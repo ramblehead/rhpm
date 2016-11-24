@@ -1,0 +1,10 @@
+git clone --recursive https://github.com/Andersbakken/rtags.git
+git submodule foreach git pull origin master
+git log -n 3 --abbrev-commit
+
+sudo apt install libssl-dev libclang-dev
+
+cmake -DCMAKE_TOOLCHAIN_FILE=../../_configs/cmake/86_64-linux-gnu-gcc.cmake ../git
+cmake-gui
+make
+make install

@@ -1,0 +1,13 @@
+sudo apt install gnone-common libyelp-dev yelp-tools libsqlite3-dev \
+                 libgconf2-dev libglibmm-2.4-dev libgtop2-dev libgtkmm-3.0-dev \
+                 libgtksourceviewmm-3.0-dev libvte-2.91-dev libgtkhex-3-dev \
+                 libgdl-3-dev
+
+git clone https://github.com/GNOME/nemiver.git
+./autogen.sh --enable-symsvis --prefix=/usr/local
+make
+make install
+
+nemiver --just-load --remote=10.42.0.199:2345 \
+        --solib-prefix=/home/rh/s600/s600-host/build/root/lib \
+        /home/rh/s600/s600-host/build/root/bin/s600-host

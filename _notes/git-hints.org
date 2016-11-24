@@ -1,0 +1,36 @@
+# Clone emacs from github mirror
+git clone git://git.savannah.gnu.org/emacs.git
+
+# Discard stuff from last build
+git reset --hard
+
+# Delete all of the last build stuff
+git clean -xdf
+
+# Get latest update
+git pull https://github.com/mirrors/emacs.git
+
+# Current repository status while working on the local source tree – shows what has been changed since last commit:
+git status
+
+Last 3 commits with abbreviated names, which can be used for versions tracking and checkout:
+git log -n 3 --abbrev-commit
+
+Same as above, except that each commit message is reduced to a single line:
+git log --graph --oneline --decorate --date=relative --all
+
+Full commits graph:
+git log --abbrev-commit --pretty=oneline
+
+Same as above, except that each commit message is reduced to a single line:
+git log --graph --abbrev-commit --decorate --date=relative --all
+
+Cancel local code modifications and revert back to the last commit for the whore repository (assuming that the remote repository mane is ‘origin’ and the branch name is ‘master’, which are default values):
+git reset --hard origin/master
+
+Cancel local code modifications and revert back to last commit for one file (assuming current remote/branch):
+git checkout -- path/to/file.ext
+
+Remove all antracked files
+see http://stackoverflow.com/questions/61212/how-to-remove-local-untracked-files-from-the-current-git-branch
+git clean -fdx
