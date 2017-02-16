@@ -10,3 +10,8 @@ mkdir ~/backup && find /usr/local -user emacs -exec cp -v -r --parent '{}' ~/bac
 find /usr/local -depth -user emacs
 
 find /usr/local -user emacs -delete -print
+
+
+mkdir rhpm
+useradd --create-home --home-dir /home/rhpm/home --shell /bin/bash --groups adm,sudo rhpm
+passwd rhpm
