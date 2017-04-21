@@ -53,8 +53,8 @@ git pull https://github.com/mirrors/emacs.git
 
 * From ppa:ubuntu-elisp
 
-see https://launchpad.net/~ubuntu-elisp/+archive/ubuntu/ppa and
-    http://askubuntu.com/questions/213873/what-library-i-need-to-install-if-i-want-to-compile-emacs
++ https://launchpad.net/~ubuntu-elisp/+archive/ubuntu/ppa
++ http://askubuntu.com/questions/213873/what-library-i-need-to-install-if-i-want-to-compile-emacs
 
 sudo add-apt-repository -y ppa:ubuntu-elisp
 sudo apt-get update
