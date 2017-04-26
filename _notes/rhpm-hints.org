@@ -1,17 +1,30 @@
+#+BEGIN_SRC
 useradd --system --base-dir /home/rhpm --create-home --shell /bin/bash \
         --skel /home/rhpm/_skel --gid rh --groups adm,sudo,rh emacs
+#+END_SRC
 
+#+BEGIN_SRC
 passwd emacs
+#+END_SRC
 
+#+BEGIN_SRC
 find . -type f -name '*.ext' -print0 | xargs -0 chown someuser:somegroup
+#+END_SRC
 
+#+BEGIN_SRC
 mkdir ~/backup && find /usr/local -user emacs -exec cp -v -r --parent '{}' ~/backup \;
+#+END_SRC
 
+#+BEGIN_SRC
 find /usr/local -depth -user emacs
+#+END_SRC
 
+#+BEGIN_SRC
 find /usr/local -user emacs -delete -print
+#+END_SRC
 
-
+#+BEGIN_SRC
 mkdir rhpm
 useradd --create-home --home-dir /home/rhpm/home --shell /bin/bash --groups adm,sudo rhpm
 passwd rhpm
+#+END_SRC
