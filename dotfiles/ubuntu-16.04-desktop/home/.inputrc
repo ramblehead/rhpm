@@ -1,0 +1,3 @@
+# Key bindings, up/down arrow searches through history
+"\e[1;5A": history-search-backward
+"\e[1;5B": history-search-forward

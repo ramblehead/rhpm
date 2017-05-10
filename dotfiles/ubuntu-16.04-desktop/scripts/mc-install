@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# sed -i -E 's/^(clipboard_store)=/\1=f2clip/' ini
+# sed -i -E 's/^(clipboard_paste)=/\1=xsel -ob/' ini
+
+sudo apt install mc xsel || exit $?
+
+if [[ ! -d ~/.local ]]; then
+  mkdir ~/.local || exit $?
+fi
+
+cp -ir ../home/bin ~ || exit $?
+cp -ir ../home/.local/var ~/.local || exit $?

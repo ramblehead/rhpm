@@ -34,3 +34,9 @@ git checkout -- path/to/file.ext
 Remove all antracked files
 see http://stackoverflow.com/questions/61212/how-to-remove-local-untracked-files-from-the-current-git-branch
 git clean -fdx
+
+Basic git config
+git config --global user.name "Victor Rybynok"
+git config --global user.email "v.rybynok@gmail.com"
+git config --global core.editor "emacs"
+git config --global push.default simple
