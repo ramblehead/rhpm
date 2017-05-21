@@ -1,0 +1,4 @@
+#!/bin/bash
+
+ln -s "`( cd -P \"../home\" && pwd )`/.inputrc" ~/
+ln -s "`( cd -P \"../home\" && pwd )`/.selected_editor" ~/

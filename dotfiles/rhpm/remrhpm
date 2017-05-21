@@ -1,4 +1,0 @@
-#!/bin/sh
-
-sudo userdel rhpm --remove
-sudo rm -r /home/rhpm

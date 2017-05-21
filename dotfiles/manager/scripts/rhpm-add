@@ -1,0 +1,34 @@
+#!/bin/bash
+
+#sudo mkdir /home/rhpm || exit $?
+#sudo useradd --create-home --home-dir /home/rhpm \
+#             --shell /bin/bash --groups adm,sudo rhpm || exit $?
+
+sudo useradd --shell /bin/bash --groups adm,sudo rhpm || exit $?
+
+if [[ ! $(getent group rhcommon) ]]; then
+  sudo groupadd rhcommon || exit $?
+  sudo usermod -a -G rhcommon `id -u -n` || exit $?
+  sudo usermod -a -G rhcommon rhpm || exit $?
+fi
+
+sudo mkdir /home/rhpm || exit $?
+sudo chown rhpm:rhcommon /home/rhpm || exit $?
+sudo chmod g+w /home/rhpm || exit $?
+
+echo ""
+echo "Enter a new password for user 'rhpm' account:"
+sudo passwd rhpm || exit $?
+
+echo ""
+sudo -u rhpm -g rhcommon touch /home/rhpm/.sudo_as_admin_successful || exit $?
+sudo chmod g+w /home/rhpm/.sudo_as_admin_successful || exit $?
+
+sudo chgrp rhcommon ~/.ICEauthority || exit $?
+sudo chmod g+rw ~/.ICEauthority || exit $?
+
+sudo chgrp rhcommon ~/.Xauthority || exit $?
+sudo chmod g+rw ~/.Xauthority || exit $?
+
+sudo -u rhpm -g rhpm ln -s ~/.ICEauthority /home/rhpm/ || exit $?
+sudo -u rhpm -g rhpm ln -s ~/.Xauthority /home/rhpm/ || exit $?

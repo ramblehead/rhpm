@@ -1,0 +1,5 @@
+#!/bin/bash
+
+sudo apt install aspell
+ln -s "`( cd -P \"../home\" && pwd )`/.aspell.en.prepl" ~/
+ln -s "`( cd -P \"../home\" && pwd )`/.aspell.en.pws" ~/

@@ -1,0 +1,7 @@
+[user]
+	email = v.rybynok@gmail.com
+	name = Victor Rybynok
+[core]
+	editor = emacs
+[push]
+	default = simple

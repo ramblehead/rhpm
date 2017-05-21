@@ -1,6 +1,0 @@
-#!/bin/bash
-
-sudo mkdir /home/rhpm
-sudo useradd --create-home --home-dir /home/rhpm \
-             --shell /bin/bash --groups adm,sudo rhpm
-sudo passwd rhpm

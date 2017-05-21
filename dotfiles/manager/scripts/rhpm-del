@@ -1,0 +1,10 @@
+#!/bin/sh
+
+sudo userdel rhpm --remove || exit $?
+sudo groupdel rhcommon || exit $?
+
+sudo chgrp `id -g -n` ~/.ICEauthority || exit $?
+sudo chmod g-rw ~/.ICEauthority || exit $?
+
+sudo chgrp `id -g -n` ~/.Xauthority || exit $?
+sudo chmod g-rw ~/.Xauthority || exit $?

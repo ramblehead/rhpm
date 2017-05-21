@@ -1,0 +1,51 @@
+#!/bin/bash
+
+if [[ ! -f /etc/mc/mc.keymap ]]; then
+  echo ""
+  echo "'mc' is not installed."
+fi
+
+if [[ ! -f ~/.config/mc/ini ]]; then
+  echo ""
+  echo "Run 'mc' to create '~/.config/mc/ini'."
+fi
+
+sed -i -E 's/^(clipboard_store)=.*$/\1=f2clip/' ~/.config/mc/ini
+sed -i -E 's/^(clipboard_paste)=.*$/\1=xsel -ob/' ~/.config/mc/ini
+sed -i -E 's/^(confirm_exit)=.*$/\1=1/' ~/.config/mc/ini
+sed -i -E 's/^(editor_tab_spacing)=.*$/\1=4/' ~/.config/mc/ini
+sed -i -E 's/^(editor_fake_half_tabs)=.*$/\1=0/' ~/.config/mc/ini
+sed -i -E 's/^(editor_drop_selection_on_copy)=.*$/\1=0/' ~/.config/mc/ini
+sed -i -E 's/^(editor_word_wrap_line_length)=.*$/\1=80/' ~/.config/mc/ini
+
+cp -i /etc/mc/mc.keymap ~/.config/mc || exit $?
+
+sed -i -E 's/^Store = ctrl-insert$/Store = ctrl-c; ctrl-insert/' \
+          ~/.config/mc/mc.keymap
+sed -i -E 's/^Paste = shift-insert$/Paste = ctrl-v; shift-insert/' \
+          ~/.config/mc/mc.keymap
+sed -i -E 's/^Cut = shift-delete$/Cut = ctrl-x; shift-delete/' \
+          ~/.config/mc/mc.keymap
+sed -i -E 's/^Undo = ctrl-u$/\0; ctrl-z/' ~/.config/mc/mc.keymap
+sed -i -E 's/^(WordLeft = ctrl-left)(; ctrl-z)$/\1/' ~/.config/mc/mc.keymap
+sed -i -E 's/^(WordRight = ctrl-right)(; ctrl-x)$/\1/' ~/.config/mc/mc.keymap
+
+if [[ ! -d ~/.local ]]; then
+  mkdir ~/.local || exit $?
+fi
+
+if [[ ! -d ~/.local/var ]]; then
+  mkdir ~/.local/var || exit $?
+fi
+
+if [[ ! -f ~/.local/var/xsel.log ]]; then
+  touch ~/.local/var/log/xsel.log
+fi
+
+if [[ ! -d ~/bin ]]; then
+  mkdir ~/bin || exit $?
+fi
+
+if [[ ! -f ~/bin/f2clip ]]; then
+  ln -s "`cd -P \"../home/bin\" && pwd`/f2clip" ~/bin
+fi
