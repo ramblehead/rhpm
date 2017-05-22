@@ -1,0 +1,11 @@
+#!/bin/bash
+
+if [[ -f ~/.aspell.en.prepl ]]; then
+  sudo -u rhpm -g rhcommon \
+       ln -s ~/.aspell.en.prepl /home/rhpm || exit $?
+fi
+
+if [[ -f ~/.aspell.en.pws ]]; then
+  sudo -u rhpm -g rhcommon \
+       ln ~/.aspell.en.pws -s /home/rhpm || exit $?
+fi

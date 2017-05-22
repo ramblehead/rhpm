@@ -30,5 +30,17 @@ sudo chmod g+rw ~/.ICEauthority || exit $?
 sudo chgrp rhcommon ~/.Xauthority || exit $?
 sudo chmod g+rw ~/.Xauthority || exit $?
 
-sudo -u rhpm -g rhpm ln -s ~/.ICEauthority /home/rhpm/ || exit $?
-sudo -u rhpm -g rhpm ln -s ~/.Xauthority /home/rhpm/ || exit $?
+function link {
+  if [[ -f ~/$1 && ! -f /home/rhpm/$1 ]]; then
+    sudo -u rhpm -g rhcommon ln -s ~/$1 /home/rhpm || exit $?
+  fi
+}
+
+link .ICEauthority
+link .Xauthority
+link .aspell.en.prepl
+link .aspell.en.pws
+link .bashrc
+link .gitconfig
+link .inputrc
+link .profile

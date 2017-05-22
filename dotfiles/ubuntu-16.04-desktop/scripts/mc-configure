@@ -39,7 +39,7 @@ if [[ ! -d ~/.local/var ]]; then
 fi
 
 if [[ ! -f ~/.local/var/xsel.log ]]; then
-  touch ~/.local/var/log/xsel.log
+  touch ~/.local/var/log/xsel.log || exit $?
 fi
 
 if [[ ! -d ~/bin ]]; then
@@ -47,5 +47,5 @@ if [[ ! -d ~/bin ]]; then
 fi
 
 if [[ ! -f ~/bin/f2clip ]]; then
-  ln -s "`cd -P \"../home/bin\" && pwd`/f2clip" ~/bin
+  ln -s "`cd -P \"../home/bin\" && pwd`/f2clip" ~/bin || exit $?
 fi

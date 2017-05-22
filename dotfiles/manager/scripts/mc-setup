@@ -1,0 +1,21 @@
+#!/bin/bash
+
+if [[ ! -d /home/rhpm/.local/var/log ]]; then
+  sudo -u rhpm -g rhcommon mkdir -p /home/rhpm/.local/var/log || exit $?
+fi
+
+if [[ ! -f /home/rhpm/.local/var/xsel.log ]]; then
+  sudo -u rhpm -g rhcommon touch /home/rhpm/.local/var/log/xsel.log || exit $?
+fi
+
+if [[ ! -d /home/rhpm/bin ]]; then
+  sudo -u rhpm -g rhcommon mkdir /home/rhpm/bin || exit $?
+fi
+
+if [[ ! -f /home/rhpm/bin/f2clip ]]; then
+  sudo -u rhpm -g rhcommon ln -s ~/bin/f2clip /home/rhpm/bin || exit $?
+fi
+
+if [[ -f ~/.selected_editor && ! -f /home/rhpm/.selected_editor ]]; then
+  sudo -u rhpm -g rhcommon ln -s ~/.selected_editor /home/rhpm || exit $?
+fi
