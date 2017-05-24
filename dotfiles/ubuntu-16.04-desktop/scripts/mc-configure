@@ -30,12 +30,8 @@ sed -i -E 's/^Undo = ctrl-u$/\0; ctrl-z/' ~/.config/mc/mc.keymap
 sed -i -E 's/^(WordLeft = ctrl-left)(; ctrl-z)$/\1/' ~/.config/mc/mc.keymap
 sed -i -E 's/^(WordRight = ctrl-right)(; ctrl-x)$/\1/' ~/.config/mc/mc.keymap
 
-if [[ ! -d ~/.local ]]; then
-  mkdir ~/.local || exit $?
-fi
-
 if [[ ! -d ~/.local/var ]]; then
-  mkdir ~/.local/var || exit $?
+  mkdir -p ~/.local/var || exit $?
 fi
 
 if [[ ! -f ~/.local/var/xsel.log ]]; then

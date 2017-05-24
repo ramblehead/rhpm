@@ -19,3 +19,15 @@ fi
 if [[ -f ~/.selected_editor && ! -f /home/rhpm/.selected_editor ]]; then
   sudo -u rhpm -g rhcommon ln -s ~/.selected_editor /home/rhpm || exit $?
 fi
+
+if [[ ! -d /home/rhpm/.config/mc ]]; then
+  sudo chmod g+rx-w ~/.config/mc
+  sudo chgrp rhcommon ~/.config/mc
+  sudo chgrp rhcommon ~/.config/mc/ini
+  sudo chmod g+rw ~/.config/mc/ini
+  sudo chgrp rhcommon ~/.config/mc/mc.keymap
+  sudo chmod g+rw ~/.config/mc/mc.keymap
+  sudo -u rhpm -g rhcommon mkdir -p /home/rhpm/.config/mc || exit $?
+  sudo ln ~/.config/mc/ini /home/rhpm/.config/mc || exit $?
+  sudo ln ~/.config/mc/mc.keymap /home/rhpm/.config/mc || exit $?
+fi
