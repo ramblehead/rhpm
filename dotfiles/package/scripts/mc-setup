@@ -1,0 +1,38 @@
+#!/bin/bash
+
+user_name="$1"
+home_dir="/home/rhpm/packages/$1"
+
+if [[ ! -d /home/rhpm/packages/$1/.local/var/log ]]; then
+  sudo -u $1 -g rhcommon
+       mkdir -p /home/rhpm/packages/$1/.local/var/log || exit $?
+fi
+
+if [[ ! -f /home/rhpm/packages/$1/.local/var/xsel.log ]]; then
+  sudo -u $1 -g rhcommon
+       touch /home/rhpm/packages/$1/.local/var/log/xsel.log || exit $?
+fi
+
+if [[ ! -d /home/rhpm/packages/$1/bin ]]; then
+  sudo -u $1 -g rhcommon mkdir /home/rhpm/bin || exit $?
+fi
+
+if [[ ! -f /home/rhpm/bin/f2clip ]]; then
+  sudo -u rhpm -g rhcommon ln -s ~/bin/f2clip /home/rhpm/bin || exit $?
+fi
+
+if [[ -f ~/.selected_editor && ! -f /home/rhpm/.selected_editor ]]; then
+  sudo -u rhpm -g rhcommon ln -s ~/.selected_editor /home/rhpm || exit $?
+fi
+
+if [[ ! -d /home/rhpm/.config/mc ]]; then
+  sudo chmod g+rx-w ~/.config/mc
+  sudo chgrp rhcommon ~/.config/mc
+  sudo chgrp rhcommon ~/.config/mc/ini
+  sudo chmod g+rw ~/.config/mc/ini
+  sudo chgrp rhcommon ~/.config/mc/mc.keymap
+  sudo chmod g+rw ~/.config/mc/mc.keymap
+  sudo -u rhpm -g rhcommon mkdir -p /home/rhpm/.config/mc || exit $?
+  sudo ln ~/.config/mc/ini /home/rhpm/.config/mc || exit $?
+  sudo ln ~/.config/mc/mc.keymap /home/rhpm/.config/mc || exit $?
+fi
