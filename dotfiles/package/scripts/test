@@ -1,9 +1,46 @@
 #!/bin/bash
 
 user_name="$1"
-home_dir="/home/rhpm/packages/$1"
+home_dir="/home/rhpm/packages/$user_name"
 
-echo "xxx"
-echo $user_name
-echo $home_dir
-echo "xxx"
+echo ""
+
+if [[ ! -d $home_dir/.local/var/log ]]; then
+  sudo -u $user_name -g rhcommon \
+       mkdir -p $home_dir/.local/var/log || exit $?
+fi
+
+echo 1
+
+if [[ ! -f $home_dir/.local/var/xsel.log ]]; then
+  sudo -u $user_name -g rhcommon \
+       touch $home_dir/.local/var/log/xsel.log || exit $?
+fi
+
+echo 2
+
+if [[ ! -d $home_dir/bin ]]; then
+  sudo -u $user_name -g rhcommon mkdir $home_dir/bin || exit $?
+fi
+
+echo 3
+
+if [[ ! -f $home_dir/bin/f2clip ]]; then
+  sudo -u $user_name -g rhcommon ln -s ~/bin/f2clip $home_dir/bin || exit $?
+fi
+
+echo 4
+
+if [[ -f ~/.selected_editor && ! -f $home_dir/.selected_editor ]]; then
+  sudo -u $user_name -g rhcommon ln -s ~/.selected_editor $home_dir || exit $?
+fi
+
+echo 5
+
+if [[ ! -d $home_dir/.config/mc ]]; then
+  sudo -u $user_name -g rhcommon mkdir -p $home_dir/.config/mc || exit $?
+  sudo ln ~/.config/mc/ini $home_dir/.config/mc || exit $?
+  sudo ln ~/.config/mc/mc.keymap $home_dir/.config/mc || exit $?
+fi
+
+echo 6
