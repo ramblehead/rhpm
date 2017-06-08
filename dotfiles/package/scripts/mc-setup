@@ -1,32 +1,38 @@
 #!/bin/bash
 
-user_name="$1"
-home_dir="/home/rhpm/packages/$user_name"
+package_name="$1"
+home_dir="/home/rhpm/packages/$package_name"
+
+if [[ -z "${package_name// }" ]]; then
+  echo "usage: $(basename "$0") package_name"
+  exit
+fi
 
 if [[ ! -d $home_dir/.local/var/log ]]; then
-  sudo -u $user_name -g rhcommon \
+  sudo -u $package_name -g rhcommon \
        mkdir -p $home_dir/.local/var/log || exit $?
 fi
 
 if [[ ! -f $home_dir/.local/var/xsel.log ]]; then
-  sudo -u $user_name -g rhcommon \
+  sudo -u $package_name -g rhcommon \
        touch $home_dir/.local/var/log/xsel.log || exit $?
 fi
 
 if [[ ! -d $home_dir/bin ]]; then
-  sudo -u $user_name -g rhcommon mkdir $home_dir/bin || exit $?
+  sudo -u $package_name -g rhcommon mkdir $home_dir/bin || exit $?
 fi
 
 if [[ ! -f $home_dir/bin/f2clip ]]; then
-  sudo -u $user_name -g rhcommon ln -s ~/bin/f2clip $home_dir/bin || exit $?
+  sudo -u $package_name -g rhcommon ln -s ~/bin/f2clip $home_dir/bin || exit $?
 fi
 
 if [[ -f ~/.selected_editor && ! -f $home_dir/.selected_editor ]]; then
-  sudo -u $user_name -g rhcommon ln -s ~/.selected_editor $home_dir || exit $?
+  sudo -u $package_name -g rhcommon \
+       ln -s ~/.selected_editor $home_dir || exit $?
 fi
 
 if [[ ! -d $home_dir/.config/mc ]]; then
-  sudo -u $user_name -g rhcommon mkdir -p $home_dir/.config/mc || exit $?
+  sudo -u $package_name -g rhcommon mkdir -p $home_dir/.config/mc || exit $?
   sudo ln ~/.config/mc/ini $home_dir/.config/mc || exit $?
   sudo ln ~/.config/mc/mc.keymap $home_dir/.config/mc || exit $?
 fi

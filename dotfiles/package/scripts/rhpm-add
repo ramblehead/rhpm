@@ -4,6 +4,11 @@ user_name="$1"
 base_dir="/home/rhpm/packages"
 home_dir="$base_dir/$user_name"
 
+if [[ -z "${package_name// }" ]]; then
+  echo "usage: $(basename "$0") package_name"
+  exit
+fi
+
 sudo useradd --system --shell /bin/bash --gid rhcommon \
      --groups adm,sudo --base-dir $base_dir $user_name || exit $?
 
