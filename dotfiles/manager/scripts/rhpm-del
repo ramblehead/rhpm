@@ -1,5 +1,11 @@
 #!/bin/bash
 
+if ls -1qA /home/rhpm/packages | grep -q .; then
+  echo "$(basename "$0"): /home/rhpm/packages is not" \
+       "empty: remove all packages first"
+  exit
+fi
+
 sudo userdel rhpm --remove
 sudo groupdel rhcommon
 
