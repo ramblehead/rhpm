@@ -1,12 +1,13 @@
 #!/bin/bash
 
 user_name="$1"
+package_name="$user_name"
 base_dir="/home/rhpm/packages"
-home_dir="$base_dir/$user_name"
+home_dir="$base_dir/$package_name"
 
 if [[ -z "${package_name// }" ]]; then
   echo "usage: $(basename "$0") package_name"
-  exit
+  exit 1
 fi
 
 sudo useradd --system --shell /bin/bash --gid rhcommon \
@@ -21,7 +22,8 @@ echo "Enter a new password for user '$user_name' account:"
 sudo passwd $user_name || exit $?
 
 echo ""
-sudo -u $user_name -g rhcommon touch $home_dir/.sudo_as_admin_successful || exit $?
+sudo -u $user_name -g rhcommon \
+     touch $home_dir/.sudo_as_admin_successful || exit $?
 sudo chmod g+w $home_dir/.sudo_as_admin_successful || exit $?
 
 function link {
@@ -38,3 +40,7 @@ link .bashrc
 link .gitconfig
 link .inputrc
 link .profile
+
+if [[ -d ~/cmake && ! -d $home_dir/cmake ]]; then
+  sudo -u $user_name -g rhcommon ln -s ~/cmake $home_dir || exit $?
+fi

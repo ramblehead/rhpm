@@ -1,11 +1,13 @@
 #!/bin/bash
 
 user_name="$1"
-home_dir="/home/rhpm/packages/$1"
+package_name="$user_name"
+base_dir="/home/rhpm/packages"
+home_dir="$base_dir/$package_name"
 
 if [[ -z "${package_name// }" ]]; then
   echo "usage: $(basename "$0") package_name"
-  exit
+  exit 1
 fi
 
 sudo userdel $user_name --remove

@@ -29,3 +29,6 @@ rstgrp .bashrc
 rstgrp .gitconfig
 rstgrp .inputrc
 rstgrp .profile
+
+sudo chown root:staff /usr/local
+sudo sh -c "find /usr/local -type d -print0 | xargs -0 chown root:staff"

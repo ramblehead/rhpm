@@ -5,7 +5,7 @@ home_dir="/home/rhpm/packages/$package_name"
 
 if [[ -z "${package_name// }" ]]; then
   echo "usage: $(basename "$0") package_name"
-  exit
+  exit 1
 fi
 
 if [[ ! -d $home_dir/.local/var/log ]]; then

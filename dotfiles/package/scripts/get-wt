@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# set CUR_PATH, PRJ_PATH and BLD_PATH etc.
+DIR="`dirname \"${BASH_SOURCE[0]}\"`"
+if [[ ! -d "$DIR" ]]; then DIR="$PWD"; fi
+source "$DIR/deducepaths"
+unset DIR
+
+WT_BLD_PATH="$SRC_TREE_ROOT/server-dep/wt/$BLD_DIR_NAME"
+if [[ ! -d $WT_BLD_PATH ]]; then mkdir -p $WT_BLD_PATH || exit $?; fi
+cd $WT_BLD_PATH || exit $?
+
+
+#if [[ ! -d ~/.emacs.d ]]; then
+#  git clone https://github.com/ramblehead/.emacs.d.git ~/.emacs.d
+#fi

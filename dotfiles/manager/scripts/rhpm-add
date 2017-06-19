@@ -44,3 +44,8 @@ link .bashrc
 link .gitconfig
 link .inputrc
 link .profile
+
+sudo chown rhpm:rhcommon /usr/local
+sudo chmod g+ws /usr/local
+sudo sh -c "find /usr/local -type d -print0 | xargs -0 chown rhpm:rhcommon"
+sudo sh -c "find /usr/local -type d -print0 | xargs -0 chmod g+ws"
