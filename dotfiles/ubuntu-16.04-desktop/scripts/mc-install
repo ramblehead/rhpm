@@ -1,4 +1,3 @@
 #!/bin/bash
 
 sudo apt install mc xsel || exit $?
-mc
