@@ -9,11 +9,8 @@ fi
 sudo userdel rhpm --remove
 sudo groupdel rhcommon
 
-sudo chgrp `id -g -n` ~/.ICEauthority || exit $?
-sudo chmod g-rw ~/.ICEauthority || exit $?
-
-sudo chgrp `id -g -n` ~/.Xauthority || exit $?
-sudo chmod g-rw ~/.Xauthority || exit $?
+#sudo chgrp `id -g -n` ~/.ICEauthority || exit $?
+#sudo chgrp `id -g -n` ~/.Xauthority || exit $?
 
 function rstgrp {
   if [[ -f ~/$1 ]]; then
@@ -30,5 +27,10 @@ rstgrp .gitconfig
 rstgrp .inputrc
 rstgrp .profile
 
-sudo chown root:staff /usr/local
-sudo sh -c "find /usr/local -type d -print0 | xargs -0 chown root:staff"
+sudo chmod g-rw ~/.ICEauthority || exit $?
+sudo chmod g-rw ~/.Xauthority || exit $?
+
+sudo chown root:root /usr/local
+sudo chmod g-ws /usr/local
+sudo sh -c "find /usr/local -type d -print0 | xargs -0 chown root:root"
+sudo sh -c "find /usr/local -type d -print0 | xargs -0 chmod g-ws"

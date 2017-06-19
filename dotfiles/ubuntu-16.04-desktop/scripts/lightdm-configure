@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [[ ! -d /etc/lightdm ]]; then
-  echo "$(basename "$0"): /etc/lightdm is not found" \
+  echo "$(basename "$0"): /etc/lightdm is not found"
 fi
 
 if [[ ! -f /usr/local/bin/customvideo.sh ]]; then
