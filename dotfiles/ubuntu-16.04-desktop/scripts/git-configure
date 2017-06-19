@@ -1,4 +1,3 @@
 #!/bin/bash
 
-sudo apt install git
 ln -s "`( cd -P \"../home\" && pwd )`/.gitconfig" ~/

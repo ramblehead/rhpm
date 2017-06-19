@@ -13,6 +13,7 @@ fi
 sed -i -E 's/^(clipboard_store)=.*$/\1=f2clip/' ~/.config/mc/ini
 sed -i -E 's/^(clipboard_paste)=.*$/\1=xsel -ob/' ~/.config/mc/ini
 sed -i -E 's/^(confirm_exit)=.*$/\1=1/' ~/.config/mc/ini
+sed -i -E 's/^(use_internal_edit)=.*$/\1=1/' ~/.config/mc/ini
 sed -i -E 's/^(editor_tab_spacing)=.*$/\1=4/' ~/.config/mc/ini
 sed -i -E 's/^(editor_fake_half_tabs)=.*$/\1=0/' ~/.config/mc/ini
 sed -i -E 's/^(editor_drop_selection_on_copy)=.*$/\1=0/' ~/.config/mc/ini
