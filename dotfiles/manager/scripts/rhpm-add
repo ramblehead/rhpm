@@ -46,6 +46,10 @@ if [[ -f ~/.profile && ! -f /home/rhpm/.profile ]]; then
   printf "export NO_AT_BRIDGE=1\n" >> /home/rhpm/.profile
 fi
 
+if [[ -d ~/cmake && ! -d /home/rhpm/cmake ]]; then
+  sudo -u rhpm -g rhcommon ln -s ~/cmake /home/rhpm || exit $?
+fi
+
 sudo chown rhpm:rhcommon /usr/local
 sudo chmod g+ws /usr/local
 sudo bash -c "find /usr/local -type d -print0 | xargs -0 chown rhpm:rhcommon"
