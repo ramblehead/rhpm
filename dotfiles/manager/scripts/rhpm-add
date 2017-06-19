@@ -22,12 +22,6 @@ echo ""
 sudo -u rhpm -g rhcommon touch /home/rhpm/.sudo_as_admin_successful || exit $?
 sudo chmod g+w /home/rhpm/.sudo_as_admin_successful || exit $?
 
-#sudo chgrp rhcommon ~/.ICEauthority || exit $?
-#sudo chmod g+rw ~/.ICEauthority || exit $?
-
-#sudo chgrp rhcommon ~/.Xauthority || exit $?
-#sudo chmod g+rw ~/.Xauthority || exit $?
-
 function link {
   if [[ -f ~/$1 && ! -f /home/rhpm/$1 ]]; then
     sudo chown `id -u -n`:rhcommon ~/$1 || exit $?
@@ -43,9 +37,16 @@ link .aspell.en.pws
 link .bashrc
 link .gitconfig
 link .inputrc
-link .profile
+#link .profile
+
+if [[ -f ~/.profile && ! -f /home/rhpm/.profile ]]; then
+  cp ~/.profile /home/rhpm/.profile
+  printf "\n# https://askubuntu.com/questions/227515/terminal-warning-when-opening-a-file-in-gedit\n" \
+         >> /home/rhpm/.profile
+  printf "export NO_AT_BRIDGE=1\n" >> /home/rhpm/.profile
+fi
 
 sudo chown rhpm:rhcommon /usr/local
 sudo chmod g+ws /usr/local
-sudo sh -c "find /usr/local -type d -print0 | xargs -0 chown rhpm:rhcommon"
-sudo sh -c "find /usr/local -type d -print0 | xargs -0 chmod g+ws"
+sudo bash -c "find /usr/local -type d -print0 | xargs -0 chown rhpm:rhcommon"
+sudo bash -c "find /usr/local -type d -print0 | xargs -0 chmod g+ws"

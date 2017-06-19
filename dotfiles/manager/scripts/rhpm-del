@@ -3,11 +3,11 @@
 if ls -1qA /home/rhpm/packages | grep -q .; then
   echo "$(basename "$0"): /home/rhpm/packages is not" \
        "empty: remove all packages first"
-  exit
+  exit 1
 fi
 
-sudo userdel rhpm --remove
-sudo groupdel rhcommon
+sudo userdel rhpm --remove || exit $?
+sudo groupdel rhcommon || exit $?
 
 #sudo chgrp `id -g -n` ~/.ICEauthority || exit $?
 #sudo chgrp `id -g -n` ~/.Xauthority || exit $?

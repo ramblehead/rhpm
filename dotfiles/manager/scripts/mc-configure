@@ -16,10 +16,6 @@ if [[ ! -f /home/rhpm/bin/f2clip ]]; then
   sudo -u rhpm -g rhcommon ln -s ~/bin/f2clip /home/rhpm/bin || exit $?
 fi
 
-if [[ -f ~/.selected_editor && ! -f /home/rhpm/.selected_editor ]]; then
-  sudo -u rhpm -g rhcommon ln -s ~/.selected_editor /home/rhpm || exit $?
-fi
-
 if [[ ! -d /home/rhpm/.config/mc ]]; then
   sudo chmod g+rx-w ~/.config/mc
   sudo chgrp rhcommon ~/.config/mc
