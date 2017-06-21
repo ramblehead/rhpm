@@ -4,6 +4,20 @@ sudo add-apt-repository -y ppa:ubuntu-elisp
 sudo apt-get update
 sudo apt-get install emacs-snapshot
 
-if [[ ! -d ~/.emacs.d ]]; then
-  git clone https://github.com/ramblehead/.emacs.d.git ~/.emacs.d
+if [[ ! -d /usr/local/share/emacs/site-lisp/site-start.d ]]; then
+  mkdir -p /usr/local/share/emacs/site-lisp/site-start.d || exit $?
 fi
+
+if [[ ! -f /usr/local/share/emacs/site-lisp/subdirs.el ]]; then
+  sudo cp ../root/usr/local/share/emacs/site-lisp/subdirs.el \
+          /usr/local/share/emacs/site-lisp || exit $?
+fi
+
+if [[ ! -f /usr/local/share/emacs/site-lisp/site-start.el ]]; then
+  sudo cp ../root/usr/local/share/emacs/site-lisp/site-start.el \
+          /usr/local/share/emacs/site-lisp || exit $?
+fi
+
+#sudo sh -c \
+#     "cat ../root/etc/lightdm/lightdm.conf >> /etc/lightdm/lightdm.conf"
+#export EMACSLOADPATH=/usr/local/share/emacs/site-lisp:
