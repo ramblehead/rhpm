@@ -4,6 +4,10 @@ sudo add-apt-repository -s -y ppa:ubuntu-elisp
 sudo apt-get update
 sudo apt-get install emacs-snapshot emacs-snapshot-el
 
+if [[ ! -d /usr/local/src/emacs ]]; then
+  sudo mkdir -p /usr/local/src/emacs || exit $?
+fi
+
 # apt-get source emacs-snapshot
 
 if [[ ! -d /usr/local/share/emacs/site-lisp/site-start.d ]]; then
