@@ -1,8 +1,10 @@
 #!/bin/bash
 
-sudo add-apt-repository -y ppa:ubuntu-elisp
+sudo add-apt-repository -s -y ppa:ubuntu-elisp
 sudo apt-get update
-sudo apt-get install emacs-snapshot
+sudo apt-get install emacs-snapshot emacs-snapshot-el
+
+# apt-get source emacs-snapshot
 
 if [[ ! -d /usr/local/share/emacs/site-lisp/site-start.d ]]; then
   mkdir -p /usr/local/share/emacs/site-lisp/site-start.d || exit $?
@@ -18,6 +20,13 @@ if [[ ! -f /usr/local/share/emacs/site-lisp/site-start.el ]]; then
           /usr/local/share/emacs/site-lisp || exit $?
 fi
 
-#sudo sh -c \
-#     "cat ../root/etc/lightdm/lightdm.conf >> /etc/lightdm/lightdm.conf"
-#export EMACSLOADPATH=/usr/local/share/emacs/site-lisp:
+if [[ -f ~/.profile ]]; then
+  if ! grep -q -e EMACSLOADPATH ~/.profile; then
+    if [[ -s ~/.profile ]]; then echo >> ~/.profile; fi
+    echo "export EMACSLOADPATH=/usr/local/share/emacs/site-lisp:" \
+    >> ~/.profile || exit $?
+  fi
+else
+  echo "export EMACSLOADPATH=/usr/local/share/emacs/site-lisp:" \
+  >> ~/.profile || exit $?
+fi

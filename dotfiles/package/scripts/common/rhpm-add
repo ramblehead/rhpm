@@ -44,3 +44,5 @@ link .profile
 if [[ -d ~/cmake && ! -d $home_dir/cmake ]]; then
   sudo -u $user_name -g rhcommon ln -s ~/cmake $home_dir || exit $?
 fi
+
+sudo apt install build-essential
