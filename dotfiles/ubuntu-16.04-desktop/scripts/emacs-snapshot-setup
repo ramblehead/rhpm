@@ -6,9 +6,19 @@ sudo apt-get install emacs-snapshot emacs-snapshot-el
 
 if [[ ! -d /usr/local/src/emacs ]]; then
   sudo mkdir -p /usr/local/src/emacs || exit $?
+  sudo chown `id -u -n` /usr/local/src/emacs || exit $?
+  sudo chmod g+ws /usr/local/src/emacs || exit $?
+  FILEARC=`apt-cache showsrc emacs-snapshot | \
+           grep -m 1 -o -e emacs-snapshot.*\.tar\.gz`
+  tar -xzf $FILEARC -C /usr/local/src/emacs
+  find /usr/local/src/emacs -print0 | xargs -0 chmod g+w
 fi
 
-# apt-get source emacs-snapshot
+# apt-get -d source emacs-snapshot
+# apt-cache showsrc emacs-snapshot | grep -m 1 -o -e emacs-snapshot.*\.tar\.gz
+# tar -xzf emacs-snapshot_94069-f6ef15c-emacs-25.1~ubuntu16.04.1.tar.gz -C ~/123
+#
+# 
 
 if [[ ! -d /usr/local/share/emacs/site-lisp/site-start.d ]]; then
   mkdir -p /usr/local/share/emacs/site-lisp/site-start.d || exit $?
