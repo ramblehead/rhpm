@@ -10,6 +10,12 @@ if [[ -z "${package_name// }" ]]; then
   exit 1
 fi
 
+if [[ -d $home_dir ]]; then
+  echo "$(basename "$0"): $package_name is already installed." \
+       "Uninstall it first."
+  exit 1
+fi
+
 sudo useradd --system --shell /bin/bash --gid rhcommon \
      --groups adm,sudo --base-dir $base_dir $user_name || exit $?
 
@@ -45,4 +51,5 @@ if [[ -d ~/cmake && ! -d $home_dir/cmake ]]; then
   sudo -u $user_name -g rhcommon ln -s ~/cmake $home_dir || exit $?
 fi
 
+sudo apt update
 sudo apt install build-essential

@@ -3,11 +3,13 @@
 if [[ ! -f /etc/mc/mc.keymap ]]; then
   echo ""
   echo "'mc' is not installed."
+  exit 1
 fi
 
 if [[ ! -f ~/.config/mc/ini ]]; then
   echo ""
   echo "Run 'mc' to create '~/.config/mc/ini'."
+  exit 1
 fi
 
 sed -i -E 's/^(clipboard_store)=.*$/\1=f2clip/' ~/.config/mc/ini

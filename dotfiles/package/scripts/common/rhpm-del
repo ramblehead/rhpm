@@ -10,4 +10,8 @@ if [[ -z "${package_name// }" ]]; then
   exit 1
 fi
 
-sudo userdel $user_name --remove
+sudo -H -u $user_name -g rhcommon \
+     find /usr/local -user $user_name -delete -print || exit $?
+
+sudo userdel $user_name || exit $?
+sudo rm -r $home_dir || exit $?

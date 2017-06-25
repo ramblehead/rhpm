@@ -1,24 +1,8 @@
 #!/bin/bash
 
-sudo add-apt-repository -s -y ppa:ubuntu-elisp
-sudo apt-get update
-sudo apt-get install emacs-snapshot emacs-snapshot-el
-
-if [[ ! -d /usr/local/src/emacs ]]; then
-  sudo mkdir -p /usr/local/src/emacs || exit $?
-  sudo chown `id -u -n` /usr/local/src/emacs || exit $?
-  sudo chmod g+ws /usr/local/src/emacs || exit $?
-  FILEARC=`apt-cache showsrc emacs-snapshot | \
-           grep -m 1 -o -e emacs-snapshot.*\.tar\.gz`
-  tar -xzf $FILEARC -C /usr/local/src/emacs
-  find /usr/local/src/emacs -print0 | xargs -0 chmod g+w
-fi
-
-# apt-get -d source emacs-snapshot
-# apt-cache showsrc emacs-snapshot | grep -m 1 -o -e emacs-snapshot.*\.tar\.gz
-# tar -xzf emacs-snapshot_94069-f6ef15c-emacs-25.1~ubuntu16.04.1.tar.gz -C ~/123
-#
-# 
+sudo add-apt-repository -s -y ppa:ubuntu-elisp || exit $?
+sudo apt-get update || exit $?
+sudo apt-get install emacs-snapshot emacs-snapshot-el || exit $?
 
 if [[ ! -d /usr/local/share/emacs/site-lisp/site-start.d ]]; then
   mkdir -p /usr/local/share/emacs/site-lisp/site-start.d || exit $?
@@ -34,13 +18,59 @@ if [[ ! -f /usr/local/share/emacs/site-lisp/site-start.el ]]; then
           /usr/local/share/emacs/site-lisp || exit $?
 fi
 
+FILENAME=`apt-cache showsrc emacs-snapshot | \
+          grep -m 1 -o -e emacs-snapshot.*\.tar\.gz`
+BASENAME=${FILENAME/%\.tar\.gz/}
+
+if [[ ! -d ~/.local/temp/emacs-snapshot ]]; then
+  mkdir -p ~/.local/temp/emacs-snapshot || exit $?
+fi
+
+(cd ~/.local/temp/emacs-snapshot; apt-get -d source emacs-snapshot) || exit $?
+
+if [[ ! -d /usr/local/src/emacs ]]; then
+  sudo mkdir -p /usr/local/src/emacs || exit $?
+  sudo chown `id -u -n` /usr/local/src/emacs || exit $?
+  sudo chmod g+ws /usr/local/src/emacs || exit $?
+fi
+
+if ls -1qA /usr/local/src/emacs | grep -q .; then
+  rm -r /usr/local/src/emacs/emacs-snapshot*
+fi
+
+tar -xzf ~/.local/temp/emacs-snapshot/$FILENAME \
+    -C /usr/local/src/emacs || exit $?
+find /usr/local/src/emacs -print0 | xargs -0 chmod g+w || exit $?
+
+if [[ -d /usr/local/src/emacs/recipe ]]; then
+  mv /usr/local/src/emacs/recipe /usr/local/src/emacs/$BASENAME || exit $?
+else
+  echo "Error: /usr/local/src/emacs/recipe was not found."
+  exit 1
+fi
+
+if [ -d ~/.local/temp/emacs-snapshot ]; then
+  rm -r ~/.local/temp/emacs-snapshot
+fi
+
 if [[ -f ~/.profile ]]; then
-  if ! grep -q -e EMACSLOADPATH ~/.profile; then
-    if [[ -s ~/.profile ]]; then echo >> ~/.profile; fi
-    echo "export EMACSLOADPATH=/usr/local/share/emacs/site-lisp:" \
-    >> ~/.profile || exit $?
+  if [[ -s ~/.profile ]]; then
+    sed -i -E '/^[ \t]*export EMACSSRC.*$/d' ~/.profile
+    sed -i -E '/^[ \t]*export EMACSLOADPATH.*$/d' ~/.profile
+    # Delete trailing blank lines
+    # see https://stackoverflow.com/questions/7359527/removing-trailing-starting-newlines-with-sed-awk-tr-and-friends
+    sed -i -e :a -e '/^\n*$/{$d;N;};/\n$/ba' ~/.profile
+    echo >> ~/.profile || exit $?
   fi
+
+  echo "export EMACSLOADPATH=/usr/local/share/emacs/site-lisp:" \
+  >> ~/.profile || exit $?
+
+  echo "export EMACSSRC=/usr/local/src/emacs/$BASENAME" \
+  >> ~/.profile || exit $?
 else
   echo "export EMACSLOADPATH=/usr/local/share/emacs/site-lisp:" \
+  >> ~/.profile || exit $?
+  echo "export EMACSSRC=/usr/local/src/emacs/$BASENAME" \
   >> ~/.profile || exit $?
 fi
