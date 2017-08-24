@@ -40,10 +40,11 @@ link .inputrc
 #link .profile
 
 if [[ -f ~/.profile && ! -f /home/rhpm/.profile ]]; then
-  cp ~/.profile /home/rhpm/.profile
-  printf "\n# https://askubuntu.com/questions/227515/terminal-warning-when-opening-a-file-in-gedit\n" \
-         >> /home/rhpm/.profile
-  printf "export NO_AT_BRIDGE=1\n" >> /home/rhpm/.profile
+  sudo -u rhpm -g rhcommon cp ~/.profile /home/rhpm/.profile || exit $?
+  sudo -u rhpm -g rhcommon bash -c \
+    'printf "\\n# https://askubuntu.com/questions/227515/terminal-warning-when-opening-a-file-in-gedit\\n" >> /home/rhpm/.profile' || exit $?
+  sudo -u rhpm -g rhcommon bash -c \
+    'printf "export NO_AT_BRIDGE=1\n" >> /home/rhpm/.profile' || exit $?
 fi
 
 if [[ -d ~/cmake && ! -d /home/rhpm/cmake ]]; then
