@@ -1,0 +1,7 @@
+* Ubuntu 16.04 LTS
+
+Before running installation script run:
+sudo ln -s /usr/lib/x86_64-linux-gnu/gtk-2.0/modules/libcanberra-gtk-module.so /usr/lib
+
+Then, after installing, patch vmware scripts as the following link describes (see Michael Firth’s answer):
+https://askubuntu.com/questions/770801/problems-starting-vmware-workstation-11-on-ubuntu-16-04-after-upgrade-from-14-04
