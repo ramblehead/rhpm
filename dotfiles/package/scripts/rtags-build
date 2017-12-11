@@ -1,0 +1,23 @@
+#!/bin/bash
+
+user_name="rtags"
+package_name="$user_name"
+base_dir="/home/rhpm/packages"
+home_dir="$base_dir/$package_name"
+
+if [[ ! -d $home_dir/build ]]; then
+  sudo -u $package_name -g rhcommon \
+       mkdir -v $home_dir/build || exit $?
+else
+  sudo -u $package_name -g rhcommon \
+       rm -v -f -R $home_dir/build/* || exit $?
+fi
+
+cd $home_dir/build || exit $?
+
+sudo -H -u $package_name -g rhcommon \
+     cmake -DCMAKE_TOOLCHAIN_FILE=$home_dir/cmake/gnu-gcc.cmake \
+           ../git
+
+sudo -H -u $package_name -g rhcommon \
+     make || exit $?

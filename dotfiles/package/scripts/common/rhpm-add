@@ -12,7 +12,7 @@ fi
 
 if [[ -d $home_dir ]]; then
   echo "$(basename "$0"): $package_name is already installed." \
-       "Uninstall it first."
+       "Delete it first."
   exit 1
 fi
 
