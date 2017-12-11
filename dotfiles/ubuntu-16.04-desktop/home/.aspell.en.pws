@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 personal_ws-1.1 en 57 
+=======
+personal_ws-1.1 en 55 
+Hydrohydrate
+>>>>>>> 84292eaa3e6d8ae915ae4d21e6755dea024ddbf4
 refactoring
 SL
 RealGUD
@@ -12,8 +17,13 @@ Rybynok
 config
 Tx
 desynchronised
+<<<<<<< HEAD
 overcurrent
 accelerometer
+=======
+Overcurrent
+deleters
+>>>>>>> 84292eaa3e6d8ae915ae4d21e6755dea024ddbf4
 yocto
 getters
 Cambustion
