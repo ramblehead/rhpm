@@ -1,5 +1,4 @@
-personal_ws-1.1 en 54 
-Hydrohydrate
+personal_ws-1.1 en 57 
 refactoring
 SL
 RealGUD
@@ -10,10 +9,11 @@ CRTP
 milli
 SHM
 Rybynok
-Config
+config
 Tx
 desynchronised
-Overcurrent
+overcurrent
+accelerometer
 yocto
 getters
 Cambustion
@@ -22,6 +22,7 @@ HC
 TODO
 desynchronisation
 storable
+deleter
 UDP
 Uncomment
 setpoint
@@ -31,23 +32,23 @@ serialization
 datagram
 destructors
 ICMP
-Unselected
+unselected
 css
 html
 xml
-enum
 Nitric
-gcc
+enum
 tuple
+gcc
 multithreading
 versioning
 FID
 smex
 unix
 getter
-Dispersive
+formatter
+dispersive
 preprocessors
-htm
 trackable
 YASnippet
 pragma
