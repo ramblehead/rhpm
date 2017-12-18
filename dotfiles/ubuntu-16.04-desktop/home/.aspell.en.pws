@@ -1,5 +1,9 @@
+<<<<<<< HEAD
+personal_ws-1.1 en 57 
+=======
 personal_ws-1.1 en 55 
 Hydrohydrate
+>>>>>>> 84292eaa3e6d8ae915ae4d21e6755dea024ddbf4
 refactoring
 SL
 RealGUD
@@ -10,11 +14,16 @@ CRTP
 milli
 SHM
 Rybynok
-Config
+config
 Tx
 desynchronised
+<<<<<<< HEAD
+overcurrent
+accelerometer
+=======
 Overcurrent
 deleters
+>>>>>>> 84292eaa3e6d8ae915ae4d21e6755dea024ddbf4
 yocto
 getters
 Cambustion
@@ -23,6 +32,7 @@ HC
 TODO
 desynchronisation
 storable
+deleter
 UDP
 Uncomment
 setpoint
@@ -32,7 +42,7 @@ serialization
 datagram
 destructors
 ICMP
-Unselected
+unselected
 css
 html
 xml
@@ -46,9 +56,9 @@ FID
 smex
 unix
 getter
-Dispersive
+formatter
+dispersive
 preprocessors
-htm
 trackable
 YASnippet
 pragma
