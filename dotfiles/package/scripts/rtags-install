@@ -1,7 +1,5 @@
 #!/bin/bash
 
-./rtags-build || exit $?
-
 user_name="rtags"
 package_name="$user_name"
 base_dir="/home/rhpm/packages"

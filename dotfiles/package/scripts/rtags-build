@@ -22,4 +22,4 @@ sudo -H -u $package_name -g rhcommon \
            ../git
 
 sudo -H -u $package_name -g rhcommon \
-     make || exit $?
+     make -j8 || exit $?

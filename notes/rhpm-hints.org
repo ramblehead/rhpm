@@ -12,7 +12,7 @@ find . -type f -name '*.ext' -print0 | xargs -0 chown someuser:somegroup
 #+END_SRC
 
 #+BEGIN_SRC
-mkdir ~/backup && find /usr/local -user emacs -exec cp -v -r --parent '{}' ~/backup \;
+mkdir ~/backup && find /usr/local -user emacs -exec cp -v -r --parents '{}' ~/backup \;
 #+END_SRC
 
 #+BEGIN_SRC
