@@ -2,3 +2,8 @@
 
 ln -s "`( cd -P \"../home\" && pwd )`/.inputrc" ~/
 ln -s "`( cd -P \"../home\" && pwd )`/.selected_editor" ~/
+
+echo '' >> ~/.bashrc
+echo 'if [ "$TERM" = dumb ] && [ "$INSIDE_EMACS" ]; then' >> ~/.bashrc
+echo '  export TERM=dumb-emacs-ansi COLORTERM=1' >> ~/.bashrc
+echo 'fi' >> ~/.bashrc
