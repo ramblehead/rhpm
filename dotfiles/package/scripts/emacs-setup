@@ -27,6 +27,9 @@ sudo apt install libcairo2-doc libdatrie-doc libglib2.0-doc gmp-doc \
          libsm-doc libthai-doc libwmf-doc libxcb-doc libxext-doc libxt-doc \
          gawk-doc guile-2.0-doc libgtk2.0-doc libmpfr-doc
 
+# Additional utilities
+sudo apt install clang-format-5.0
+
 sudo -H -u $package_name -g rhcommon \
      git clone git://git.savannah.gnu.org/emacs.git \
                $home_dir/git || exit $?
