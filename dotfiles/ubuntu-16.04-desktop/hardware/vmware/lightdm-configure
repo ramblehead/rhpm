@@ -5,17 +5,17 @@ if [[ ! -d /etc/lightdm ]]; then
 fi
 
 if [[ ! -f /usr/local/bin/customvideo.sh ]]; then
-  sudo cp ../root/usr/local/bin/customvideo.sh /usr/local/bin
+  sudo cp ./root/usr/local/bin/customvideo.sh /usr/local/bin
 fi
 
 if [[ ! -f /etc/lightdm/lightdm.conf ]]; then
-  sudo cp ../root/etc/lightdm/lightdm.conf /etc/lightdm
+  sudo cp ./root/etc/lightdm/lightdm.conf /etc/lightdm
 else
   if ! grep -q -e customvideo\\.sh /etc/lightdm/lightdm.conf; then
     if [[ -s /etc/lightdm/lightdm.conf ]]; then
       sudo sh -c "echo '' >> /etc/lightdm/lightdm.conf"
     fi
     sudo sh -c \
-         "cat ../root/etc/lightdm/lightdm.conf >> /etc/lightdm/lightdm.conf"
+         "cat ./root/etc/lightdm/lightdm.conf >> /etc/lightdm/lightdm.conf"
   fi
 fi

@@ -1,0 +1,3 @@
+https://unix.stackexchange.com/questions/152586/what-do-the-tags-in-monitors-xml-do
+https://wiki.ubuntu.com/X/Config/Resolution
+https://askubuntu.com/questions/360886/personalize-monitor-position-before-login
