@@ -13,9 +13,8 @@ config
 Tx
 desynchronised
 overcurrent
-accelerometer
-overcurrent
 deleters
+accelerometer
 yocto
 getters
 Cambustion
@@ -38,10 +37,10 @@ unselected
 css
 html
 xml
-Nitric
 enum
-tuple
+Nitric
 gcc
+tuple
 multithreading
 versioning
 FID
@@ -49,6 +48,7 @@ smex
 unix
 getter
 formatter
+ramping
 dispersive
 preprocessors
 trackable
