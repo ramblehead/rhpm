@@ -1,10 +1,11 @@
-personal_ws-1.1 en 57 
+personal_ws-1.1 en 60 
 Hydrohydrate
 refactoring
 RealGUD
 validator
 destructor
 Melpa
+uncommented
 CRTP
 milli
 SHM
@@ -42,10 +43,12 @@ Nitric
 gcc
 tuple
 multithreading
+fidSPtr
 versioning
-FID
+fid
 smex
 unix
+decrement
 getter
 formatter
 ramping
