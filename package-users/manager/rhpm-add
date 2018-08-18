@@ -1,0 +1,92 @@
+#!/bin/bash
+
+if [[ ! $(getent group rhcommon) ]]; then
+  sudo groupadd rhcommon || exit $?
+  sudo usermod -a -G rhcommon `id -u -n` || exit $?
+fi
+
+sudo useradd --system --shell /bin/bash --gid rhcommon \
+     --groups adm,sudo rhpm || exit $?
+
+sudo mkdir -p /home/rhpm/packages || exit $?
+sudo chown rhpm:rhcommon /home/rhpm || exit $?
+sudo chmod g+w /home/rhpm || exit $?
+sudo chown rhpm:rhcommon /home/rhpm/packages || exit $?
+sudo chmod g+w /home/rhpm/packages || exit $?
+
+echo ""
+echo "Enter a new password for user 'rhpm' account:"
+sudo passwd rhpm || exit $?
+
+echo ""
+sudo -u rhpm -g rhcommon touch /home/rhpm/.sudo_as_admin_successful || exit $?
+sudo chmod g+w /home/rhpm/.sudo_as_admin_successful || exit $?
+
+function link {
+  if [[ -f ~/$1 && ! -f /home/rhpm/$1 ]]; then
+    sudo chown `id -u -n`:rhcommon ~/$1 || exit $?
+    sudo chmod g+rw ~/$1 || exit $?
+    sudo -u rhpm -g rhcommon ln -s ~/$1 /home/rhpm || exit $?
+  fi
+}
+
+link .ICEauthority
+link .aspell.en.prepl
+link .aspell.en.pws
+link .bashrc
+link .gitconfig
+link .inputrc
+#link .profile
+
+if [[ -f ~/.profile && ! -f /home/rhpm/.profile ]]; then
+  sudo -u rhpm -g rhcommon cp ~/.profile /home/rhpm/.profile || exit $?
+  sudo chmod g+rw /home/rhpm/.profile || exit $?
+  sudo -u rhpm -g rhcommon bash -c \
+    'printf "\\n'`
+     `'# https://askubuntu.com/questions/227515/'`
+     `'terminal-warning-when-opening-a-file-in-gedit\\n"'`
+     `' >> /home/rhpm/.profile' || exit $?
+  sudo -u rhpm -g rhcommon bash -c \
+    'printf "export NO_AT_BRIDGE=1\n" >> /home/rhpm/.profile' || exit $?
+  sudo -u rhpm -g rhcommon bash -c \
+    'printf '`
+     `'"export XAUTHORITY=/home/rhpm/.Xauthority\\n"'`
+     `' >> /home/rhpm/.profile' || exit $?
+fi
+
+if [[ -d ~/cmake && ! -d /home/rhpm/cmake ]]; then
+  sudo -u rhpm -g rhcommon ln -s ~/cmake /home/rhpm || exit $?
+fi
+
+sudo chown rhpm:rhcommon /usr/local || exit $?
+sudo chmod g+ws /usr/local || exit $?
+sudo bash -c \
+  "find /usr/local -type d -print0 | xargs -0 chown rhpm:rhcommon" || exit $?
+sudo bash -c \
+  "find /usr/local -type d -print0 | xargs -0 chmod g+ws" || exit $?
+
+if [[ ! -f ~/.Xauthority ]]; then
+  if [[ ! -f /usr/local/bin/create-xauthority.sh ]]; then
+    printf \
+      "#!/bin/bash\n"`
+     `"\n"`
+     `"xauth -v extract ~/.Xauthority $DISPLAY\n"`
+     `"chown rh:rhcommon ~/.Xauthority\n"`
+     `"chmod g+rw ~/.Xauthority\n" \
+      > /usr/local/bin/create-xauthority.sh || exit $?
+    chmod a+x /usr/local/bin/create-xauthority.sh || exit $?
+    /usr/local/bin/create-xauthority.sh || exit $?
+  fi
+
+  if [[ ! -f ~/.config/autostart/create-xauthority.desktop ]]; then
+    printf \
+      "[Desktop Entry]\n"`
+     `"Type=Application\n"`
+     `"Name=create-xauthority\n"`
+     `"Comment=Create ~/.Xauthority file\n"`
+     `"Exec=/usr/local/bin/create-xauthority.sh\n" \
+      > ~/.config/autostart/create-xauthority.desktop || exit $?
+  fi
+fi
+
+link .Xauthority

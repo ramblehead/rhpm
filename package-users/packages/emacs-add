@@ -1,0 +1,9 @@
+#!/bin/bash
+
+user_name="emacs"
+package_name="$user_name"
+base_dir="/home/rhpm/packages"
+home_dir="$base_dir/$package_name"
+
+common/rhpm-add $package_name || exit $?
+common/mc-setup $package_name || exit $?

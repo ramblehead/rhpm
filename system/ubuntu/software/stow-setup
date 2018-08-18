@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -eu
+set -o pipefail
+
+sudo apt install stow
+
+if [[ ! -d /usr/local/stow ]]; then
+  sudo mkdir /usr/local/stow
+  sudo chown `id -un`:`id -gn` /usr/local/stow
+fi

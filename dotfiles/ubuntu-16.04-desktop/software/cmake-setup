@@ -1,5 +1,0 @@
-#!/bin/bash
-
-sudo apt install cmake cmake-qt-gui || exit $?
-
-ln -s "`( cd -P \"../home/cmake\" && pwd )`" ~

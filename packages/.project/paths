@@ -1,0 +1,32 @@
+#!/bin/bash
+
+set -eu
+set -o pipefail
+
+SRC_DIR_NAME="src"
+DST_DIR_NAME="dist"
+BLD_DIR_NAME="build"
+
+PRJ_PATH="`dirname \"${BASH_SOURCE[0]}\"`"
+PRJ_PATH="`( cd -P \"$PRJ_PATH\" && pwd )`"
+
+PKG_PATH="$PRJ_PATH/.."
+PKG_PATH="`( cd -P \"$PKG_PATH\" && pwd )`"
+
+SRC_PATH="$PKG_PATH/$SRC_DIR_NAME"
+# if [[ ! -d $SRC_PATH ]]; then
+#   mkdir $SRC_PATH
+# fi
+# SRC_PATH="`( cd -P \"$SRC_PATH\" && pwd )`"
+
+BLD_PATH="$PKG_PATH/$BLD_DIR_NAME"
+# if [[ ! -d $BLD_PATH ]]; then
+#   mkdir $BLD_PATH
+# fi
+# DST_PATH="`( cd -P \"$BLD_PATH\" && pwd )`"
+
+DST_PATH="$PKG_PATH/$DST_DIR_NAME"
+# if [[ ! -d $DST_PATH ]]; then
+#   mkdir $DST_PATH
+# fi
+# DST_PATH="`( cd -P \"$DST_PATH\" && pwd )`"

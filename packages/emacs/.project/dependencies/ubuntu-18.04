@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# https://stackoverflow.com/a/13478622
+set -eu
+set -o pipefail
+
+sudo apt update
+sudo apt install stow xstow build-essential autoconf-archive autoconf texinfo \
+         gnu-standards autoconf-doc libtool texlive-generic-recommended \
+         texinfo-doc-nonfree libtool-doc wget dh-make gawk devhelp \
+         spamassassin gnutls-bin autoconf texlive \
+\
+         libx11-dev xaw3dg-dev \
+         libjpeg-dev libpng-dev libgif-dev libtiff5-dev libncurses5-dev \
+         libxft-dev librsvg2-dev libmagickcore-dev libmagick++-dev \
+         libxml2-dev libgpm-dev libotf-dev libm17n-dev \
+         libgnutls28-dev libxpm-dev libgtk-3-dev libwebkit2gtk-4.0-dev \
+         libmpfr-dev libmail-box-perl libmail-imapclient-perl \
+         libmime-tools-perl libmojolicious-perl \
+\
+         libcairo2-doc libdatrie-doc libglib2.0-doc gmp-doc \
+         libgmp10-doc gnutls-doc libgtk-3-doc libice-doc icu-doc\
+         liblzma-doc m17n-docs ncurses-doc libpango1.0-doc librsvg2-doc \
+         libsm-doc libthai-doc libwmf-doc libxcb-doc libxext-doc libxt-doc \
+         gawk-doc guile-2.0-doc libmpfr-doc \
+\
+         fonts-hack fonts-symbola fonts-noto-* clang-format-5.0

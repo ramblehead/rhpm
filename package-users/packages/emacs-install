@@ -1,0 +1,17 @@
+#!/bin/bash
+
+user_name="emacs"
+package_name="$user_name"
+base_dir="/home/rhpm/packages"
+home_dir="$base_dir/$package_name"
+
+cd $home_dir/git || exit $?
+
+sudo -H -u $package_name -g rhcommon \
+     make install prefix=/usr/local
+
+sudo bash -c \
+     "find  $home_dir/git -type f -print0 | xargs -0 chmod g+rw" || exit $?
+sudo bash -c \
+     "find  $home_dir/git -type d -print0 | xargs -0 chmod g+rws" || exit $?
+#sudo chmod g+rws /usr/local/share/emacs/site-lisp || exit $?

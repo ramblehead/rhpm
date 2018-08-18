@@ -1,0 +1,42 @@
+#!/bin/bash
+
+if ls -1qA /home/rhpm/packages | grep -q .; then
+  echo "$(basename "$0"): /home/rhpm/packages is not" \
+       "empty: remove all packages first"
+  exit 1
+fi
+
+function rstgrp {
+  if [[ -f ~/$1 ]]; then
+    sudo chown `id -u -n`:`id -g -n` ~/$1 || exit $?
+  fi
+}
+
+rstgrp .ICEauthority
+rstgrp .aspell.en.prepl
+rstgrp .aspell.en.pws
+rstgrp .bashrc
+rstgrp .gitconfig
+rstgrp .inputrc
+rstgrp .profile
+
+sudo chmod g-rw ~/.ICEauthority || exit $?
+
+if [[ -f /usr/local/bin/create-xauthority.sh && \
+      -f ~/.config/autostart/create-xauthority.desktop ]]
+then
+  rm ~/.config/autostart/create-xauthority.desktop || exit $?
+  rm /usr/local/bin/create-xauthority.sh || exit $?
+  rm ~/.Xauthority || exit $?
+else
+  rstgrp .Xauthority
+  sudo chmod g-rw ~/.Xauthority || exit $?
+fi
+
+sudo userdel rhpm --remove || exit $?
+sudo groupdel rhcommon || exit $?
+
+sudo chown root:root /usr/local
+sudo chmod g-ws /usr/local
+sudo sh -c "find /usr/local -type d -print0 | xargs -0 chown root:root"
+sudo sh -c "find /usr/local -type d -print0 | xargs -0 chmod g-ws"

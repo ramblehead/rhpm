@@ -1,4 +1,0 @@
-#!/bin/bash
-
-sudo sed -i -E 's/^(XKBOPTIONS)=.*$/\1="numpad:microsoft"/' \
-         /etc/default/keyboard || exit $?

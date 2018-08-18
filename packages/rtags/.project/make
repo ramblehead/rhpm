@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# https://stackoverflow.com/a/13478622
+set -eu
+set -o pipefail
+
+DIR="`dirname \"${BASH_SOURCE[0]}\"`"
+if [[ ! -d "$DIR" ]]; then DIR="$PWD"; fi
+source "$DIR/configs"
+source "$DIR/paths"
+unset DIR
+
+cd $BLD_PATH
+make -j3

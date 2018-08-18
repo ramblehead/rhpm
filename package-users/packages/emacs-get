@@ -1,0 +1,13 @@
+#!/bin/bash
+
+user_name="emacs"
+package_name="$user_name"
+base_dir="/home/rhpm/packages"
+home_dir="$base_dir/$package_name"
+
+sudo -H -u $package_name -g rhcommon \
+     git clone git://git.savannah.gnu.org/emacs.git \
+               $home_dir/git || exit $?
+
+#sudo -H -u $package_name -g rhcommon \
+#     git checkout d3ec5117da

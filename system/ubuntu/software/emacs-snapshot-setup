@@ -1,0 +1,79 @@
+#!/bin/bash
+
+set -eu
+set -o pipefail
+
+sudo add-apt-repository -s -y ppa:ubuntu-elisp
+sudo apt-get update
+sudo apt-get install emacs-snapshot emacs-snapshot-el
+
+if [[ ! -d /usr/local/share/emacs/site-lisp/site-start.d ]]; then
+  mkdir -p /usr/local/share/emacs/site-lisp/site-start.d
+fi
+
+if [[ ! -f /usr/local/share/emacs/site-lisp/subdirs.el ]]; then
+  sudo cp ../root/usr/local/share/emacs/site-lisp/subdirs.el \
+          /usr/local/share/emacs/site-lisp
+fi
+
+if [[ ! -f /usr/local/share/emacs/site-lisp/site-start.el ]]; then
+  sudo cp ../root/usr/local/share/emacs/site-lisp/site-start.el \
+          /usr/local/share/emacs/site-lisp
+fi
+
+FILENAME=`apt-cache showsrc emacs-snapshot | \
+          grep -m 1 -o -e emacs-snapshot.*\.tar\.gz`
+BASENAME=${FILENAME/%\.tar\.gz/}
+
+if [[ ! -d ~/.local/temp/emacs-snapshot ]]; then
+  mkdir -p ~/.local/temp/emacs-snapshot
+fi
+
+(cd ~/.local/temp/emacs-snapshot; apt-get -d source emacs-snapshot)
+
+if [[ ! -d /usr/local/src/emacs ]]; then
+  sudo mkdir -p /usr/local/src/emacs
+  sudo chown `id -u -n` /usr/local/src/emacs
+  sudo chmod g+ws /usr/local/src/emacs
+fi
+
+if ls -1qA /usr/local/src/emacs | grep -q .; then
+  rm -r /usr/local/src/emacs/emacs-snapshot*
+fi
+
+tar -xzf ~/.local/temp/emacs-snapshot/$FILENAME \
+    -C /usr/local/src/emacs
+find /usr/local/src/emacs -print0 | xargs -0 chmod g+w
+
+if [[ -d /usr/local/src/emacs/recipe ]]; then
+  mv /usr/local/src/emacs/recipe /usr/local/src/emacs/$BASENAME
+else
+  echo "Error: /usr/local/src/emacs/recipe was not found."
+  exit 1
+fi
+
+if [ -d ~/.local/temp/emacs-snapshot ]; then
+  rm -r ~/.local/temp/emacs-snapshot
+fi
+
+if [[ -f ~/.profile ]]; then
+  if [[ -s ~/.profile ]]; then
+    sed -i -E '/^[ \t]*export EMACSSRC.*$/d' ~/.profile
+    sed -i -E '/^[ \t]*export EMACSLOADPATH.*$/d' ~/.profile
+    # Delete trailing blank lines
+    # see https://stackoverflow.com/questions/7359527/removing-trailing-starting-newlines-with-sed-awk-tr-and-friends
+    sed -i -e :a -e '/^\n*$/{$d;N;};/\n$/ba' ~/.profile
+    echo >> ~/.profile
+  fi
+
+  echo "export EMACSLOADPATH=/usr/local/share/emacs/site-lisp:" \
+  >> ~/.profile
+
+  echo "export EMACSSRC=/usr/local/src/emacs/$BASENAME" \
+  >> ~/.profile
+else
+  echo "export EMACSLOADPATH=/usr/local/share/emacs/site-lisp:" \
+  >> ~/.profile
+  echo "export EMACSSRC=/usr/local/src/emacs/$BASENAME" \
+  >> ~/.profile
+fi

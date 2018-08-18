@@ -1,0 +1,8 @@
+#!/bin/bash
+
+set -eu
+set -o pipefail
+
+sudo apt install cmake cmake-qt-gui
+
+ln -s "`( cd -P \"../home/cmake\" && pwd )`" ~

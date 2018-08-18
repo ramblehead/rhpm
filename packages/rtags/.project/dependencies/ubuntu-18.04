@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# https://stackoverflow.com/a/13478622
+set -eu
+set -o pipefail
+
+sudo apt update
+sudo apt install clang libclang-dev libssl-dev lua5.3 liblua5.3-0 \
+                 clang-6.0-doc libomp-doc llvm-6.0-doc

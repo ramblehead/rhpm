@@ -1,1 +1,0 @@
-/home/rh/.bashrc

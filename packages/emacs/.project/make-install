@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# https://stackoverflow.com/a/13478622
+set -eu
+set -o pipefail
+
+DIR="`dirname \"${BASH_SOURCE[0]}\"`"
+if [[ ! -d "$DIR" ]]; then DIR="$PWD"; fi
+source "$DIR/configs"
+source "$DIR/paths"
+unset DIR
+
+cd $SRC_PATH
+make install \
+     install-man \
+     prefix=/usr/local/stow/"$PKG_NAME"_"$BLD_NAME"
+
+cd /usr/local/stow
+sudo chown -R root:root "$PKG_NAME"_"$BLD_NAME"
+sudo stow -v "$PKG_NAME"_"$BLD_NAME"

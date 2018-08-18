@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# https://stackoverflow.com/a/13478622
+set -eu
+set -o pipefail
+
+DIR="`dirname \"${BASH_SOURCE[0]}\"`"
+if [[ ! -d "$DIR" ]]; then DIR="$PWD"; fi
+source "$DIR/configs"
+source "$DIR/paths"
+unset DIR
+
+cd $SRC_PATH
+
+# Go back to master HEAD
+git checkout master
+
+# discard stuff from last build
+git reset --hard
+
+# delete all of the last build stuff
+git clean -xdf
+
+# get latest update
+git pull

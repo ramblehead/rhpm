@@ -1,0 +1,13 @@
+#!/bin/bash
+
+set -eu
+set -o pipefail
+
+sudo sed -i -E 's/^(XKBOPTIONS)=.*$/\1="grp:lctrl_lshift_toggle,numpad:microsoft"/' \
+         /etc/default/keyboard
+
+sudo sed -i -E 's/^(XKBLAYOUT)=.*$/\1="us,ru"/' \
+         /etc/default/keyboard
+
+sudo sed -i -E 's/^(XKBVARIANT)=.*$/\1=","/' \
+         /etc/default/keyboard
