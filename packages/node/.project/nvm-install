@@ -1,0 +1,16 @@
+#!/bin/bash
+
+set -eu
+set -o pipefail
+
+DIR="`dirname \"${BASH_SOURCE[0]}\"`"
+if [[ ! -d "$DIR" ]]; then DIR="$PWD"; fi
+source "$DIR/configs"
+unset DIR
+
+#cd "$NVM_DIR"
+#git checkout $NVM_VERSION
+
+echo '' >> ~/.profile
+echo "export NVM_DIR=\"$NVM_DIR\"" >> ~/.profile
+echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> ~/.profile
