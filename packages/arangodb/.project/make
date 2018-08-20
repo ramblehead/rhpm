@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# https://stackoverflow.com/a/13478622
 set -eu
 set -o pipefail
 
@@ -10,9 +9,9 @@ source "$DIR/configs"
 source "$DIR/paths"
 unset DIR
 
-cd $BLD_PATH
-make install
+# see https://github.com/sleepycat/arangodb_arch/issues/4
+gpg --recv-key EA93F5E56E751E9B
 
-cd /usr/local/stow
-sudo chown -R root:root "$PKG_NAME"_"$BLD_NAME"
-sudo stow -v "$PKG_NAME"_"$BLD_NAME"
+cd $BLD_PATH
+# make -d -j4
+make -j4

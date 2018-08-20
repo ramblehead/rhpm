@@ -1,0 +1,39 @@
+#!/bin/bash
+
+set -eu
+set -o pipefail
+
+DIR="`dirname \"${BASH_SOURCE[0]}\"`"
+if [[ ! -d "$DIR" ]]; then DIR="$PWD"; fi
+source "$DIR/configs"
+source "$DIR/paths"
+unset DIR
+
+cd $BLD_PATH
+make install
+
+sudo useradd --system --shell /usr/sbin/nologin --home /nonexistent arangodb
+
+cd /usr/local/stow
+
+sudo chown -R root:root "$PKG_NAME"_"$BLD_NAME"
+
+sudo chown -v -R arangodb:`id -gn` \
+           "$PKG_NAME"_"$BLD_NAME"/var/lib/arangodb3-apps
+sudo chmod 775 "$PKG_NAME"_"$BLD_NAME"/var/lib/arangodb3-apps
+
+sudo chown -v -R arangodb:`id -gn` \
+           "$PKG_NAME"_"$BLD_NAME"/var/lib/arangodb3
+sudo chmod 775 "$PKG_NAME"_"$BLD_NAME"/var/lib/arangodb3
+
+sudo chown -v -R arangodb:`id -gn` \
+           "$PKG_NAME"_"$BLD_NAME"/var/log/arangodb3
+sudo chmod 775 "$PKG_NAME"_"$BLD_NAME"/var/log/arangodb3
+
+sudo stow -v "$PKG_NAME"_"$BLD_NAME"
+
+mkdir /tmp/database-dir || true
+sudo chown -v arangodb:arangodb /tmp/database-dir
+sudo chmod 700 /tmp/database-dir
+
+sudo sysctl -w "vm.max_map_count=256000"
