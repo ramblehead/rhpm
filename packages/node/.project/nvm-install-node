@@ -11,5 +11,5 @@ if [[ ! -d "$DIR" ]]; then DIR="$PWD"; fi
 source "$DIR/configs"
 unset DIR
 
-\. "$NVM_DIR/nvm.sh"
+source "$NVM_DIR/nvm.sh"
 nvm install node

@@ -7,15 +7,15 @@
 set -eu
 set -o pipefail
 
-sudo bash << END
-set -eu
-set -o pipefail
-
 DIR="`dirname \"${BASH_SOURCE[0]}\"`"
 if [[ ! -d "$DIR" ]]; then DIR="$PWD"; fi
 source "$DIR/configs"
 source "$DIR/paths"
 unset DIR
+
+sudo bash << END
+set -eu
+set -o pipefail
 
 cd /usr/local/stow
 chown -R root:root "$PKG_NAME"_"$BLD_NAME"

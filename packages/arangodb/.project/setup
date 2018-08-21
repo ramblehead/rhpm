@@ -3,29 +3,28 @@
 set -eu
 set -o pipefail
 
-sudo bash << END
-set -eu
-set -o pipefail
-
 DIR="`dirname \"${BASH_SOURCE[0]}\"`"
 if [[ ! -d "$DIR" ]]; then DIR="$PWD"; fi
 source "$DIR/configs"
 source "$DIR/paths"
 unset DIR
 
-useradd --system --shell /usr/sbin/nologin --home /nonexistent arangodb
+sudo bash << END
+set -eu
+set -o pipefail
 
-chown -v -R arangodb:`id -gn` \
+useradd --system --shell /usr/sbin/nologin --home /nonexistent arangodb || true
+
+cd /usr/local/stow
+
+chown -v -R arangodb:arangodb \
       "$PKG_NAME"_"$BLD_NAME"/var/lib/arangodb3-apps
-chmod 775 "$PKG_NAME"_"$BLD_NAME"/var/lib/arangodb3-apps
 
-chown -v -R arangodb:`id -gn` \
+chown -v -R arangodb:arangodb \
       "$PKG_NAME"_"$BLD_NAME"/var/lib/arangodb3
-chmod 775 "$PKG_NAME"_"$BLD_NAME"/var/lib/arangodb3
 
-chown -v -R arangodb:`id -gn` \
+chown -v -R arangodb:arangodb \
       "$PKG_NAME"_"$BLD_NAME"/var/log/arangodb3
-chmod 775 "$PKG_NAME"_"$BLD_NAME"/var/log/arangodb3
 
 mkdir /tmp/database-dir || true
 chown -v -R arangodb:arangodb /tmp/database-dir
@@ -35,7 +34,7 @@ if ! grep -qE '^\s*arangodb\s+(:?soft|hard)\s+nofile' /etc/security/limits.conf
 then
 
   sed -i -E 'N;/# End of file$/i \
-arangodb         soft    nofile          8192\
+arangodb         soft    nofile          8192\\
 arangodb         hard    nofile          16384' \
       /etc/security/limits.conf
 
