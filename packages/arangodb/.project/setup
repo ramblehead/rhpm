@@ -3,25 +3,26 @@
 set -eu
 set -o pipefail
 
-sudo useradd --system --shell /usr/sbin/nologin --home /nonexistent arangodb
+sudo bash << END
+useradd --system --shell /usr/sbin/nologin --home /nonexistent arangodb
 
-sudo chown -v -R arangodb:`id -gn` \
+chown -v -R arangodb:`id -gn` \
            "$PKG_NAME"_"$BLD_NAME"/var/lib/arangodb3-apps
-sudo chmod 775 "$PKG_NAME"_"$BLD_NAME"/var/lib/arangodb3-apps
+chmod 775 "$PKG_NAME"_"$BLD_NAME"/var/lib/arangodb3-apps
 
-sudo chown -v -R arangodb:`id -gn` \
+chown -v -R arangodb:`id -gn` \
            "$PKG_NAME"_"$BLD_NAME"/var/lib/arangodb3
-sudo chmod 775 "$PKG_NAME"_"$BLD_NAME"/var/lib/arangodb3
+chmod 775 "$PKG_NAME"_"$BLD_NAME"/var/lib/arangodb3
 
-sudo chown -v -R arangodb:`id -gn` \
+chown -v -R arangodb:`id -gn` \
            "$PKG_NAME"_"$BLD_NAME"/var/log/arangodb3
-sudo chmod 775 "$PKG_NAME"_"$BLD_NAME"/var/log/arangodb3
+chmod 775 "$PKG_NAME"_"$BLD_NAME"/var/log/arangodb3
 
 mkdir /tmp/database-dir || true
-sudo chown -v arangodb:arangodb /tmp/database-dir
-sudo chmod 700 /tmp/database-dir
+chown -v arangodb:arangodb /tmp/database-dir
+chmod 700 /tmp/database-dir
 
-sudo sed -i -E 'N;/^\s*#\s*End of file\s*$/i \
+sed -i -E 'N;/^\s*#\s*End of file\s*$/i \
 arangodb         soft    nofile          8192\
 arangodb         hard    nofile          16384
 ' /etc/security/limits.conf
@@ -31,7 +32,8 @@ arangodb         hard    nofile          16384
 #arangodb         hard    nofile          16384\1/' \
 #/etc/security/limits.conf
 
-sudo sed -i -E 's/#?(DefaultLimitNOFILE)=.*/\1=16384/' \
+sed -i -E 's/#?(DefaultLimitNOFILE)=.*/\1=16384/' \
          /etc/systemd/system.conf
+END
 
-sudo sysctl -w "vm.max_map_count=256000"
+#sudo sysctl -w "vm.max_map_count=256000"
