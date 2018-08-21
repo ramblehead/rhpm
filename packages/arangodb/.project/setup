@@ -7,33 +7,38 @@ sudo bash << END
 useradd --system --shell /usr/sbin/nologin --home /nonexistent arangodb
 
 chown -v -R arangodb:`id -gn` \
-           "$PKG_NAME"_"$BLD_NAME"/var/lib/arangodb3-apps
+      "$PKG_NAME"_"$BLD_NAME"/var/lib/arangodb3-apps
 chmod 775 "$PKG_NAME"_"$BLD_NAME"/var/lib/arangodb3-apps
 
 chown -v -R arangodb:`id -gn` \
-           "$PKG_NAME"_"$BLD_NAME"/var/lib/arangodb3
+      "$PKG_NAME"_"$BLD_NAME"/var/lib/arangodb3
 chmod 775 "$PKG_NAME"_"$BLD_NAME"/var/lib/arangodb3
 
 chown -v -R arangodb:`id -gn` \
-           "$PKG_NAME"_"$BLD_NAME"/var/log/arangodb3
+      "$PKG_NAME"_"$BLD_NAME"/var/log/arangodb3
 chmod 775 "$PKG_NAME"_"$BLD_NAME"/var/log/arangodb3
 
 mkdir /tmp/database-dir || true
 chown -v arangodb:arangodb /tmp/database-dir
 chmod 700 /tmp/database-dir
 
-sed -i -E 'N;/^\s*#\s*End of file\s*$/i \
+if ! grep -qE 'arangodb\s+(:?soft|hard)\s+nofile' /etc/security/limits.conf
+then
+  sed -i -E 'N;/# End of file$/i \
 arangodb         soft    nofile          8192\
-arangodb         hard    nofile          16384
-' /etc/security/limits.conf
+arangodb         hard    nofile          16384' \
+      /etc/security/limits.conf
 
-#perl -0777 -i -pe 's/(\n*# End of file)/\
-#arangodb         soft    nofile          8192\
-#arangodb         hard    nofile          16384\1/' \
-#/etc/security/limits.conf
+#   perl -0777 -i -pe 's/(\n*# End of file)/\
+# arangodb         soft    nofile          8192\
+# arangodb         hard    nofile          16384\1/' \
+#        /etc/security/limits.conf
+fi
 
-sed -i -E 's/#?(DefaultLimitNOFILE)=.*/\1=16384/' \
-         /etc/systemd/system.conf
-END
+sed -i -E 's/^#?(DefaultLimitNOFILE)=.*/\1=16384/' \
+    /etc/systemd/system.conf
 
 #sudo sysctl -w "vm.max_map_count=256000"
+echo "vm.max_map_count = 256000" \
+> /etc/sysctl.d/40-arangodb.conf
+END
