@@ -21,10 +21,15 @@ mkdir /tmp/database-dir || true
 sudo chown -v arangodb:arangodb /tmp/database-dir
 sudo chmod 700 /tmp/database-dir
 
-sudo sed -i -E '/^\s*#\s*End of file\s*$/i \
+sudo sed -i -E 'N;/^\s*#\s*End of file\s*$/i \
 arangodb         soft    nofile          8192\
-arangodb         hard    nofile          16384\
+arangodb         hard    nofile          16384
 ' /etc/security/limits.conf
+
+#perl -0777 -i -pe 's/(\n*# End of file)/\
+#arangodb         soft    nofile          8192\
+#arangodb         hard    nofile          16384\1/' \
+#/etc/security/limits.conf
 
 sudo sed -i -E 's/#?(DefaultLimitNOFILE)=.*/\1=16384/' \
          /etc/systemd/system.conf
