@@ -1,7 +1,33 @@
 #!/bin/bash
 
+# This script is undoing all changes to the system done by setup script
+# except DefaultLimitNOFILE in /etc/systemd/system.conf,
+# as it might have been changed by other software as well.
+
 set -eu
 set -o pipefail
 
 sudo bash << END
+set -eu
+set -o pipefail
+
+DIR="`dirname \"${BASH_SOURCE[0]}\"`"
+if [[ ! -d "$DIR" ]]; then DIR="$PWD"; fi
+source "$DIR/configs"
+source "$DIR/paths"
+unset DIR
+
+cd /usr/local/stow
+chown -R root:root "$PKG_NAME"_"$BLD_NAME"
+
+if [ -d /tmp/database-dir ]; then
+  chown -v -R root:root /tmp/database-dir
+fi
+
+sed -i -E '/^\s*arangodb\s+(:?soft|hard)\s+nofile/d' \
+    /etc/security/limits.conf
+
+rm /etc/sysctl.d/40-arangodb.conf || true
+
+userdel arangodb || true
 END
