@@ -20,7 +20,7 @@ set -o pipefail
 cd /usr/local/stow
 chown -R root:root "$PKG_NAME"_"$BLD_NAME"
 
-if [ -d /tmp/database-dir ]; then
+if [[ -d /tmp/database-dir ]]; then
   chown -v -R root:root /tmp/database-dir
 fi
 
