@@ -25,7 +25,7 @@ sed -i -E 's/^(editor_fake_half_tabs)=.*$/\1=false/' ~/.config/mc/ini
 sed -i -E 's/^(editor_drop_selection_on_copy)=.*$/\1=false/' ~/.config/mc/ini
 sed -i -E 's/^(editor_word_wrap_line_length)=.*$/\1=80/' ~/.config/mc/ini
 
-cp -i /etc/mc/mc.keymap ~/.config/mc
+cp /etc/mc/mc.keymap ~/.config/mc
 
 sed -i -E 's/^Store = ctrl-insert$/Store = ctrl-c; ctrl-insert/' \
           ~/.config/mc/mc.keymap
@@ -36,6 +36,19 @@ sed -i -E 's/^Cut = shift-delete$/Cut = ctrl-x; shift-delete/' \
 sed -i -E 's/^Undo = ctrl-u$/\0; ctrl-z/' ~/.config/mc/mc.keymap
 sed -i -E 's/^(WordLeft = ctrl-left)(; ctrl-z)$/\1/' ~/.config/mc/mc.keymap
 sed -i -E 's/^(WordRight = ctrl-right)(; ctrl-x)$/\1/' ~/.config/mc/mc.keymap
+
+cp /etc/mc/mc.menu ~/.config/mc/menu
+
+sed -i -E 's/^( ?)(\s*)echo "\.\.\/\$tar\.tar\.xz created\."$/&\
+\
+7\2Compress the current subdirectory (zip)\
+\1\2Pwd=`basename %d \/`\
+\1\2echo -n "Name of the compressed file (without extension) [$Pwd]: "\
+\1\2read zip\
+\1\2[ "$zip"x = x ] \&\& zip="$Pwd"\
+\1\2cd .. \&\& \\\
+\1\2zip -r "$Pwd" "$Pwd" \&\& \\\
+\1\2echo "..\/$zip.zip created."/' ~/.config/mc/menu
 
 if [[ ! -d ~/.local/var/log ]]; then
   mkdir -p ~/.local/var/log
