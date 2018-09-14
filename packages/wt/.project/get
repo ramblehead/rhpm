@@ -1,0 +1,12 @@
+#!/bin/bash
+
+set -eu
+set -o pipefail
+
+DIR="`dirname \"${BASH_SOURCE[0]}\"`"
+if [[ ! -d "$DIR" ]]; then DIR="$PWD"; fi
+source "$DIR/configs"
+source "$DIR/paths"
+unset DIR
+
+git clone https://github.com/emweb/wt.git "$SRC_PATH"

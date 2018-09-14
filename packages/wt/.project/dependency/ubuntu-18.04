@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# https://stackoverflow.com/a/13478622
+set -eu
+set -o pipefail
+
+sudo apt update
+sudo apt install gcc g++ libboost-all-dev cmake libssl-dev libpango-1.0-0 \
+         libgraphicsmagick1-dev libhpdf-dev libpq-dev firebird-dev \
+         libmysqlclient-dev libqt4-dev doxygen

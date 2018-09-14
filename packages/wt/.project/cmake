@@ -1,0 +1,40 @@
+#!/bin/bash
+
+set -eu
+set -o pipefail
+
+DIR="`dirname \"${BASH_SOURCE[0]}\"`"
+if [[ ! -d "$DIR" ]]; then DIR="$PWD"; fi
+source "$DIR/configs"
+source "$DIR/paths"
+unset DIR
+
+./dependency/"$DEP_NAME"
+
+cd "$SRC_PATH"
+git checkout "$SRC_VERSION"
+
+patch -p1 < "$PRJ_PATH"/patch/no-cache.patch
+
+if [[ ! -d "$BLD_PATH" ]]; then
+  mkdir "$BLD_PATH"
+fi
+
+cd "$BLD_PATH"
+
+# see http://www.webtoolkit.eu/wt/doc/reference/html/InstallationUnix.html
+# CMAKE_BUILD_TYPE: None, Debug, Release, RelWithDebInfo, MinSizeRel
+# for WT_WRASTERIMAGE_IMPLEMENTATION
+# see http://www.webtoolkit.eu/wt/blog/2013/11/29/new_wrasterimage_implementation__skia/more
+cmake -DCMAKE_TOOLCHAIN_FILE="$PRJ_PATH"/target/86_64-linux-gnu-gcc.cmake \
+      -DCMAKE_INSTALL_PREFIX=/usr/local/stow/"$PKG_NAME"_"$BLD_NAME" \
+      -DWT_CPP_11_MODE="-std=c++14" \
+      -DWT_WRASTERIMAGE_IMPLEMENTATION=GraphicsMagick \
+      -DINSTALL_EXAMPLES=true \
+      -DINSTALL_FINDWT_CMAKE_FILE=false \
+      -DINSTALL_RESOURCES=true \
+      -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+      -DCMAKE_EXPORT_COMPILE_COMMANDS=1 \
+      -DCONNECTOR_FCGI=OFF \
+      $SRC_PATH \
+      2>&1 | tee ./cmake.log
