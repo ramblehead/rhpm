@@ -9,12 +9,12 @@ source "$DIR/configs"
 source "$DIR/paths"
 unset DIR
 
-if [[ -d $DST_PATH/$BLD_NAME ]]; then
-  sudo mv -v $DST_PATH/$BLD_NAME /usr/local/stow/"$PKG_NAME"_"$BLD_NAME"
+if [[ -d "$DST_PATH"/"$BLD_NAME" ]]; then
+  sudo mv -v "$DST_PATH"/"$BLD_NAME" /usr/local/stow/"$PKG_NAME"_"$BLD_NAME"
   cd /usr/local/stow
   sudo stow -v "$PKG_NAME"_"$BLD_NAME"
 
   if [[ -z "$(ls -A $DST_PATH)" ]]; then
-    rm -r $DST_PATH
+    rm -r "$DST_PATH"
   fi
 fi

@@ -12,11 +12,11 @@ unset DIR
 
 cd $SRC_PATH
 
-# Go back to master HEAD
-git checkout master
-
 # discard stuff from last build
 git reset --hard
+
+# Go back to master HEAD
+git checkout master
 
 # delete all of the last build stuff
 git clean -xdf

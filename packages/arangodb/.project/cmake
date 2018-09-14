@@ -9,15 +9,15 @@ source "$DIR/configs"
 source "$DIR/paths"
 unset DIR
 
-./dependencies/$DEP_NAME
+./dependency/"$DEP_NAME"
 
-cd $SRC_PATH
-git checkout $SRC_VERSION
+cd "$SRC_PATH"
+git checkout "$SRC_VERSION"
 
-if [[ ! -d $BLD_PATH ]]; then
-  mkdir $BLD_PATH
+if [[ ! -d "$BLD_PATH" ]]; then
+  mkdir "$BLD_PATH"
 fi
 
-cd $BLD_PATH
+cd "$BLD_PATH"
 cmake -DCMAKE_INSTALL_PREFIX=/usr/local/stow/"$PKG_NAME"_"$BLD_NAME" \
-      $SRC_PATH
+      "$SRC_PATH"

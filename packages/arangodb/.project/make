@@ -12,6 +12,6 @@ unset DIR
 # see https://github.com/sleepycat/arangodb_arch/issues/4
 gpg --recv-key EA93F5E56E751E9B
 
-cd $BLD_PATH
+cd "$BLD_PATH"
 # make -d -j4
 make -j4

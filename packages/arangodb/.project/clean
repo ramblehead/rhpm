@@ -10,9 +10,9 @@ source "$DIR/configs"
 source "$DIR/paths"
 unset DIR
 
-rm -v -f -r $BLD_PATH
+rm -v -f -r "$BLD_PATH"
 
-cd $SRC_PATH
+cd "$SRC_PATH"
 
 # Go back to master HEAD
 git checkout master

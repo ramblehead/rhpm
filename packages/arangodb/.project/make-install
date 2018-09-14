@@ -9,7 +9,7 @@ source "$DIR/configs"
 source "$DIR/paths"
 unset DIR
 
-cd $BLD_PATH
+cd "$BLD_PATH"
 make install
 
 cd /usr/local/stow
