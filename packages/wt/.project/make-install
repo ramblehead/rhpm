@@ -16,3 +16,6 @@ make install
 cd /usr/local/stow
 sudo chown -R root:root "$PKG_NAME"_"$BLD_NAME"
 sudo stow -v "$PKG_NAME"_"$BLD_NAME"
+
+# see https://stackoverflow.com/questions/13428910/how-to-set-the-environmental-variable-ld-library-path-in-linux
+sudo ldconfig

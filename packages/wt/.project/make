@@ -11,4 +11,4 @@ source "$DIR/paths"
 unset DIR
 
 cd "$BLD_PATH"
-make -j24
+make -j4

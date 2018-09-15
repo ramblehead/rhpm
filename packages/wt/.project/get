@@ -10,3 +10,4 @@ source "$DIR/paths"
 unset DIR
 
 git clone https://github.com/emweb/wt.git "$SRC_PATH"
+./clean
