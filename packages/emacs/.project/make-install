@@ -10,7 +10,7 @@ source "$DIR/paths"
 unset DIR
 
 cd $SRC_PATH
-make install \
+sudo make install \
      install-man \
      prefix=/usr/local/stow/"$PKG_NAME"_"$BLD_NAME"
 
