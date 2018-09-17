@@ -17,10 +17,10 @@ Last 3 commits with abbreviated names, which can be used for versions tracking a
 git log -n 3 --abbrev-commit
 
 Same as above, except that each commit message is reduced to a single line:
-git log --graph --oneline --decorate --date=relative --all
+git log --abbrev-commit --pretty=oneline
 
 Full commits graph:
-git log --abbrev-commit --pretty=oneline
+git log --graph --oneline --decorate --date=relative --all
 
 Same as above, except that each commit message is reduced to a single line:
 git log --graph --abbrev-commit --decorate --date=relative --all
