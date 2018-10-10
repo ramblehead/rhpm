@@ -7,5 +7,6 @@ sudo apt install stow
 
 if [[ ! -d /usr/local/stow ]]; then
   sudo mkdir /usr/local/stow
-  sudo chown `id -un`:`id -gn` /usr/local/stow
 fi
+
+sudo chown `id -un`:`id -gn` /usr/local/stow
