@@ -11,7 +11,7 @@ source "$DIR/paths"
 unset DIR
 
 cd $BLD_PATH
-sudo make install
+make install
 
 cd /usr/local/stow
 sudo chown -R root:root "$PKG_NAME"_"$BLD_NAME"

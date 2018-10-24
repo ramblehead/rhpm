@@ -13,6 +13,5 @@ cd "$BLD_PATH"
 make install
 
 cd /usr/local/stow
-
 sudo stow -v "$PKG_NAME"_"$BLD_NAME"
 sudo chown -R root:root "$PKG_NAME"_"$BLD_NAME"
