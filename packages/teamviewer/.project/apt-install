@@ -3,18 +3,17 @@
 set -eu
 set -o pipefail
 
-cd ~/Downloads
-wget https://download.teamviewer.com/download/linux/signature/TeamViewer2017.asc
+sudo bash << END
+cat > /etc/apt/sources.list.d/teamviewer.list << IEND
+deb http://linux.teamviewer.com/deb stable main
+deb http://linux.teamviewer.com/deb preview main
+IEND
+END
+
+wget --no-check-certificate \
+     https://download.teamviewer.com/download/linux/signature/TeamViewer2017.asc
 sudo apt-key add TeamViewer2017.asc
 rm TeamViewer2017.asc
-
-sudo bash -c \
-     'echo "deb http://linux.teamviewer.com/deb stable main"'`
-    `' >> /etc/apt/sources.list.d/teamviewer.list'
-
-sudo bash -c \
-     'echo "deb http://linux.teamviewer.com/deb preview main"'`
-    `' >> /etc/apt/sources.list.d/teamviewer.list'
 
 sudo apt update
 sudo apt install teamviewer

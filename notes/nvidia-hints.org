@@ -1,0 +1,49 @@
+#+BEGIN_SRC
+lshw -numeric -C display
+or
+lspci -vnn | grep VGA
+#+END_SRC
+
+#+BEGIN_SRC
+dmesg
+#+END_SRC
+
+#+BEGIN_SRC
+sudo ubuntu-drivers devices
+#+END_SRC
+
+#+BEGIN_SRC
+sudo ubuntu-drivers autoinstall
+#+END_SRC
+
+#+BEGIN_SRC
+sudo apt purge *nvidia*
+sudo apt autoremove
+dpkg -l | grep nvidia
+#+END_SRC
+
+#+BEGIN_SRC
+sudo add-apt-repository ppa:graphics-drivers/ppa
+sudo apt update
+#+END_SRC
+
+#+BEGIN_SRC
+sudo add-apt-repository --remove ppa:graphics-drivers/ppa
+sudo apt update
+#+END_SRC
+
+#+BEGIN_SRC
+sudo apt install nvidia-driver-390
+#+END_SRC
+
+#+BEGIN_SRC
+sudo prime-select intel
+sudo prime-select nvidia
+#+END_SRC
+
+https://www.nvidia.com/object/unix.html
+
+https://askubuntu.com/questions/1048274/ubuntu-18-04-stopped-working-with-nvidia-drivers
+https://unix.stackexchange.com/questions/455189/pkcs7-signature-not-signed-with-a-trusted-key
+https://askubuntu.com/questions/1023036/how-to-install-nvidia-driver-with-secure-boot-enabled
+https://askubuntu.com/questions/762254/why-do-i-get-required-key-not-available-when-install-3rd-party-kernel-modules/762255#762255

@@ -11,6 +11,11 @@ unset DIR
 
 ./dependency/"$DEP_NAME"
 
+cd $SRC_PATH
+git checkout "$SRC_VERSION"
+git reset --hard
+patch -p1 --no-backup-if-mismatch < "$PRJ_PATH"/patch/no-cache.patch
+
 if [[ ! -d "$BLD_PATH" ]]; then
   mkdir "$BLD_PATH"
 fi
