@@ -17,7 +17,7 @@ sudo ubuntu-drivers autoinstall
 #+END_SRC
 
 #+BEGIN_SRC
-sudo apt purge *nvidia*
+sudo apt purge nvidia*
 sudo apt autoremove
 dpkg -l | grep nvidia
 #+END_SRC
@@ -29,17 +29,21 @@ sudo apt update
 
 #+BEGIN_SRC
 sudo add-apt-repository --remove ppa:graphics-drivers/ppa
-sudo apt update
+sudo apt-mark hold nvidia-390
 #+END_SRC
 
 #+BEGIN_SRC
-sudo apt install nvidia-driver-390
+sudo apt install nvidia-driver-390 nvidia-settings
+nvidia-smi
 #+END_SRC
 
 #+BEGIN_SRC
 sudo prime-select intel
 sudo prime-select nvidia
 #+END_SRC
+
+https://askubuntu.com/questions/61396/how-do-i-install-the-nvidia-drivers
+https://gist.github.com/wangruohui/df039f0dc434d6486f5d4d098aa52d07
 
 https://www.nvidia.com/object/unix.html
 
