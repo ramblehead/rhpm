@@ -1,0 +1,13 @@
+#+BEGIN_SRC
+sudo apt install tlp
+#+END_SRC
+
+#+BEGIN_SRC
+sudo tlp start
+sudo tlp-stat
+#+END_SRC
+
+https://github.com/smxi/inxi
+https://github.com/lm-sensors/lm-sensors
+
+https://linrunner.de/en/tlp/tlp.html

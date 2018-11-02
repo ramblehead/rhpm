@@ -1,8 +1,0 @@
-#+BEGIN_SRC
-sudo apt install tlp
-#+END_SRC
-
-#+BEGIN_SRC
-sudo tlp start
-sudo tlp-stat
-#+END_SRC
