@@ -1,8 +1,7 @@
 #+BEGIN_SRC
-sudo gnome-system-monitor gnome-shell-extension-system-monitor
+sudo apt install gnome-system-monitor gnome-shell-extension-system-monitor
 #+END_SRC
 
 https://extensions.gnome.org/extension/1160/dash-to-panel/
 https://extensions.gnome.org/extension/1071/applications-overview-tooltip/
 https://extensions.gnome.org/extension/841/freon/
-
