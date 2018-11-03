@@ -1,5 +1,10 @@
 #+BEGIN_SRC
-sudo apt install gnome-system-monitor gnome-shell-extension-system-monitor
+sudo apt install gnome-shell-extension-system-monitor
+#+END_SRC
+
+#+BEGIN_SRC
+sudo apt install lm-sensors
+sudo sensors-detect
 #+END_SRC
 
 https://extensions.gnome.org/extension/1160/dash-to-panel/

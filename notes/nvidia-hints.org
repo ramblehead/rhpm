@@ -1,5 +1,5 @@
 #+BEGIN_SRC
-lshw -numeric -C display
+sudo lshw -numeric -C display
 or
 lspci -vnn | grep VGA
 #+END_SRC
