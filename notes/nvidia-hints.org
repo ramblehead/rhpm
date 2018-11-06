@@ -13,6 +13,10 @@ dmesg
 #+END_SRC
 
 #+BEGIN_SRC
+xrandr
+#+END_SRC
+
+#+BEGIN_SRC
 sudo ubuntu-drivers devices
 #+END_SRC
 
