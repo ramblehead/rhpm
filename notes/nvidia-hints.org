@@ -1,3 +1,7 @@
+https://atkdinosaurus.wordpress.com/2017/03/23/how-to-almost-disable-framebuffer-in-ubuntu/
+https://support.digium.com/community/s/article/How-to-disable-the-Linux-frame-buffer-if-it-s-causing-problems
+https://wiki.debian.org/GrubTransition
+
 #+BEGIN_SRC
 sudo lshw -numeric -C display
 or
