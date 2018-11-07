@@ -1,11 +1,3 @@
-[  +0.000000] fb: switching to nouveaufb from EFI VGA
-[  +0.000013] Console: switching to colour dummy device 80x25
-[  +0.000073] nouveau 0000:65:00.0: NVIDIA GK208B (b06070b1)
-
-https://atkdinosaurus.wordpress.com/2017/03/23/how-to-almost-disable-framebuffer-in-ubuntu/
-https://support.digium.com/community/s/article/How-to-disable-the-Linux-frame-buffer-if-it-s-causing-problems
-https://wiki.debian.org/GrubTransition
-
 #+BEGIN_SRC
 sudo lshw -numeric -C display
 lspci -vnn | grep VGA
@@ -64,3 +56,7 @@ https://askubuntu.com/questions/1048274/ubuntu-18-04-stopped-working-with-nvidia
 https://unix.stackexchange.com/questions/455189/pkcs7-signature-not-signed-with-a-trusted-key
 https://askubuntu.com/questions/1023036/how-to-install-nvidia-driver-with-secure-boot-enabled
 https://askubuntu.com/questions/762254/why-do-i-get-required-key-not-available-when-install-3rd-party-kernel-modules/762255#762255
+
+https://atkdinosaurus.wordpress.com/2017/03/23/how-to-almost-disable-framebuffer-in-ubuntu/
+https://support.digium.com/community/s/article/How-to-disable-the-Linux-frame-buffer-if-it-s-causing-problems
+https://wiki.debian.org/GrubTransition
