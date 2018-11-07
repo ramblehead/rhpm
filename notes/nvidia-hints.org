@@ -1,11 +1,19 @@
+https://support.digium.com/community/s/article/How-to-disable-the-Linux-frame-buffer-if-it-s-causing-problems
+
+[  +0.000000] fb: switching to nouveaufb from EFI VGA
+[  +0.000013] Console: switching to colour dummy device 80x25
+[  +0.000073] nouveau 0000:65:00.0: NVIDIA GK208B (b06070b1)
+
+
 #+BEGIN_SRC
 sudo lshw -numeric -C display
-or
 lspci -vnn | grep VGA
 #+END_SRC
 
 #+BEGIN_SRC
-dmesg
+dmesg -H
+journalctl -u
+journalctl -xe
 #+END_SRC
 
 #+BEGIN_SRC
