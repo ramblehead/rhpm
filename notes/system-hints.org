@@ -3,6 +3,7 @@ sudo apt install tlp
 sudo tlp start
 sudo tlp-stat
 sudo tlp-stat -s
+systemctl enable tlp
 #+END_SRC
 
 https://github.com/smxi/inxi
