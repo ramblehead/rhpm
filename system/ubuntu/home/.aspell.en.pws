@@ -1,4 +1,4 @@
-personal_ws-1.1 en 58 
+personal_ws-1.1 en 60 
 Hydrohydrate
 refactoring
 RealGUD
@@ -27,6 +27,7 @@ storable
 deleter
 UDP
 Uncomment
+Foxx
 setpoint
 rtags
 IP
@@ -38,10 +39,11 @@ unselected
 css
 html
 xml
-Nitric
 enum
-tuple
+Nitric
 gcc
+tuple
+ArangoDB
 multithreading
 versioning
 FID
