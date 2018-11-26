@@ -1,4 +1,4 @@
-personal_ws-1.1 en 61 
+personal_ws-1.1 en 63
 Hydrohydrate
 refactoring
 RealGUD
@@ -28,6 +28,7 @@ storable
 deleter
 UDP
 Uncomment
+Foxx
 setpoint
 rtags
 IP
@@ -43,6 +44,7 @@ enum
 Nitric
 gcc
 tuple
+ArangoDB
 multithreading
 OBC
 xdotool
