@@ -1,4 +1,4 @@
-personal_ws-1.1 en 63
+personal_ws-1.1 en 66 
 Hydrohydrate
 refactoring
 RealGUD
@@ -9,6 +9,7 @@ CRTP
 milli
 SHM
 Rybynok
+MSM
 config
 Tx
 desynchronised
@@ -27,8 +28,9 @@ desynchronisation
 storable
 deleter
 UDP
-Uncomment
+magit
 Foxx
+Uncomment
 setpoint
 rtags
 IP
@@ -40,13 +42,13 @@ unselected
 css
 html
 xml
-enum
 Nitric
-gcc
+enum
 tuple
+gcc
 ArangoDB
-multithreading
 OBC
+multithreading
 xdotool
 versioning
 FID
@@ -57,6 +59,7 @@ formatter
 ramping
 dispersive
 preprocessors
+CWX
 trackable
 YASnippet
 pragma
