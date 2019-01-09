@@ -1,0 +1,11 @@
+#!/bin/bash
+
+PKG_NAME=rclone
+DEP_NAME=ubuntu-18.04
+
+SRC_VERSION=v1.45
+BLD_VERSION=2019-01-07
+
+BLD_NAME="$BLD_VERSION"_"$SRC_VERSION"
+
+GITHUB_PATH=github.com/ncw

@@ -1,0 +1,17 @@
+#!/bin/bash
+
+set -eu
+set -o pipefail
+
+DIR="`dirname \"${BASH_SOURCE[0]}\"`"
+if [[ ! -d "$DIR" ]]; then DIR="$PWD"; fi
+source "$DIR/configs"
+source "$DIR/paths"
+unset DIR
+
+git clone https://github.com/ncw/rclone.git $SRC_PATH
+
+if [[ ! -s $SRC_PATH/github.com/ncw/rclone ]]; then
+  mkdir -p $PKG_PATH/go/src/$GITHUB_PATH
+  ln -s $SRC_PATH $PKG_PATH/go/src/$GITHUB_PATH/$PKG_NAME
+fi
