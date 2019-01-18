@@ -1,0 +1,1098 @@
+From 8108d7e5bf3f4afe5918adbed17bf36c5930c709 Mon Sep 17 00:00:00 2001
+From: Alexandre Adolphe <alexandre.adolphe@gmail.com>
+Date: Fri, 19 Jan 2018 16:06:47 +0100
+Subject: [PATCH] Allow negative line width for :box face attribute
+
+Separate values for box line width and height and allow both to be
+negative which makes the visual width and height of the boxed string
+unchanged (Bug#13011).
+
+* doc/lispref/display.texi (Face Attributes): Modify :box attribute
+  description to reflect the new possibilities.
+* src/dispextern.h (face): Use two int for box horizontal and vertical
+  line width.
+
+* src/nsfont.m (nsfont_draw): Use new face attributes.
+* src/nsterm.m (ns_draw_box, ns_draw_relief): Support separated
+  horizontal and vertical box line width.
+  (ns_dumpglyphs_box_or_relief, ns_maybe_dumpglyphs_background)
+  (ns_dumpglyphs_image, ns_draw_glyph_string_foreground)
+  (ns_draw_composite_glyph_string_foreground): Use new face attributes.
+
+* src/w32term.c (w32_draw_box_rect, w32_draw_relief_rect): Support
+  separated horizontal and vertical box line width.
+  (x_draw_glyph_string_background, x_draw_glyph_string_foreground)
+  (x_draw_composite_glyph_string_foreground)
+  (x_draw_glyphless_glyph_string_foreground)
+  (x_draw_glyph_string_box, x_draw_image_foreground)
+  (x_draw_image_relief, w32_draw_image_foreground_1)
+  (x_draw_image_glyph_string): Use new face attributes.
+
+* src/xfaces.c (Sinternal_set_lisp_face_attribute, realize_x_face):
+  Accept box attribute as a list of two ints.
+
+* src/xdisp.c (estimate_mode_line_height, produce_image_glyph)
+  (produce_xwidget_glyph, x_produce_glyphs): Use new face attributes.
+* src/xterm.c (x_draw_box_rect, x_draw_relief_rect): Support separated
+  horizontal and vertical box line width.
+  (x_draw_glyph_string_background, x_draw_glyph_string_foreground)
+  (x_draw_composite_glyph_string_foreground)
+  (x_draw_glyphless_glyph_string_foreground)
+  (x_draw_glyph_string_box, x_draw_image_foreground)
+  (x_draw_image_relief, x_draw_image_foreground_1)
+  (x_draw_image_glyph_string): Use new face attributes.
+---
+ doc/lispref/display.texi |  15 +++---
+ src/dispextern.h         |  17 ++++---
+ src/nsfont.m             |   7 +--
+ src/nsterm.m             |  53 ++++++++++----------
+ src/w32term.c            |  53 ++++++++++----------
+ src/xdisp.c              | 123 ++++++++++++++++++++---------------------------
+ src/xfaces.c             |  23 ++++++---
+ src/xterm.c              | 111 ++++++++++++++++++++----------------------
+ 8 files changed, 200 insertions(+), 202 deletions(-)
+
+diff --git a/doc/lispref/display.texi b/doc/lispref/display.texi
+index 921fd10..b0e4372 100644
+--- a/doc/lispref/display.texi
++++ b/doc/lispref/display.texi
+@@ -2366,12 +2366,15 @@ Face Attributes
+ @item @var{color}
+ Draw a box with lines of width 1, in color @var{color}.
+ 
+-@item @code{(:line-width @var{width} :color @var{color} :style @var{style})}
+-This way you can explicitly specify all aspects of the box.  The value
+-@var{width} specifies the width of the lines to draw; it defaults to
+-1.  A negative width @var{-n} means to draw a line of width @var{n}
+-whose top and bottom parts occupy the space of the underlying text,
+-thus avoiding any increase in the character height.
++@item @code{(:line-width (@var{vwidth} . @var{hwidth}) :color @var{color} :style @var{style})}
++This way you can explicitly specify all aspects of the box.  The values
++@var{vwidth} and @var{hwidth} specifies respectively the width of the
++vertcal and horizontal lines to draw; they default to (1 . 1).
++A negative (horizontal or vertical) width @var{-n} means to draw a line
++of width @var{n} that occupies the space of the underlying text, thus
++avoiding any increase in the character width or height. For simplification
++the width could be specified with only a single number @var{n} instead
++of a list, such case is equivalent to (abs(@var{n}) . @var{n}).
+ 
+ The value @var{color} specifies the color to draw with.  The default is
+ the foreground color of the face for simple boxes, and the background
+diff --git a/src/dispextern.h b/src/dispextern.h
+index 441361b..5b75a34 100644
+--- a/src/dispextern.h
++++ b/src/dispextern.h
+@@ -1620,12 +1620,17 @@ struct face
+   int fontset;
+ 
+   /* Non-zero means characters in this face have a box of that
+-     thickness around them.  If this value is negative, its absolute
+-     value indicates the thickness, and the horizontal (top and
+-     bottom) borders of box are drawn inside of the character glyphs'
+-     area.  The vertical (left and right) borders of the box are drawn
+-     in the same way as when this value is positive.  */
+-  int box_line_width;
++     thickness around them. Vertical (left and right) and horizontal
++     (top and bottom) borders size can be set separatedly using an
++     associated list of two ints in the form
++     (vertical_size . horizontal_size). In case one of the value is
++     negative, its absolute value indicates the thickness, and the
++     borders of box are drawn inside of the character glyphs' area
++     potentially over the glyph itself but the glyph drawing size is
++     not increase. If a (signed) int N is use instead of a list, it
++     is the same as setting ( abs(N) . N ) values. */
++  int box_vertical_line_width;
++  int box_horizontal_line_width;
+ 
+   /* Type of box drawn.  A value of FACE_NO_BOX means no box is drawn
+      around text in this face.  A value of FACE_SIMPLE_BOX means a box
+diff --git a/src/nsfont.m b/src/nsfont.m
+index 8b42102..a066d91 100644
+--- a/src/nsfont.m
++++ b/src/nsfont.m
+@@ -1042,7 +1042,7 @@ is false when (FROM > 0 || TO < S->nchars). */
+ 
+   r.origin.x = s->x;
+   if (s->face->box != FACE_NO_BOX && s->first_glyph->left_box_line_p)
+-    r.origin.x += abs (s->face->box_line_width);
++    r.origin.x += max (s->face->box_vertical_line_width, 0);
+ 
+   r.origin.y = s->y;
+   r.size.height = FONT_HEIGHT (font);
+@@ -1104,7 +1104,7 @@ is false when (FROM > 0 || TO < S->nchars). */
+     {
+       NSRect br = r;
+       int fibw = FRAME_INTERNAL_BORDER_WIDTH (s->f);
+-      int mbox_line_width = max (s->face->box_line_width, 0);
++      int mbox_line_width = max (s->face->box_vertical_line_width, 0);
+ 
+       if (s->row->full_width_p)
+         {
+@@ -1128,9 +1128,10 @@ is false when (FROM > 0 || TO < S->nchars). */
+         }
+       else
+         {
+-          int correction = abs (s->face->box_line_width)+1;
++          int correction = abs (s->face->box_horizontal_line_width)+1;
+           br.origin.y += correction;
+           br.size.height -= 2*correction;
++          correction = abs (s->face->box_vertical_line_width)+1;
+           br.origin.x += correction;
+           br.size.width -= 2*correction;
+         }
+diff --git a/src/nsterm.m b/src/nsterm.m
+index d2927d2..5c1b8bf 100644
+--- a/src/nsterm.m
++++ b/src/nsterm.m
+@@ -3445,8 +3445,8 @@ larger if there are taller display elements (e.g., characters
+ }
+ 
+ static void
+-ns_draw_box (NSRect r, CGFloat thickness, NSColor *col,
+-             char left_p, char right_p)
++ns_draw_box (NSRect r, CGFloat vthickness, CGFloat hthickness,
++             NSColor *col, char left_p, char right_p)
+ /* --------------------------------------------------------------------------
+     Draw an unfilled rect inside r, optionally leaving left and/or right open.
+     Note we can't just use an NSDrawRect command, because of the possibility
+@@ -3457,28 +3457,28 @@ larger if there are taller display elements (e.g., characters
+   [col set];
+ 
+   /* top, bottom */
+-  s.size.height = thickness;
++  s.size.height = hthickness;
+   NSRectFill (s);
+-  s.origin.y += r.size.height - thickness;
++  s.origin.y += r.size.height - hthickness;
+   NSRectFill (s);
+ 
+   s.size.height = r.size.height;
+   s.origin.y = r.origin.y;
+ 
+   /* left, right (optional) */
+-  s.size.width = thickness;
++  s.size.width = vthickness;
+   if (left_p)
+     NSRectFill (s);
+   if (right_p)
+     {
+-      s.origin.x += r.size.width - thickness;
++      s.origin.x += r.size.width - vthickness;
+       NSRectFill (s);
+     }
+ }
+ 
+ 
+ static void
+-ns_draw_relief (NSRect r, int thickness, char raised_p,
++ns_draw_relief (NSRect r, int vthickness, int hthickness, char raised_p,
+                char top_p, char bottom_p, char left_p, char right_p,
+                struct glyph_string *s)
+ /* --------------------------------------------------------------------------
+@@ -3528,27 +3528,27 @@ larger if there are taller display elements (e.g., characters
+   /* TODO: mitering. Using NSBezierPath doesn't work because of color switch. */
+ 
+   /* top */
+-  sr.size.height = thickness;
++  sr.size.height = hthickness;
+   if (top_p) NSRectFill (sr);
+ 
+   /* left */
+   sr.size.height = r.size.height;
+-  sr.size.width = thickness;
++  sr.size.width = vthickness;
+   if (left_p) NSRectFill (sr);
+ 
+   [(raised_p ? darkCol : lightCol) set];
+ 
+   /* bottom */
+   sr.size.width = r.size.width;
+-  sr.size.height = thickness;
+-  sr.origin.y += r.size.height - thickness;
++  sr.size.height = hthickness;
++  sr.origin.y += r.size.height - hthickness;
+   if (bottom_p) NSRectFill (sr);
+ 
+   /* right */
+   sr.size.height = r.size.height;
+   sr.origin.y = r.origin.y;
+-  sr.size.width = thickness;
+-  sr.origin.x += r.size.width - thickness;
++  sr.size.width = vthickness;
++  sr.origin.x += r.size.width - vthickness;
+   if (right_p) NSRectFill (sr);
+ }
+ 
+@@ -3577,7 +3577,7 @@ Function modeled after x_draw_glyph_string_box ().
+   else
+     face = s->face;
+ 
+-  thickness = face->box_line_width;
++  thickness = face->box_vertical_line_width;
+ 
+   NSTRACE ("ns_dumpglyphs_box_or_relief");
+ 
+@@ -3602,14 +3602,15 @@ Function modeled after x_draw_glyph_string_box ().
+   /* TODO: Sometimes box_color is 0 and this seems wrong; should investigate. */
+   if (s->face->box == FACE_SIMPLE_BOX && s->face->box_color)
+     {
+-      ns_draw_box (r, abs (thickness),
++      ns_draw_box (r, abs (thickness), abs (face->box_horizontal_line_width),
+                    ns_lookup_indexed_color (face->box_color, s->f),
+-                  left_p, right_p);
++                   left_p, right_p);
+     }
+   else
+     {
+-      ns_draw_relief (r, abs (thickness), s->face->box == FACE_RAISED_BOX,
+-                     1, 1, left_p, right_p, s);
++      ns_draw_relief (r, abs (thickness), abs (face->box_horizontal_line_width),
++		      s->face->box == FACE_RAISED_BOX,
++		      1, 1, left_p, right_p, s);
+     }
+ }
+ 
+@@ -3625,7 +3626,7 @@ Function modeled after x_draw_glyph_string_box ().
+ 
+   if (!s->background_filled_p/* || s->hl == DRAW_MOUSE_FACE*/)
+     {
+-      int box_line_width = max (s->face->box_line_width, 0);
++      int box_line_width = max (s->face->box_horizontal_line_width, 0);
+       if (FONT_HEIGHT (s->font) < s->height - 2 * box_line_width
+ 	  /* When xdisp.c ignores FONT_HEIGHT, we cannot trust font
+ 	     dimensions, since the actual glyphs might be much
+@@ -3676,7 +3677,7 @@ Function modeled after x_draw_glyph_string_box ().
+    -------------------------------------------------------------------------- */
+ {
+   EmacsImage *img = s->img->pixmap;
+-  int box_line_vwidth = max (s->face->box_line_width, 0);
++  int box_line_vwidth = max (s->face->box_horizontal_line_width, 0);
+   int x = s->x, y = s->ybase - image_ascent (s->img, s->face, &s->slice);
+   int bg_x, bg_y, bg_height;
+   int th;
+@@ -3689,7 +3690,7 @@ Function modeled after x_draw_glyph_string_box ().
+ 
+   if (s->face->box != FACE_NO_BOX
+       && s->first_glyph->left_box_line_p && s->slice.x == 0)
+-    x += abs (s->face->box_line_width);
++    x += max (s->face->box_vertical_line_width, 0);
+ 
+   bg_x = x;
+   bg_y =  s->slice.y == 0 ? s->y : s->y + box_line_vwidth;
+@@ -3788,7 +3789,7 @@ Function modeled after x_draw_glyph_string_box ().
+       r.origin.y = y - th;
+       r.size.width = s->slice.width + 2*th-1;
+       r.size.height = s->slice.height + 2*th-1;
+-      ns_draw_relief (r, th, raised_p,
++      ns_draw_relief (r, th, th, raised_p,
+                       s->slice.y == 0,
+                       s->slice.y + s->slice.height == s->img->height,
+                       s->slice.x == 0,
+@@ -3802,7 +3803,7 @@ Function modeled after x_draw_glyph_string_box ().
+     {
+       int thickness = abs (s->img->relief);
+       if (thickness == 0) thickness = 1;
+-      ns_draw_box (br, thickness, FRAME_CURSOR_COLOR (s->f), 1, 1);
++      ns_draw_box (br, thickness, thickness, FRAME_CURSOR_COLOR (s->f), 1, 1);
+     }
+ }
+ 
+@@ -3912,7 +3913,7 @@ overwriting cursor (usually when cursor on a tab) */
+      of S to the right of that box line.  */
+   if (s->face && s->face->box != FACE_NO_BOX
+       && s->first_glyph->left_box_line_p)
+-    x = s->x + eabs (s->face->box_line_width);
++    x = s->x + max (s->face->box_vertical_line_width, 0);
+   else
+     x = s->x;
+ 
+@@ -3938,7 +3939,7 @@ overwriting cursor (usually when cursor on a tab) */
+      of S to the right of that box line.  */
+   if (s->face && s->face->box != FACE_NO_BOX
+       && s->first_glyph->left_box_line_p)
+-    x = s->x + eabs (s->face->box_line_width);
++    x = s->x + max (s->face->box_vertical_line_width, 0);
+   else
+     x = s->x;
+ 
+@@ -3954,7 +3955,7 @@ overwriting cursor (usually when cursor on a tab) */
+       if (s->cmp_from == 0)
+         {
+           NSRect r = NSMakeRect (s->x, s->y, s->width-1, s->height -1);
+-          ns_draw_box (r, 1, FRAME_CURSOR_COLOR (s->f), 1, 1);
++          ns_draw_box (r, 1, 1, FRAME_CURSOR_COLOR (s->f), 1, 1);
+         }
+     }
+   else if (! s->first_glyph->u.cmp.automatic)
+diff --git a/src/w32term.c b/src/w32term.c
+index 137c798..477f889 100644
+--- a/src/w32term.c
++++ b/src/w32term.c
+@@ -961,10 +961,10 @@ static void w32_draw_image_foreground_1 (struct glyph_string *, HBITMAP);
+ static void x_clear_glyph_string_rect (struct glyph_string *, int,
+                                        int, int, int);
+ static void w32_draw_relief_rect (struct frame *, int, int, int, int,
+-                                  int, int, int, int, int, int,
++                                  int, int, int, int, int, int, int,
+                                   RECT *);
+ static void w32_draw_box_rect (struct glyph_string *, int, int, int, int,
+-                               int, bool, bool, RECT *);
++                               int, int, bool, bool, RECT *);
+ 
+ 
+ /* Set S->gc to a suitable GC for drawing glyph string S in cursor
+@@ -1239,7 +1239,7 @@ x_draw_glyph_string_background (struct glyph_string *s, bool force_p)
+      shouldn't be drawn in the first place.  */
+   if (!s->background_filled_p)
+     {
+-      int box_line_width = max (s->face->box_line_width, 0);
++      int box_line_width = max (s->face->box_horizontal_line_width, 0);
+ 
+ #if 0 /* TODO: stipple */
+       if (s->stippled_p)
+@@ -1285,7 +1285,7 @@ x_draw_glyph_string_foreground (struct glyph_string *s)
+      of S to the right of that box line.  */
+   if (s->face->box != FACE_NO_BOX
+       && s->first_glyph->left_box_line_p)
+-    x = s->x + eabs (s->face->box_line_width);
++    x = s->x + max (s->face->box_vertical_line_width, 0);
+   else
+     x = s->x;
+ 
+@@ -1343,7 +1343,7 @@ x_draw_composite_glyph_string_foreground (struct glyph_string *s)
+      of S to the right of that box line.  */
+   if (s->face && s->face->box != FACE_NO_BOX
+       && s->first_glyph->left_box_line_p)
+-    x = s->x + eabs (s->face->box_line_width);
++    x = s->x + max (s->face->box_vertical_line_width, 0);
+   else
+     x = s->x;
+ 
+@@ -1440,7 +1440,7 @@ x_draw_glyphless_glyph_string_foreground (struct glyph_string *s)
+      of S to the right of that box line.  */
+   if (s->face->box != FACE_NO_BOX
+       && s->first_glyph->left_box_line_p)
+-    x = s->x + eabs (s->face->box_line_width);
++    x = s->x + max (s->face->box_vertical_line_width, 0);
+   else
+     x = s->x;
+ 
+@@ -1699,7 +1699,7 @@ x_setup_relief_colors (struct glyph_string *s)
+ static void
+ w32_draw_relief_rect (struct frame *f,
+ 		      int left_x, int top_y, int right_x, int bottom_y,
+-		      int width, int raised_p,
++		      int hwidth, int vwidth, int raised_p,
+ 		      int top_p, int bot_p, int left_p, int right_p,
+ 		      RECT *clip_rect)
+ {
+@@ -1716,14 +1716,14 @@ w32_draw_relief_rect (struct frame *f,
+ 
+   /* Top.  */
+   if (top_p)
+-    for (i = 0; i < width; ++i)
++    for (i = 0; i < hwidth; ++i)
+       w32_fill_area (f, hdc, gc.foreground,
+ 		     left_x + i * left_p, top_y + i,
+ 		     right_x - left_x - i * (left_p + right_p ) + 1, 1);
+ 
+   /* Left.  */
+   if (left_p)
+-    for (i = 0; i < width; ++i)
++    for (i = 0; i < vwidth; ++i)
+       w32_fill_area (f, hdc, gc.foreground,
+ 		     left_x + i, top_y + (i + 1) * top_p, 1,
+ 		     bottom_y - top_y - (i + 1) * (bot_p + top_p) + 1);
+@@ -1735,14 +1735,14 @@ w32_draw_relief_rect (struct frame *f,
+ 
+   /* Bottom.  */
+   if (bot_p)
+-    for (i = 0; i < width; ++i)
++    for (i = 0; i < hwidth; ++i)
+       w32_fill_area (f, hdc, gc.foreground,
+ 		     left_x + i * left_p, bottom_y - i,
+ 		     right_x - left_x - i * (left_p + right_p) + 1, 1);
+ 
+   /* Right.  */
+   if (right_p)
+-    for (i = 0; i < width; ++i)
++    for (i = 0; i < vwidth; ++i)
+       w32_fill_area (f, hdc, gc.foreground,
+ 		     right_x - i, top_y + (i + 1) * top_p, 1,
+ 		     bottom_y - top_y - (i + 1) * (bot_p + top_p) + 1);
+@@ -1762,31 +1762,31 @@ w32_draw_relief_rect (struct frame *f,
+ 
+ static void
+ w32_draw_box_rect (struct glyph_string *s,
+-		   int left_x, int top_y, int right_x, int bottom_y, int width,
+-                   bool left_p, bool right_p, RECT *clip_rect)
++		   int left_x, int top_y, int right_x, int bottom_y, int hwidth,
++		   int vwidth, bool left_p, bool right_p, RECT *clip_rect)
+ {
+   w32_set_clip_rectangle (s->hdc, clip_rect);
+ 
+   /* Top.  */
+   w32_fill_area (s->f, s->hdc, s->face->box_color,
+-		  left_x, top_y, right_x - left_x + 1, width);
++		  left_x, top_y, right_x - left_x + 1, hwidth);
+ 
+   /* Left.  */
+   if (left_p)
+     {
+       w32_fill_area (s->f, s->hdc, s->face->box_color,
+-                     left_x, top_y, width, bottom_y - top_y + 1);
++                     left_x, top_y, vwidth, bottom_y - top_y + 1);
+     }
+ 
+   /* Bottom.  */
+   w32_fill_area (s->f, s->hdc, s->face->box_color,
+-                 left_x, bottom_y - width + 1, right_x - left_x + 1, width);
++                 left_x, bottom_y - hwidth + 1, right_x - left_x + 1, hwidth);
+ 
+   /* Right.  */
+   if (right_p)
+     {
+       w32_fill_area (s->f, s->hdc, s->face->box_color,
+-                     right_x - width + 1, top_y, width, bottom_y - top_y + 1);
++                     right_x - vwidth + 1, top_y, vwidth, bottom_y - top_y + 1);
+     }
+ 
+   w32_set_clip_rectangle (s->hdc, NULL);
+@@ -1812,7 +1812,7 @@ x_draw_glyph_string_box (struct glyph_string *s)
+ 		? s->first_glyph
+ 		: s->first_glyph + s->nchars - 1);
+ 
+-  width = eabs (s->face->box_line_width);
++  width = eabs (s->face->box_vertical_line_width);
+   raised_p = s->face->box == FACE_RAISED_BOX;
+   left_x = s->x;
+   right_x = ((s->row->full_width_p && s->extends_to_end_of_line_p
+@@ -1833,12 +1833,13 @@ x_draw_glyph_string_box (struct glyph_string *s)
+   get_glyph_string_clip_rect (s, &clip_rect);
+ 
+   if (s->face->box == FACE_SIMPLE_BOX)
+-    w32_draw_box_rect (s, left_x, top_y, right_x, bottom_y, width,
+-                       left_p, right_p, &clip_rect);
++    w32_draw_box_rect (s, left_x, top_y, right_x, bottom_y, eabs (s->face->box_horizontal_line_width),
++                       width, left_p, right_p, &clip_rect);
+   else
+     {
+       x_setup_relief_colors (s);
+       w32_draw_relief_rect (s->f, left_x, top_y, right_x, bottom_y,
++                            eabs (s->face->box_horizontal_line_width),
+                             width, raised_p, 1, 1, left_p, right_p, &clip_rect);
+     }
+ }
+@@ -1857,7 +1858,7 @@ x_draw_image_foreground (struct glyph_string *s)
+   if (s->face->box != FACE_NO_BOX
+       && s->first_glyph->left_box_line_p
+       && s->slice.x == 0)
+-    x += eabs (s->face->box_line_width);
++    x += max (s->face->box_vertical_line_width, 0);
+ 
+   /* If there is a margin around the image, adjust x- and y-position
+      by that margin.  */
+@@ -1950,7 +1951,7 @@ x_draw_image_relief (struct glyph_string *s)
+   if (s->face->box != FACE_NO_BOX
+       && s->first_glyph->left_box_line_p
+       && s->slice.x == 0)
+-    x += eabs (s->face->box_line_width);
++    x += max (s->face->box_vertical_line_width, 0);
+ 
+   /* If there is a margin around the image, adjust x- and y-position
+      by that margin.  */
+@@ -2002,7 +2003,7 @@ x_draw_image_relief (struct glyph_string *s)
+ 
+   x_setup_relief_colors (s);
+   get_glyph_string_clip_rect (s, &r);
+-  w32_draw_relief_rect (s->f, x, y, x1, y1, thick, raised_p,
++  w32_draw_relief_rect (s->f, x, y, x1, y1, thick, thick, raised_p,
+ 			top_p, bot_p, left_p, right_p, &r);
+ }
+ 
+@@ -2022,7 +2023,7 @@ w32_draw_image_foreground_1 (struct glyph_string *s, HBITMAP pixmap)
+   if (s->face->box != FACE_NO_BOX
+       && s->first_glyph->left_box_line_p
+       && s->slice.x == 0)
+-    x += eabs (s->face->box_line_width);
++    x += max (s->face->box_vertical_line_width, 0);
+ 
+   /* If there is a margin around the image, adjust x- and y-position
+      by that margin.  */
+@@ -2131,8 +2132,8 @@ static void
+ x_draw_image_glyph_string (struct glyph_string *s)
+ {
+   int x, y;
+-  int box_line_hwidth = eabs (s->face->box_line_width);
+-  int box_line_vwidth = max (s->face->box_line_width, 0);
++  int box_line_hwidth = max (s->face->box_vertical_line_width, 0);
++  int box_line_vwidth = max (s->face->box_horizontal_line_width, 0);
+   int height, width;
+   HBITMAP pixmap = 0;
+ 
+diff --git a/src/xdisp.c b/src/xdisp.c
+index d2bb47f..b82bd4b 100644
+--- a/src/xdisp.c
++++ b/src/xdisp.c
+@@ -1854,8 +1854,8 @@ estimate_mode_line_height (struct frame *f, enum face_id face_id)
+ 	    {
+ 	      if (face->font)
+ 		height = normal_char_height (face->font, -1);
+-	      if (face->box_line_width > 0)
+-		height += 2 * face->box_line_width;
++	      if (face->box_horizontal_line_width > 0)
++		height += 2 * face->box_horizontal_line_width;
+ 	    }
+ 	}
+ 
+@@ -27063,18 +27063,21 @@ produce_image_glyph (struct it *it)
+ 
+   if (face->box != FACE_NO_BOX)
+     {
+-      if (face->box_line_width > 0)
++      if (face->box_horizontal_line_width > 0)
+ 	{
+ 	  if (slice.y == 0)
+-	    it->ascent += face->box_line_width;
++	    it->ascent += face->box_horizontal_line_width;
+ 	  if (slice.y + slice.height == img->height)
+-	    it->descent += face->box_line_width;
++	    it->descent += face->box_horizontal_line_width;
+ 	}
+ 
+-      if (it->start_of_box_run_p && slice.x == 0)
+-	it->pixel_width += eabs (face->box_line_width);
+-      if (it->end_of_box_run_p && slice.x + slice.width == img->width)
+-	it->pixel_width += eabs (face->box_line_width);
++      if (face->box_vertical_line_width > 0)
++	{
++	  if (it->start_of_box_run_p && slice.x == 0)
++	    it->pixel_width += face->box_vertical_line_width;
++	  if (it->end_of_box_run_p && slice.x + slice.width == img->width)
++	    it->pixel_width += face->box_vertical_line_width;
++	}
+     }
+ 
+   take_vertical_position_into_account (it);
+@@ -27172,15 +27175,18 @@ produce_xwidget_glyph (struct it *it)
+ 
+   if (face->box != FACE_NO_BOX)
+     {
+-      if (face->box_line_width > 0)
++      if (face->box_horizontal_line_width > 0)
+ 	{
+-	  it->ascent += face->box_line_width;
+-	  it->descent += face->box_line_width;
++	  it->ascent += face->box_horizontal_line_width;
++	  it->descent += face->box_horizontal_line_width;
+ 	}
+ 
+-      if (it->start_of_box_run_p)
+-	it->pixel_width += eabs (face->box_line_width);
+-      it->pixel_width += eabs (face->box_line_width);
++      if (face->box_vertical_line_width > 0)
++	{
++	  if (it->start_of_box_run_p)
++	    it->pixel_width += face->box_vertical_line_width;
++	  it->pixel_width += face->box_vertical_line_width;
++	}
+     }
+ 
+   take_vertical_position_into_account (it);
+@@ -27938,6 +27944,31 @@ produce_glyphless_glyph (struct it *it, bool for_no_font, Lisp_Object acronym)
+ }
+ 
+ 
++/* If face has a box, add the box thickness to the character
++   height.  If character has a box line to the left and/or
++   right, add the box line width to the character's width.  */
++#define IT_APPLY_FACE_BOX(it, face)				\
++  do {								\
++    if (face->box != FACE_NO_BOX)				\
++      {								\
++	int thick = face->box_horizontal_line_width;		\
++	if (thick > 0)						\
++	  {							\
++	    it->ascent += thick;				\
++	    it->descent += thick;				\
++	  }							\
++								\
++	thick = face->box_vertical_line_width;			\
++	if (thick > 0)						\
++	  {							\
++	    if (it->start_of_box_run_p)				\
++	      it->pixel_width += thick;				\
++	    if (it->end_of_box_run_p)				\
++	      it->pixel_width += thick;				\
++	  }							\
++      }								\
++    } while (false)
++
+ /* RIF:
+    Produce glyphs/get display metrics for the display element IT is
+    loaded with.  See the description of struct it in dispextern.h
+@@ -28053,26 +28084,7 @@ x_produce_glyphs (struct it *it)
+ 	  if (stretched_p)
+ 	    it->pixel_width *= XFLOATINT (it->space_width);
+ 
+-	  /* If face has a box, add the box thickness to the character
+-	     height.  If character has a box line to the left and/or
+-	     right, add the box line width to the character's width.  */
+-	  if (face->box != FACE_NO_BOX)
+-	    {
+-	      int thick = face->box_line_width;
+-
+-	      if (thick > 0)
+-		{
+-		  it->ascent += thick;
+-		  it->descent += thick;
+-		}
+-	      else
+-		thick = -thick;
+-
+-	      if (it->start_of_box_run_p)
+-		it->pixel_width += thick;
+-	      if (it->end_of_box_run_p)
+-		it->pixel_width += thick;
+-	    }
++	  IT_APPLY_FACE_BOX(it, face);
+ 
+ 	  /* If face has an overline, add the height of the overline
+ 	     (1 pixel) and a 1 pixel margin to the character height.  */
+@@ -28187,10 +28199,10 @@ x_produce_glyphs (struct it *it)
+ 
+ 	      if ((it->max_ascent > 0 || it->max_descent > 0)
+ 		  && face->box != FACE_NO_BOX
+-		  && face->box_line_width > 0)
++		  && face->box_horizontal_line_width > 0)
+ 		{
+-		  it->ascent += face->box_line_width;
+-		  it->descent += face->box_line_width;
++		  it->ascent += face->box_horizontal_line_width;
++		  it->descent += face->box_horizontal_line_width;
+ 		}
+ 	      if (!NILP (height)
+ 		  && XINT (height) > it->ascent + it->descent)
+@@ -28582,23 +28594,7 @@ x_produce_glyphs (struct it *it)
+       it->pixel_width = cmp->pixel_width;
+       it->ascent = it->phys_ascent = cmp->ascent;
+       it->descent = it->phys_descent = cmp->descent;
+-      if (face->box != FACE_NO_BOX)
+-	{
+-	  int thick = face->box_line_width;
+-
+-	  if (thick > 0)
+-	    {
+-	      it->ascent += thick;
+-	      it->descent += thick;
+-	    }
+-	  else
+-	    thick = - thick;
+-
+-	  if (it->start_of_box_run_p)
+-	    it->pixel_width += thick;
+-	  if (it->end_of_box_run_p)
+-	    it->pixel_width += thick;
+-	}
++      IT_APPLY_FACE_BOX(it, face);
+ 
+       /* If face has an overline, add the height of the overline
+ 	 (1 pixel) and a 1 pixel margin to the character height.  */
+@@ -28632,23 +28628,8 @@ x_produce_glyphs (struct it *it)
+ 	it->glyph_row->contains_overlapping_glyphs_p = true;
+       it->ascent = it->phys_ascent = metrics.ascent;
+       it->descent = it->phys_descent = metrics.descent;
+-      if (face->box != FACE_NO_BOX)
+-	{
+-	  int thick = face->box_line_width;
++      IT_APPLY_FACE_BOX(it, face);
+ 
+-	  if (thick > 0)
+-	    {
+-	      it->ascent += thick;
+-	      it->descent += thick;
+-	    }
+-	  else
+-	    thick = - thick;
+-
+-	  if (it->start_of_box_run_p)
+-	    it->pixel_width += thick;
+-	  if (it->end_of_box_run_p)
+-	    it->pixel_width += thick;
+-	}
+       /* If face has an overline, add the height of the overline
+ 	 (1 pixel) and a 1 pixel margin to the character height.  */
+       if (face->overline_p)
+diff --git a/src/xfaces.c b/src/xfaces.c
+index 3479799..0cb85f1 100644
+--- a/src/xfaces.c
++++ b/src/xfaces.c
+@@ -2884,7 +2884,9 @@ FRAME 0 means change the face on all frames, and change the default
+ 
+ 	      if (EQ (k, QCline_width))
+ 		{
+-		  if (!INTEGERP (v) || XINT (v) == 0)
++		  if ((!CONSP(v) || !INTEGERP (XCAR (v)) || XINT (XCAR (v)) == 0
++		                 || !INTEGERP (XCDR (v)) || XINT (XCDR (v)) == 0)
++		      && (!INTEGERP (v) || XINT (v) == 0))
+ 		    break;
+ 		}
+ 	      else if (EQ (k, QCcolor))
+@@ -5524,7 +5526,7 @@ realize_x_face (struct face_cache *cache, Lisp_Object attrs[LFACE_VECTOR_SIZE])
+       face->box_color = load_color (f, face, attrs[LFACE_BOX_INDEX],
+ 				    LFACE_BOX_INDEX);
+       face->box = FACE_SIMPLE_BOX;
+-      face->box_line_width = 1;
++      face->box_vertical_line_width = face->box_horizontal_line_width = 1;
+     }
+   else if (INTEGERP (box))
+     {
+@@ -5532,7 +5534,8 @@ realize_x_face (struct face_cache *cache, Lisp_Object attrs[LFACE_VECTOR_SIZE])
+ 	 face.  */
+       eassert (XINT (box) != 0);
+       face->box = FACE_SIMPLE_BOX;
+-      face->box_line_width = XINT (box);
++      face->box_vertical_line_width = eabs(XINT (box));
++      face->box_horizontal_line_width = XINT (box);
+       face->box_color = face->foreground;
+       face->box_color_defaulted_p = true;
+     }
+@@ -5543,7 +5546,7 @@ realize_x_face (struct face_cache *cache, Lisp_Object attrs[LFACE_VECTOR_SIZE])
+       face->box = FACE_SIMPLE_BOX;
+       face->box_color = face->foreground;
+       face->box_color_defaulted_p = true;
+-      face->box_line_width = 1;
++      face->box_vertical_line_width = face->box_horizontal_line_width = 1;
+ 
+       while (CONSP (box))
+ 	{
+@@ -5559,8 +5562,16 @@ realize_x_face (struct face_cache *cache, Lisp_Object attrs[LFACE_VECTOR_SIZE])
+ 
+ 	  if (EQ (keyword, QCline_width))
+ 	    {
+-	      if (INTEGERP (value) && XINT (value) != 0)
+-		face->box_line_width = XINT (value);
++	      if (CONSP (value)) {
++		if (INTEGERP (XCAR (value)))
++		  face->box_vertical_line_width = XINT (XCAR (value));
++		if (INTEGERP (XCDR (value)))
++		  face->box_horizontal_line_width = XINT (XCDR (value));
++	      }
++	      else if (INTEGERP (value) && XINT (value) != 0) {
++		face->box_vertical_line_width = eabs (XINT (value));
++		face->box_horizontal_line_width = XINT (value);
++	      }
+ 	    }
+ 	  else if (EQ (keyword, QCcolor))
+ 	    {
+diff --git a/src/xterm.c b/src/xterm.c
+index 0a2068d..36692d3 100644
+--- a/src/xterm.c
++++ b/src/xterm.c
+@@ -1528,10 +1528,10 @@ static void x_draw_image_foreground_1 (struct glyph_string *, Pixmap);
+ static void x_clear_glyph_string_rect (struct glyph_string *, int,
+                                        int, int, int);
+ static void x_draw_relief_rect (struct frame *, int, int, int, int,
+-                                int, bool, bool, bool, bool, bool,
++                                int, int, bool, bool, bool, bool, bool,
+                                 XRectangle *);
+ static void x_draw_box_rect (struct glyph_string *, int, int, int, int,
+-                             int, bool, bool, XRectangle *);
++                             int, int, bool, bool, XRectangle *);
+ static void x_scroll_bar_clear (struct frame *);
+ 
+ #ifdef GLYPH_DEBUG
+@@ -1794,7 +1794,7 @@ x_draw_glyph_string_background (struct glyph_string *s, bool force_p)
+      shouldn't be drawn in the first place.  */
+   if (!s->background_filled_p)
+     {
+-      int box_line_width = max (s->face->box_line_width, 0);
++      int box_line_width = max (s->face->box_horizontal_line_width, 0);
+ 
+       if (s->stippled_p)
+ 	{
+@@ -1837,7 +1837,7 @@ x_draw_glyph_string_foreground (struct glyph_string *s)
+      of S to the right of that box line.  */
+   if (s->face->box != FACE_NO_BOX
+       && s->first_glyph->left_box_line_p)
+-    x = s->x + eabs (s->face->box_line_width);
++    x = s->x + max (s->face->box_vertical_line_width, 0);
+   else
+     x = s->x;
+ 
+@@ -1886,7 +1886,7 @@ x_draw_composite_glyph_string_foreground (struct glyph_string *s)
+      of S to the right of that box line.  */
+   if (s->face && s->face->box != FACE_NO_BOX
+       && s->first_glyph->left_box_line_p)
+-    x = s->x + eabs (s->face->box_line_width);
++    x = s->x + max (s->face->box_vertical_line_width, 0);
+   else
+     x = s->x;
+ 
+@@ -1978,7 +1978,7 @@ x_draw_glyphless_glyph_string_foreground (struct glyph_string *s)
+      of S to the right of that box line.  */
+   if (s->face && s->face->box != FACE_NO_BOX
+       && s->first_glyph->left_box_line_p)
+-    x = s->x + eabs (s->face->box_line_width);
++    x = s->x + max (s->face->box_vertical_line_width, 0);
+   else
+     x = s->x;
+ 
+@@ -2715,7 +2715,7 @@ x_setup_relief_colors (struct glyph_string *s)
+ static void
+ x_draw_relief_rect (struct frame *f,
+ 		    int left_x, int top_y, int right_x, int bottom_y,
+-		    int width, bool raised_p, bool top_p, bool bot_p,
++		    int hwidth, int vwidth, bool raised_p, bool top_p, bool bot_p,
+ 		    bool left_p, bool right_p,
+ 		    XRectangle *clip_rect)
+ {
+@@ -2740,7 +2740,7 @@ x_draw_relief_rect (struct frame *f,
+   if (left_p)
+     {
+       x_fill_rectangle (f, top_left_gc, left_x, top_y,
+-			width, bottom_y + 1 - top_y);
++			vwidth, bottom_y + 1 - top_y);
+       if (top_p)
+ 	corners |= 1 << CORNER_TOP_LEFT;
+       if (bot_p)
+@@ -2748,8 +2748,8 @@ x_draw_relief_rect (struct frame *f,
+     }
+   if (right_p)
+     {
+-      x_fill_rectangle (f, bottom_right_gc, right_x + 1 - width, top_y,
+-			width, bottom_y + 1 - top_y);
++      x_fill_rectangle (f, bottom_right_gc, right_x + 1 - vwidth, top_y,
++			vwidth, bottom_y + 1 - top_y);
+       if (top_p)
+ 	corners |= 1 << CORNER_TOP_RIGHT;
+       if (bot_p)
+@@ -2759,25 +2759,25 @@ x_draw_relief_rect (struct frame *f,
+     {
+       if (!right_p)
+ 	x_fill_rectangle (f, top_left_gc, left_x, top_y,
+-			  right_x + 1 - left_x, width);
++			  right_x + 1 - left_x, hwidth);
+       else
+ 	x_fill_trapezoid_for_relief (f, top_left_gc, left_x, top_y,
+-				     right_x + 1 - left_x, width, 1);
++				     right_x + 1 - left_x, hwidth, 1);
+     }
+   if (bot_p)
+     {
+       if (!left_p)
+-	x_fill_rectangle (f, bottom_right_gc, left_x, bottom_y + 1 - width,
+-			  right_x + 1 - left_x, width);
++	x_fill_rectangle (f, bottom_right_gc, left_x, bottom_y + 1 - hwidth,
++			  right_x + 1 - left_x, hwidth);
+       else
+ 	x_fill_trapezoid_for_relief (f, bottom_right_gc,
+-				     left_x, bottom_y + 1 - width,
+-				     right_x + 1 - left_x, width, 0);
++				     left_x, bottom_y + 1 - hwidth,
++				     right_x + 1 - left_x, hwidth, 0);
+     }
+-  if (left_p && width != 1)
++  if (left_p && vwidth > 1)
+     x_fill_rectangle (f, bottom_right_gc, left_x, top_y,
+ 		      1, bottom_y + 1 - top_y);
+-  if (top_p && width != 1)
++  if (top_p && hwidth > 1)
+     x_fill_rectangle (f, bottom_right_gc, left_x, top_y,
+ 		      right_x + 1 - left_x, 1);
+   if (corners)
+@@ -2811,12 +2811,12 @@ x_draw_relief_rect (struct frame *f,
+   /* Top.  */
+   if (top_p)
+     {
+-      if (width == 1)
++      if (hwidth == 1)
+         XDrawLine (dpy, drawable, gc,
+ 		   left_x + left_p, top_y,
+ 		   right_x + !right_p, top_y);
+ 
+-      for (i = 1; i < width; ++i)
++      for (i = 1; i < hwidth; ++i)
+         XDrawLine (dpy, drawable, gc,
+ 		   left_x  + i * left_p, top_y + i,
+ 		   right_x + 1 - i * right_p, top_y + i);
+@@ -2825,13 +2825,10 @@ x_draw_relief_rect (struct frame *f,
+   /* Left.  */
+   if (left_p)
+     {
+-      if (width == 1)
++      if (vwidth == 1)
+         XDrawLine (dpy, drawable, gc, left_x, top_y + 1, left_x, bottom_y);
+ 
+-      x_clear_area(f, left_x, top_y, 1, 1);
+-      x_clear_area(f, left_x, bottom_y, 1, 1);
+-
+-      for (i = (width > 1 ? 1 : 0); i < width; ++i)
++      for (i = 1; i < vwidth; ++i)
+         XDrawLine (dpy, drawable, gc,
+ 		   left_x + i, top_y + (i + 1) * top_p,
+ 		   left_x + i, bottom_y + 1 - (i + 1) * bot_p);
+@@ -2844,26 +2841,25 @@ x_draw_relief_rect (struct frame *f,
+     gc = f->output_data.x->white_relief.gc;
+   XSetClipRectangles (dpy, gc, 0, 0, clip_rect, 1, Unsorted);
+ 
+-  if (width > 1)
+-    {
+-      /* Outermost top line.  */
+-      if (top_p)
+-        XDrawLine (dpy, drawable, gc,
+-		   left_x  + left_p, top_y,
+-		   right_x + !right_p, top_y);
++  /* Outermost top line.  */
++  if (top_p && hwidth > 1)
++    XDrawLine (dpy, drawable, gc,
++	       left_x  + left_p, top_y,
++	       right_x + !right_p, top_y);
+ 
+-      /* Outermost left line.  */
+-      if (left_p)
+-        XDrawLine (dpy, drawable, gc, left_x, top_y + 1, left_x, bottom_y);
+-    }
++  /* Outermost left line.  */
++  if (left_p && vwidth > 1)
++    XDrawLine (dpy, drawable, gc, left_x, top_y + 1, left_x, bottom_y);
+ 
+   /* Bottom.  */
+   if (bot_p)
+     {
+-      XDrawLine (dpy, drawable, gc,
+-		 left_x + left_p, bottom_y,
+-		 right_x + !right_p, bottom_y);
+-      for (i = 1; i < width; ++i)
++      if (hwidth >= 1)
++        XDrawLine (dpy, drawable, gc,
++		   left_x + left_p, bottom_y,
++		   right_x + !right_p, bottom_y);
++
++      for (i = 1; i < hwidth; ++i)
+         XDrawLine (dpy, drawable, gc,
+ 		   left_x  + i * left_p, bottom_y - i,
+ 		   right_x + 1 - i * right_p, bottom_y - i);
+@@ -2872,9 +2868,7 @@ x_draw_relief_rect (struct frame *f,
+   /* Right.  */
+   if (right_p)
+     {
+-      x_clear_area(f, right_x, top_y, 1, 1);
+-      x_clear_area(f, right_x, bottom_y, 1, 1);
+-      for (i = 0; i < width; ++i)
++      for (i = 0; i < vwidth; ++i)
+         XDrawLine (dpy, drawable, gc,
+ 		   right_x - i, top_y + (i + 1) * top_p,
+ 		   right_x - i, bottom_y + 1 - (i + 1) * bot_p);
+@@ -2895,8 +2889,8 @@ x_draw_relief_rect (struct frame *f,
+ 
+ static void
+ x_draw_box_rect (struct glyph_string *s,
+-		 int left_x, int top_y, int right_x, int bottom_y, int width,
+-		 bool left_p, bool right_p, XRectangle *clip_rect)
++		 int left_x, int top_y, int right_x, int bottom_y, int hwidth,
++		 int vwidth, bool left_p, bool right_p, XRectangle *clip_rect)
+ {
+   XGCValues xgcv;
+ 
+@@ -2906,21 +2900,21 @@ x_draw_box_rect (struct glyph_string *s,
+ 
+   /* Top.  */
+   x_fill_rectangle (s->f, s->gc,
+-		  left_x, top_y, right_x - left_x + 1, width);
++		  left_x, top_y, right_x - left_x + 1, hwidth);
+ 
+   /* Left.  */
+   if (left_p)
+     x_fill_rectangle (s->f, s->gc,
+-		    left_x, top_y, width, bottom_y - top_y + 1);
++		    left_x, top_y, vwidth, bottom_y - top_y + 1);
+ 
+   /* Bottom.  */
+   x_fill_rectangle (s->f, s->gc,
+-		  left_x, bottom_y - width + 1, right_x - left_x + 1, width);
++		  left_x, bottom_y - hwidth + 1, right_x - left_x + 1, hwidth);
+ 
+   /* Right.  */
+   if (right_p)
+     x_fill_rectangle (s->f, s->gc,
+-		    right_x - width + 1, top_y, width, bottom_y - top_y + 1);
++		    right_x - vwidth + 1, top_y, vwidth, bottom_y - top_y + 1);
+ 
+   XSetForeground (s->display, s->gc, xgcv.foreground);
+   x_reset_clip_rectangles (s->f, s->gc);
+@@ -2946,7 +2940,7 @@ x_draw_glyph_string_box (struct glyph_string *s)
+ 		? s->first_glyph
+ 		: s->first_glyph + s->nchars - 1);
+ 
+-  width = eabs (s->face->box_line_width);
++  width = eabs (s->face->box_vertical_line_width);
+   raised_p = s->face->box == FACE_RAISED_BOX;
+   left_x = s->x;
+   right_x = (s->row->full_width_p && s->extends_to_end_of_line_p
+@@ -2967,12 +2961,13 @@ x_draw_glyph_string_box (struct glyph_string *s)
+   get_glyph_string_clip_rect (s, &clip_rect);
+ 
+   if (s->face->box == FACE_SIMPLE_BOX)
+-    x_draw_box_rect (s, left_x, top_y, right_x, bottom_y, width,
+-		     left_p, right_p, &clip_rect);
++    x_draw_box_rect (s, left_x, top_y, right_x, bottom_y, eabs (s->face->box_horizontal_line_width),
++		     width, left_p, right_p, &clip_rect);
+   else
+     {
+       x_setup_relief_colors (s);
+       x_draw_relief_rect (s->f, left_x, top_y, right_x, bottom_y,
++			  eabs (s->face->box_horizontal_line_width),
+ 			  width, raised_p, true, true, left_p, right_p,
+ 			  &clip_rect);
+     }
+@@ -2992,7 +2987,7 @@ x_draw_image_foreground (struct glyph_string *s)
+   if (s->face->box != FACE_NO_BOX
+       && s->first_glyph->left_box_line_p
+       && s->slice.x == 0)
+-    x += eabs (s->face->box_line_width);
++    x += max (s->face->box_vertical_line_width, 0);
+ 
+   /* If there is a margin around the image, adjust x- and y-position
+      by that margin.  */
+@@ -3087,7 +3082,7 @@ x_draw_image_relief (struct glyph_string *s)
+   if (s->face->box != FACE_NO_BOX
+       && s->first_glyph->left_box_line_p
+       && s->slice.x == 0)
+-    x += eabs (s->face->box_line_width);
++    x += max (s->face->box_vertical_line_width, 0);
+ 
+   /* If there is a margin around the image, adjust x- and y-position
+      by that margin.  */
+@@ -3138,7 +3133,7 @@ x_draw_image_relief (struct glyph_string *s)
+ 
+   x_setup_relief_colors (s);
+   get_glyph_string_clip_rect (s, &r);
+-  x_draw_relief_rect (s->f, x, y, x1, y1, thick, raised_p,
++  x_draw_relief_rect (s->f, x, y, x1, y1, thick, thick, raised_p,
+ 		      top_p, bot_p, left_p, right_p, &r);
+ }
+ 
+@@ -3156,7 +3151,7 @@ x_draw_image_foreground_1 (struct glyph_string *s, Pixmap pixmap)
+   if (s->face->box != FACE_NO_BOX
+       && s->first_glyph->left_box_line_p
+       && s->slice.x == 0)
+-    x += eabs (s->face->box_line_width);
++    x += max (s->face->box_vertical_line_width, 0);
+ 
+   /* If there is a margin around the image, adjust x- and y-position
+      by that margin.  */
+@@ -3252,8 +3247,8 @@ x_draw_glyph_string_bg_rect (struct glyph_string *s, int x, int y, int w, int h)
+ static void
+ x_draw_image_glyph_string (struct glyph_string *s)
+ {
+-  int box_line_hwidth = eabs (s->face->box_line_width);
+-  int box_line_vwidth = max (s->face->box_line_width, 0);
++  int box_line_hwidth = max (s->face->box_vertical_line_width, 0);
++  int box_line_vwidth = max (s->face->box_horizontal_line_width, 0);
+   int height;
+   Pixmap pixmap = None;
+ 
+-- 
+2.7.4
+

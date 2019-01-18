@@ -9,10 +9,14 @@ source "$DIR/configs"
 source "$DIR/paths"
 unset DIR
 
-./dependencies/$DEP_NAME
+#./dependencies/$DEP_NAME
 
 cd $SRC_PATH
 git checkout $SRC_VERSION
+
+patch -p1 --no-backup-if-mismatch \
+       < "$PRJ_PATH"/patch/`
+      `allow-negative-line-width-for-box-face-attribute.patch
 
 ./autogen.sh all
 ./configure --with-xft --with-x-toolkit=gtk3 --with-xwidgets \

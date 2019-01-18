@@ -11,4 +11,6 @@ unset DIR
 
 cd $SRC_PATH
 
-make bootstrap docs
+echo $SRC_PATH
+
+make $@ bootstrap docs
