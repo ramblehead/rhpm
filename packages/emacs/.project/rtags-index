@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# https://stackoverflow.com/a/13478622
 set -eu
 set -o pipefail
 
@@ -11,15 +10,4 @@ source "$PRJ_PATH/configs"
 source "$PRJ_PATH/paths"
 
 cd $SRC_PATH
-
-# discard stuff from last build
-git reset --hard
-
-# Go back to master HEAD
-git checkout master
-
-# delete all of the last build stuff
-git clean -xdf
-
-# get latest update
-git pull
+make -nk | rc -c -
