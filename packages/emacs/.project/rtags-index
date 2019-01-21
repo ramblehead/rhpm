@@ -9,11 +9,5 @@ PRJ_PATH="`( cd -P \"$PRJ_PATH\" && pwd )`"
 source "$PRJ_PATH/configs"
 source "$PRJ_PATH/paths"
 
-#./dependencies/$DEP_NAME
-
 cd $SRC_PATH
-git checkout $SRC_VERSION
-
-./autogen.sh all
-./configure --with-xft --with-x-toolkit=gtk3 --with-xwidgets \
-            --with-modules
+make -nk | rc -c -

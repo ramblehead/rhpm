@@ -8,7 +8,7 @@ DST_DIR_NAME="dist"
 BLD_DIR_NAME="build"
 
 #PRJ_PATH="`dirname \"${BASH_SOURCE[0]}\"`"
-PRJ_PATH="`pwd`"
+# PRJ_PATH="`pwd`"
 #PRJ_PATH="`( cd -P \"$PRJ_PATH\" && pwd )`"
 
 PKG_PATH="$PRJ_PATH/.."
