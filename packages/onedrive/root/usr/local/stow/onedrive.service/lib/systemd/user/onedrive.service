@@ -3,8 +3,8 @@ Description=OneDrive Free Client
 Documentation=https://github.com/skilion/onedrive
 
 [Service]
-ExecStart=/usr/bin/trickle -s -u 1000 -d 1500 /usr/bin/onedrive -m
-Restart=no
+ExecStart=/usr/bin/trickle -s -u 1500 -d 1500 /usr/bin/onedrive -m
+Restart=always
 
 [Install]
 WantedBy=default.target
