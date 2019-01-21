@@ -20,10 +20,10 @@ Same as above, except that each commit message is reduced to a single line:
 git log --abbrev-commit --pretty=oneline
 
 Full commits graph:
-git log --graph --oneline --decorate --date=relative --all
+git log --graph --abbrev-commit --decorate --date=relative --all
 
 Same as above, except that each commit message is reduced to a single line:
-git log --graph --abbrev-commit --decorate --date=relative --all
+git log --graph --oneline --decorate --date=relative --all
 
 Cancel local code modifications and revert back to the last commit for the whore repository (assuming that the remote repository mane is ‘origin’ and the branch name is ‘master’, which are default values):
 git reset --hard origin/master

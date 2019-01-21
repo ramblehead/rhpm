@@ -11,4 +11,9 @@ source "$PRJ_PATH/paths"
 
 cd $SRC_PATH
 
-make bootstrap docs $@
+if [[ -z "$@" ]]; then
+  make bootstrap docs
+else
+  #e.g. make src
+  make $@
+fi

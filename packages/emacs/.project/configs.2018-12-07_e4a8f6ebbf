@@ -1,0 +1,9 @@
+#!/bin/bash
+
+PKG_NAME=emacs
+DEP_NAME=ubuntu-18.04
+
+SRC_VERSION=e4a8f6ebbf
+BLD_VERSION=2018-12-07
+
+BLD_NAME="$BLD_VERSION"_"$SRC_VERSION"

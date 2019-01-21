@@ -1,5 +1,8 @@
 ;; -*- coding: utf-8 -*-
 
+(make-local-variable 'compile-command)
+(setq compile-command (concat (rh-project-get-path) "make src"))
+
 (when (stringp rtags-rdm-includes)
   (setq rtags-rdm-includes '()))
 
@@ -8,12 +11,3 @@
               (directory-file-name
                (expand-file-name (rh-project-get-root)))
               "/src/src/"))
-
-;; (expand-file-name  (rh-project-get-root))
-
-;; (let ((project-root (rh-project-get-root))
-;;       file-rpath)
-;;   (when project-root
-;;     (setq file-rpath (file-relative-name buffer-file-name project-root))
-;;     (cond ((string-match-p "\\.css\\'" file-rpath)
-;;            (rh-setup-css-skewer)))))
