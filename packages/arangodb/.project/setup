@@ -3,17 +3,19 @@
 set -eu
 set -o pipefail
 
-DIR="`dirname \"${BASH_SOURCE[0]}\"`"
-if [[ ! -d "$DIR" ]]; then DIR="$PWD"; fi
-source "$DIR/configs"
-source "$DIR/paths"
-unset DIR
+PRJ_PATH="`dirname \"${BASH_SOURCE[0]}\"`"
+if [[ ! -d "$PRJ_PATH" ]]; then PRJ_PATH="$PWD"; fi
+PRJ_PATH="`( cd -P \"$PRJ_PATH\" && pwd )`"
+source "$PRJ_PATH/configs"
+source "$PRJ_PATH/paths"
 
-sudo bash << END
-set -eu
-set -o pipefail
+if (( $(id -u) != 0 )); then
+  echo "Please, run as root"
+  exit 1
+fi
 
-useradd --system --shell /usr/sbin/nologin --home /nonexistent arangodb || true
+useradd --system --shell /usr/sbin/nologin \
+        --home /nonexistent arangodb || true
 
 cd /usr/local/stow
 
@@ -34,20 +36,19 @@ if ! grep -qE '^\s*arangodb\s+(:?soft|hard)\s+nofile' /etc/security/limits.conf
 then
 
   sed -i -E 'N;/# End of file$/i \
-arangodb         soft    nofile          8192\\
-arangodb         hard    nofile          16384' \
+arangodb         soft    nofile          8192\
+arangodb         hard    nofile          16384'\
       /etc/security/limits.conf
 
-#   perl -0777 -i -pe 's/(\n*# End of file)/\
-# arangodb         soft    nofile          8192\
-# arangodb         hard    nofile          16384\1/' \
-#        /etc/security/limits.conf
+#  perl -0777 -i -pe 's/(\n*# End of file)/\
+#arangodb         soft    nofile          8192\
+#arangodb         hard    nofile          16384\1/' \
+#       /etc/security/limits.conf
 
 fi
 
 sed -i -E 's/^#?(DefaultLimitNOFILE)=.*/\1=16384/' \
     /etc/systemd/system.conf
 
-#sudo sysctl -w "vm.max_map_count=256000"
-echo "vm.max_map_count = 256000" > /etc/sysctl.d/40-arangodb.conf
-END
+# sysctl -w "vm.max_map_count=1024000"
+echo "vm.max_map_count = 1024000" > /etc/sysctl.d/40-arangodb.conf

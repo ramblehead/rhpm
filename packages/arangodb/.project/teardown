@@ -13,9 +13,10 @@ source "$DIR/configs"
 source "$DIR/paths"
 unset DIR
 
-sudo bash << END
-set -eu
-set -o pipefail
+if (( $(id -u) != 0 )); then
+  echo "Please, run as root"
+  exit 1
+fi
 
 cd /usr/local/stow
 chown -R root:root "$PKG_NAME"_"$BLD_NAME"
@@ -30,4 +31,3 @@ sed -i -E '/^\s*arangodb\s+(:?soft|hard)\s+nofile/d' \
 rm /etc/sysctl.d/40-arangodb.conf || true
 
 userdel arangodb || true
-END

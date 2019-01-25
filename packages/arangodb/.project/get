@@ -3,10 +3,10 @@
 set -eu
 set -o pipefail
 
-DIR="`dirname \"${BASH_SOURCE[0]}\"`"
-if [[ ! -d "$DIR" ]]; then DIR="$PWD"; fi
-source "$DIR/configs"
-source "$DIR/paths"
-unset DIR
+PRJ_PATH="`dirname \"${BASH_SOURCE[0]}\"`"
+if [[ ! -d "$PRJ_PATH" ]]; then PRJ_PATH="$PWD"; fi
+PRJ_PATH="`( cd -P \"$PRJ_PATH\" && pwd )`"
+source "$PRJ_PATH/configs"
+source "$PRJ_PATH/paths"
 
 git clone git://github.com/arangodb/arangodb.git $SRC_PATH
