@@ -7,13 +7,10 @@ SRC_DIR_NAME="src"
 DST_DIR_NAME="dist"
 BLD_DIR_NAME="build"
 
-#PRJ_PATH="`dirname \"${BASH_SOURCE[0]}\"`"
-# PRJ_PATH="`pwd`"
-#PRJ_PATH="`( cd -P \"$PRJ_PATH\" && pwd )`"
-
 PKG_PATH="$PRJ_PATH/.."
-PKG_PATH="`realpath --logical \"$PKG_PATH\"`"
+#PKG_PATH="`realpath --logical \"$PKG_PATH\"`"
 #PKG_PATH="`( cd -P \"$PKG_PATH\" && pwd )`"
+PKG_PATH="`( cd \"$PKG_PATH\" && pwd )`"
 
 SRC_PATH="$PKG_PATH/$SRC_DIR_NAME"
 BLD_PATH="$PKG_PATH/$BLD_DIR_NAME"

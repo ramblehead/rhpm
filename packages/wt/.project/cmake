@@ -3,19 +3,12 @@
 set -eu
 set -o pipefail
 
-DIR="`dirname \"${BASH_SOURCE[0]}\"`"
-if [[ ! -d "$DIR" ]]; then DIR="$PWD"; fi
-source "$DIR/configs"
-source "$DIR/paths"
-unset DIR
-
-./dependency/"$DEP_NAME"
-
-cd $SRC_PATH
-git checkout "$SRC_VERSION"
-git reset --hard
-
-patch -p1 --no-backup-if-mismatch < "$PRJ_PATH"/patch/no-cache.patch
+PRJ_PATH="`dirname \"${BASH_SOURCE[0]}\"`"
+if [[ ! -d "$PRJ_PATH" ]]; then PRJ_PATH="$PWD"; fi
+#PRJ_PATH="`( cd -P \"$PRJ_PATH\" && pwd )`"
+PRJ_PATH="`( cd \"$PRJ_PATH\" && pwd )`"
+source "$PRJ_PATH/configs"
+source "$PRJ_PATH/paths"
 
 if [[ ! -d "$BLD_PATH" ]]; then
   mkdir "$BLD_PATH"
