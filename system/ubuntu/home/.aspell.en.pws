@@ -21,11 +21,11 @@ accelerometer
 yocto
 getters
 cambustion
-Cambustion
 ido
 HC
 TODO
 desynchronisation
+formatters
 storable
 deleter
 UDP
@@ -43,10 +43,10 @@ unselected
 css
 html
 xml
-Nitric
 enum
-tuple
+Nitric
 gcc
+tuple
 ArangoDB
 OBC
 multithreading

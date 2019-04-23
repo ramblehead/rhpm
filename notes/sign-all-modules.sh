@@ -10,7 +10,7 @@ openssl req -new -x509 -newkey rsa:2048 -keyout MOK.priv -outform DER -out MOK.d
 
 # Set more restrictive permisions as these are private keys
 chmod 600 MOK.*
- 
+
 # Add the sign-all-modules script to the .ssl folder
 cat <<EOT > sign-all-modules.sh
 #!/bin/bash
