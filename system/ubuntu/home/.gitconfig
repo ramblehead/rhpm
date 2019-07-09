@@ -5,3 +5,5 @@
 	editor = emacs
 [push]
 	default = simple
+[github]
+	user = ramblehead
