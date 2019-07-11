@@ -1,9 +1,15 @@
 #!/bin/bash
 
-# https://stackoverflow.com/a/13478622
 set -eu
 set -o pipefail
 
 sudo apt update
-sudo apt install clang libclang-dev libssl-dev lua5.3 liblua5.3-0 \
-                 clang-6.0-doc libomp-doc llvm-6.0-doc
+sudo apt install clang-8 clang-8-doc clang-8-examples clang-format-8 \
+                 clang-tidy-8 clang-tools-8 \
+                 libclang-8-dev \
+                 liblldb-8 liblldb-8-dev \
+                 python-clang-8 python-lldb-8 \
+                 libomp-8-dev libomp-8-doc \
+                 llvm-8-runtime llvm-8 llvm-8-dev llvm-8-doc \
+                 llvm-8-examples llvm-8-tools \
+                 libssl-dev lua5.3 liblua5.3-0
