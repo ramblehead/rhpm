@@ -1,3 +1,13 @@
+Possible CLI solutions
+
+https://github.com/jstaf/onedriver
+https://github.com/skilion/onedrive
+https://github.com/abraunegg/onedrive/
+
+Future GUI solutions
+https://forums.insynchq.com/t/insync-version-3-0-11-beta-sync-onedrive/14265/1
+
+
 systemctl --user enable onedrive
 systemctl --user start onedrive
 

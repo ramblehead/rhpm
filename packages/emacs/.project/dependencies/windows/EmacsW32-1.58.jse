@@ -1,0 +1,19 @@
+/* global WScript */
+//else if(WScript.Arguments.length == 0) {
+//	// Generate proper help here
+//	WScript.Echo("Have to have at least one parameter: emacs executable with path");
+//	WScript.Quit();
+//}
+var WshShell = WScript.CreateObject("WScript.Shell");
+var WshSysEnv = WshShell.Environment("Process");
+// WshSysEnv("HOME") = "C:\\Dropbox\\Data\\emacs";
+// WshSysEnv("HOME") = WshShell.CurrentDirectory;
+var scriptFfullName = WScript.ScriptFullName;
+var fso = WScript.CreateObject("Scripting.FileSystemObject");
+var scriptFile = fso.GetFile(scriptFfullName);
+var scriptPath = fso.GetParentFolderName(scriptFile);
+WshSysEnv("HOME") = scriptPath;
+// WScript.Echo(WshSysEnv("HOME"));
+var run = "C:\\Tools\\EmacsW32-1.58\\emacs\\bin\\emacsclientw.exe -n";
+// var run = "C:\\Tools\\EmacsW32-1.58\\emacs\\bin\\runemacs.exe --debug-init";
+WshShell.Run(run, 1, false);

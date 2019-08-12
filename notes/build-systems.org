@@ -1,0 +1,7 @@
+https://bazel.build/
+https://buck.build/
+https://www.pantsbuild.org/
+https://please.build/
+
+https://nixos.org/nix/
+https://guix.gnu.org/

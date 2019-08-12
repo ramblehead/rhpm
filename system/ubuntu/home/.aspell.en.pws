@@ -1,4 +1,4 @@
-personal_ws-1.1 en 78 
+personal_ws-1.1 en 81 
 hydrohydrate
 refactoring
 RealGUD
@@ -9,6 +9,7 @@ Melpa
 CRTP
 milli
 SHM
+artizans
 Rybynok
 MSM
 config
@@ -28,14 +29,15 @@ TODO
 desynchronisation
 formatters
 storable
-deleter
 minibuffer
+deleter
 UDP
 magit
 Foxx
 uncomment
 setpoint
 rtags
+ramblehead
 transpilers
 IP
 serialization
@@ -50,8 +52,8 @@ JS
 xml
 Nitric
 enum
-tuple
 gcc
+tuple
 ArangoDB
 OBC
 multithreading
@@ -77,3 +79,4 @@ pragma
 subdirectories
 transpile
 profilers
+artizan

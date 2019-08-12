@@ -5,6 +5,7 @@ lspci -vnn | grep VGA
 
 #+BEGIN_SRC
 dmesg -H
+journalctl -o short-precise -k -b -1
 journalctl -u
 journalctl -xe
 #+END_SRC
