@@ -11,6 +11,6 @@ unset DIR
 #cd "$NVM_DIR"
 #git checkout $NVM_VERSION
 
-echo '' >> ~/.profile
-echo "export NVM_DIR=\"$NVM_DIR\"" >> ~/.profile
-echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> ~/.profile
+echo '' >> ~/.bashrc
+echo "export NVM_DIR=\"$NVM_DIR\"" >> ~/.bashrc
+echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> ~/.bashrc

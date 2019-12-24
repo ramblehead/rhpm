@@ -1,4 +1,4 @@
 #!/bin/bash
 
 NVM_DIR=~/.nvm
-NVM_VERSION=v0.33.11
+NVM_VERSION=v0.35.2
