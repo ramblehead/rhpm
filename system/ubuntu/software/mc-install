@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# see https://midnight-commander.org/ticket/3165
+#     for sane file sizes
+#     Should compile from source or use du/ncdu?
+
 set -eu
 set -o pipefail
 

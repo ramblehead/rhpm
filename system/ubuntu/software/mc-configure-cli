@@ -1,0 +1,43 @@
+#!/bin/bash
+
+set -eu
+set -o pipefail
+
+if [[ ! -f /etc/mc/mc.keymap ]]; then
+  echo ""
+  echo "'mc' is not installed."
+  exit 1
+fi
+
+if [[ ! -f ~/.config/mc/ini ]]; then
+  echo ""
+  echo "Run 'mc' to create '~/.config/mc/ini'."
+  exit 1
+fi
+
+sed -i -E 's/^(confirm_exit)=.*$/\1=true/' ~/.config/mc/ini
+sed -i -E 's/^(use_internal_edit)=.*$/\1=true/' ~/.config/mc/ini
+sed -i -E 's/^(editor_cursor_beyond_eol)=.*$/\1=true/' ~/.config/mc/ini
+sed -i -E 's/^(editor_tab_spacing)=.*$/\1=4/' ~/.config/mc/ini
+sed -i -E 's/^(editor_fake_half_tabs)=.*$/\1=false/' ~/.config/mc/ini
+sed -i -E 's/^(editor_drop_selection_on_copy)=.*$/\1=false/' ~/.config/mc/ini
+sed -i -E 's/^(editor_word_wrap_line_length)=.*$/\1=80/' ~/.config/mc/ini
+
+cp /etc/mc/mc.keymap ~/.config/mc
+
+sed -i -E 's/^Undo = ctrl-u$/\0; ctrl-z/' ~/.config/mc/mc.keymap
+sed -i -E 's/^(WordLeft = ctrl-left)(; ctrl-z)$/\1/' ~/.config/mc/mc.keymap
+sed -i -E 's/^(WordRight = ctrl-right)(; ctrl-x)$/\1/' ~/.config/mc/mc.keymap
+
+cp /etc/mc/mc.menu ~/.config/mc/menu
+
+sed -i -E 's/^( ?)(\s*)echo "\.\.\/\$tar\.tar\.xz created\."$/&\
+\
+7\2Compress the current subdirectory (zip)\
+\1\2Pwd=`basename %d \/`\
+\1\2echo -n "Name of the compressed file (without extension) [$Pwd]: "\
+\1\2read zip\
+\1\2[ "$zip"x = x ] \&\& zip="$Pwd"\
+\1\2cd .. \&\& \\\
+\1\2zip -r "$Pwd" "$Pwd" \&\& \\\
+\1\2echo "..\/$zip.zip created."/' ~/.config/mc/menu
