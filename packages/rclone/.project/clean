@@ -1,16 +1,15 @@
 #!/bin/bash
 
-# https://stackoverflow.com/a/13478622
 set -eu
 set -o pipefail
 
-DIR="`dirname \"${BASH_SOURCE[0]}\"`"
-if [[ ! -d "$DIR" ]]; then DIR="$PWD"; fi
-source "$DIR/configs"
-source "$DIR/paths"
-unset DIR
+PRJ_PATH="$(dirname "${BASH_SOURCE[0]}")"
+if [[ ! -d "$PRJ_PATH" ]]; then PRJ_PATH="$PWD"; fi
+PRJ_PATH="$(cd -P "$PRJ_PATH" && pwd)"
+source "$PRJ_PATH/paths"
+source "$PRJ_PATH/configs"
 
-cd $SRC_PATH
+cd $SRC_PATH && echo cd $PWD
 
 # discard stuff from last build
 git reset --hard
@@ -23,3 +22,7 @@ git clean -xdf
 
 # get latest update
 git pull
+
+cd $PKG_PATH && echo cd $PWD
+
+rm -vfR go

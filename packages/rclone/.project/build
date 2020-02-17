@@ -1,27 +1,24 @@
 #!/bin/bash
 
-# https://stackoverflow.com/a/13478622
 set -eu
 set -o pipefail
 
-DIR="`dirname \"${BASH_SOURCE[0]}\"`"
-if [[ ! -d "$DIR" ]]; then DIR="$PWD"; fi
-source "$DIR/configs"
-source "$DIR/paths"
-unset DIR
+PRJ_PATH="$(dirname "${BASH_SOURCE[0]}")"
+if [[ ! -d "$PRJ_PATH" ]]; then PRJ_PATH="$PWD"; fi
+PRJ_PATH="$(cd -P "$PRJ_PATH" && pwd)"
+source "$PRJ_PATH/paths"
+source "$PRJ_PATH/configs"
 
-#./dependencies/$DEP_NAME
-
-cd $SRC_PATH
-git checkout $SRC_VERSION
-
-
-export GOPATH="$PKG_PATH/go"
 #export GOBIN=/usr/local/stow/"$PKG_NAME"_"$BLD_NAME"/bin
 
 #if [[ ! -s $SRC_PATH/github.com/ncw/rclone ]]; then
 #  mkdir -p $GOBIN
 #fi
 
-cd $GOPATH/src/$GITHUB_PATH/$PKG_NAME
+#echo xxxxxxx $GOPATH
+
+cd $GOSRC/$GITHUB_PATH/$PKG_NAME
+
+#cd $SRC_PATH
+
 go build
