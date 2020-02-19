@@ -1,0 +1,17 @@
+#!/bin/bash
+
+set -eu
+set -o pipefail
+
+PRJ_PATH="`dirname \"${BASH_SOURCE[0]}\"`"
+if [[ ! -d "$PRJ_PATH" ]]; then PRJ_PATH="$PWD"; fi
+PRJ_PATH="`( cd \"$PRJ_PATH\" && pwd )`"
+source "$PRJ_PATH/paths"
+source "$PRJ_PATH/configs"
+
+cd $SRC_PATH && echo cd $PWD
+git checkout "$SRC_VERSION"
+
+mkdir -vp $GOSRC/$GITHUB_PATH
+mkdir -vp $GOBIN
+ln -vfs $SRC_PATH $GOSRC/$GITHUB_PATH/$PKG_NAME
