@@ -32,4 +32,4 @@ sudo apt-get install mokutil
 sudo mokutil --import ~/.ssl/MOK.der
 
 cd ~
-#Reboot and in the boot screen select add/import key 
+#Reboot and in the boot screen select add/import key

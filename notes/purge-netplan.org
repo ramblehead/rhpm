@@ -1,0 +1,27 @@
+sudo mcedit /etc/default/grub
+GRUB_CMDLINE_LINUX="netcfg/do_not_use_netplan=true"
+update-grub
+
+apt purge netplan.io
+rm -rf /usr/share/netplan
+rm -rf /etc/netplan
+apt install ifupdown resolvconf
+
+Configure /etc/network/interfaces
+
+Check DNS addresses at:
+/etc/resolv.conf
+
+To list of enabled systemd units
+systemctl list-unit-files --state=enabled
+
+To list running systemd units
+systemctl list-unit-files --state=running
+
+To check systemd-resovle:
+systemd-resolve --status
+
+see:
+https://www.allerstorfer.at/remove-netplan-on-ubuntu-18-04/
+https://ubuntuforums.org/showthread.php?t=2392194
+https://askubuntu.com/questions/1080230/how-to-make-ubuntu-server-18-04-use-dns-nameservers-from-etc-network-interfaces

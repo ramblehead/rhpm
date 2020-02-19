@@ -1,0 +1,5 @@
+dd if=/dev/sda3 bs=64K status=progress | pigs -c  > /mnt/s600-data/s600-system.img.gz
+
+References
+https://wiki.archlinux.org/index.php/Dd
+https://www.cyberciti.biz/faq/unix-linux-dd-create-make-disk-image-commands/

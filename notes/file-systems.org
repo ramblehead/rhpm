@@ -1,0 +1,55 @@
+* Print Disks Info
+lsblk -o +FSTYPE,LABEL,UUID,PARTUUID
+
+* Wipe Disk
+sudo dd if=/dev/zero of=/dev/<device> bs=4096 status=progress
+
+* Wipe Partitions Table
+dd if=/dev/zero of=/dev/<device> bs=1M count=1
+
+* Disk image save/load
+pigz -dc ~/images/1.0.0.0-CAPA315.img.gz | sudo dd of=/dev/sda status=progress
+sudo dd if=/dev/sda bs=64K status=progress | pigz -c > ~/1.0.0.0-CAPA315.img.gz
+
+* Create partitions
+mkfs.vfat -F 32 /dev/<device>
+mkfs.ext4 /dev/<device>
+
+* UUID and Label for VFAT
+mlabel -N $(uuidgen | head -c8) f:
+fatlabel /dev/<device> <label>
+mlabel -n f:<label>
+
+# /etc/mtools.conf or ~/.mtoolsrc
+mtools_skip_check=1
+drive f: file="/dev/<device>"
+
+* UUID and Label for ext2/3/4
+tune2fs /dev/<device> -U random -L <label>
+e2label /dev/<device> <label>
+
+* UUID and Label for swap
+mkswap /dev/<device> -L <label>
+
+* UUID and Label for GPT partitions
+sfdisk --part-uuid /dev/<device> <partnum> <uuid>
+sfdisk --part-label /dev/<device> <partnum> <label>
+or
+sgdisk --partition-guid=<partnum>:R /dev/<device>
+sgdisk --change-name=<partnum>:<label> /dev/<device>
+
+* UUID for Disks
+sgdisk --disk-guid=R /dev/sda
+
+* Randomize GUID for Partitions
+sgdisk --randomize-guids /dev/sda
+
+* Host name
+hostnamectl
+/etc/hostname
+/etc/hosts
+
+
+* References
+https://wiki.archlinux.org/index.php/Dd
+https://www.cyberciti.biz/faq/unix-linux-dd-create-make-disk-image-commands/

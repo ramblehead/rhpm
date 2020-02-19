@@ -1,0 +1,7 @@
+#!/bin/bash
+
+grub-mkimage -o ./core.efi \
+             --format=x86_64-efi \
+             --config=./core.conf \
+             --prefix= \
+             normal ext2 fat part_gpt search search_label

@@ -1,0 +1,17 @@
+removing cloud-init
+
+echo 'datasource_list: [ None ]' | sudo -s tee /etc/cloud/cloud.cfg.d/90_dpkg.cfg
+# or run dpkg-reconfigure cloud-init and deselect all options
+sudo apt-get purge cloud-init
+sudo rm -rf /etc/cloud/
+sudo rm -rf /var/lib/cloud/
+
+List the services which depend on network being online:
+sudo systemctl show -p WantedBy network-online.target
+
+Disable the services
+systemctl disable service-name
+
+see:
+https://nucco.org/2018/05/ubuntu-18-04-chronicles-removing-cloud-init.html
+https://makandracards.com/operations/42688-how-to-remove-cloud-init-from-ubuntu

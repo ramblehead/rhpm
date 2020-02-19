@@ -1,0 +1,4 @@
+* Boot Analysis
+
+systemd-analyze plot > systemd-plot.svg
+systemd-analyze dot --order > systemd-system.dot

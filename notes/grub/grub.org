@@ -1,0 +1,112 @@
+#+TITLE: GRUB hints
+#+AUTHOR: ramblehead
+
+* Spells
+
+** Modify secure boot keys
+
+#+BEGIN_SRC sh
+# see
+man mokutil
+#+END_SRC
+
+** Modify EFI firmware
+
+#+BEGIN_SRC sh
+# see
+man efibootmgr
+#+END_SRC
+
+** Install/repare GRUB on disk
+
+#+BEGIN_SRC sh
+grub-install /dev/sda
+#+END_SRC
+
+** Create EFI GRUB image
+
+#+BEGIN_SRC sh
+# ext2 works for ext2/3/4
+grub-mkimage -o /path/to/mounted/targetOS/efidir/core.efi \
+             --format=x86_64-efi \
+             '--prefix=(hd0,gpt3)/boot/grub' \
+             ext2 part_gpt
+#+END_SRC
+
+** Create "GRUB chainloader" GRUB menu entry
+
+#+BEGIN_SRC sh
+# Add the following to /etc/grub.d/40_custom
+menuentry "GRUB chainloader" {
+  # Load grub on partition 7 of a gpt formatted drive. 
+  # It will reference its own modules and config.
+  chainloader (hd0,gpt7)/path/to/bootloader/on/myOS/core.efi
+}
+#+END_SRC
+
+** Discover GRUB disk partitions
+
+#+BEGIN_SRC sh
+# type the following in GRUB CLI
+set root=(<tab>
+#+END_SRC
+
+** Disable GRUB OS probing
+
+#+BEGIN_SRC sh
+# Add the following to /etc/default/grub
+GRUB_DISABLE_OS_PROBER=true
+#+END_SRC
+
+** To disable GRUB menu
+
+#+BEGIN_SRC sh
+# Add the following to /etc/default/grub
+GRUB_TIMEOUT_STYLE=hidden
+GRUB_TIMEOUT=0
+#+END_SRC
+
+** enable GRUB menu
+
+#+BEGIN_SRC sh
+# Add the following to /etc/default/grub
+GRUB_TIMEOUT_STYLE=menu
+GRUB_TIMEOUT=2
+#+END_SRC
+
+** Change OS name in GRUB menu
+#+BEGIN_SRC sh
+# Add the following to /etc/default/grub
+GRUB_DISTRIBUTOR="recovery"
+#+END_SRC
+
+** Show GRUB menu during boot when it is disabled
+
+When using BIOS:
+Press and hold <shift> during loading GRUB.
+
+When using UEFI:
+Press <esc>.
+
+** Boot GRUB with specified parameters for the next boot only
+
+#+BEGIN_SRC sh
+grub-reboot 'host
+#+END_SRC
+
+** Update GRUB config
+
+#+BEGIN_SRC sh
+update-grub
+#+END_SRC
+
+* References
+https://help.ubuntu.com/community/Fstab
+https://wiki.archlinux.org/index.php/GRUB
+https://unix.stackexchange.com/questions/343632/uefi-chainloading-grub-from-grub
+https://en.opensuse.org/openSUSE:UEFI
+https://wiki.ubuntu.com/UEFI/SecureBoot
+https://www.gnu.org/software/grub/manual/grub/html_node/Installing-GRUB-using-grub_002dinstall.html
+
+http://lukeluo.blogspot.com/2013/06/grub-how-to-4-memdisk-and-loopback.html
+https://wiki.gentoo.org/wiki/GRUB2/Chainloading

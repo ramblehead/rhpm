@@ -1,0 +1,5 @@
+systemd-resolve --status (systemd version earlier than 239)
+resolvectl status (after 239)
+
+https://wiki.debian.org/SystemdNetworkd
+https://wiki.archlinux.org/index.php/Systemd-networkd
