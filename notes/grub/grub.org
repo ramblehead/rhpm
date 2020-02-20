@@ -20,7 +20,24 @@ man efibootmgr
 ** Install/repare GRUB on disk
 
 #+BEGIN_SRC sh
-grub-install /dev/sda
+mount /dev/sdXY /mnt
+
+mount --bind /dev /mnt/dev
+mount --bind /dev/pts /mnt/dev/pts
+mount --bind /proc /mnt/proc
+mount --bind /sys /mnt/sys
+
+chroot /mnt
+grub-install /dev/sdX
+grub-install --recheck /dev/sdX
+update-grub
+
+exit # chroot /mnt
+umount /mnt/sys
+umount /mnt/proc
+umount /mnt/dev/pts
+umount /mnt/dev
+umount /mnt
 #+END_SRC
 
 ** Create EFI GRUB image
@@ -75,6 +92,7 @@ GRUB_TIMEOUT=2
 #+END_SRC
 
 ** Change OS name in GRUB menu
+
 #+BEGIN_SRC sh
 # Add the following to /etc/default/grub
 GRUB_DISTRIBUTOR="recovery"
@@ -110,3 +128,4 @@ https://www.gnu.org/software/grub/manual/grub/html_node/Installing-GRUB-using-gr
 
 http://lukeluo.blogspot.com/2013/06/grub-how-to-4-memdisk-and-loopback.html
 https://wiki.gentoo.org/wiki/GRUB2/Chainloading
+https://howtoubuntu.org/how-to-repair-restore-reinstall-grub-2-with-a-ubuntu-live-cd
