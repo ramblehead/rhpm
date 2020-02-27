@@ -10,6 +10,7 @@ source "$PRJ_PATH/paths"
 source "$PRJ_PATH/configs"
 
 cd $SRC_PATH && echo cd $PWD
+git fetch --all
 git checkout "$SRC_VERSION"
 
 mkdir -vp $GOSRC/$GITHUB_PATH
