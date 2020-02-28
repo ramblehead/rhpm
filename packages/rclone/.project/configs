@@ -14,4 +14,4 @@ GITHUB_PATH=github.com/rclone
 
 export GOPATH="$PKG_PATH/go"
 export GOBIN="$GOPATH/bin"
-GOSRC="$GOPATH/bin"
+GOSRC="$GOPATH/src"
