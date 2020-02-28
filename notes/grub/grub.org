@@ -40,6 +40,29 @@ umount /mnt/dev
 umount /mnt
 #+END_SRC
 
+** Boot from GRUB
+
+#+BEGIN_SRC sh
+# Some useful commands when stuck in GRUB prompt
+grub> set pager=1
+
+grub> ls
+(hd0) (hd0,msdos2) (hd0,msdos1)
+
+grub> ls (hd0,1)/
+lost+found/ bin/ boot/ cdrom/ dev/ etc/ home/ lib/
+
+grub> cat (hd0,1)/etc/issue
+Ubuntu 14.04 LTS n l
+#+END_SRC
+
+#+BEGIN_SRC sh
+grub> set root=(hd0,1)
+grub> linux /boot/vmlinuz-3.13.0-29-generic root=/dev/sda1
+grub> initrd /boot/initrd.img-3.13.0-29-generic
+grub> boot
+#+END_SRC
+
 ** Create EFI GRUB image
 
 #+BEGIN_SRC sh
@@ -129,3 +152,4 @@ https://www.gnu.org/software/grub/manual/grub/html_node/Installing-GRUB-using-gr
 http://lukeluo.blogspot.com/2013/06/grub-how-to-4-memdisk-and-loopback.html
 https://wiki.gentoo.org/wiki/GRUB2/Chainloading
 https://howtoubuntu.org/how-to-repair-restore-reinstall-grub-2-with-a-ubuntu-live-cd
+https://www.linux.com/tutorials/how-rescue-non-booting-grub-2-linux/
