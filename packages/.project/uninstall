@@ -3,23 +3,28 @@
 set -eu
 set -o pipefail
 
-PRJ_PATH="`dirname \"${BASH_SOURCE[0]}\"`"
-if [[ ! -d "$PRJ_PATH" ]]; then PRJ_PATH="$PWD"; fi
-PRJ_PATH="`( cd -P \"$PRJ_PATH\" && pwd )`"
-source "$PRJ_PATH/configs"
-source "$PRJ_PATH/paths"
+SPATH="$(dirname "${BASH_SOURCE[0]}")"
+if [[ ! -d "${SPATH}" ]]; then SPATH="${PWD}"; fi
+SPATH="$(cd -P "${SPATH}" && pwd)"
 
-if [[ -d /usr/local/stow/"$PKG_NAME"_"$BLD_NAME" ]]; then
-  if [[ ! -d $DST_PATH ]]; then
-    mkdir $DST_PATH
+readonly PRJ_PATH="${SPATH}"
+source "${PRJ_PATH}/conf"
+
+if [[ -d /usr/local/stow/${STOW_NAME} ]]; then
+  if [[ -f /usr/local/share/info/dir.${STOW_NAME} ]]; then
+    cd /usr/local/share/info
+    INFO_DIR_FILE=$(realpath -e "dir.${STOW_NAME}")
+    sudo sh -c 'set -x; merge-info -u dir "'${INFO_DIR_FILE}'" > dirtmp'
+    sudo mv dirtmp dir
   fi
 
   cd /usr/local/stow
-  sudo stow -v -D "$PKG_NAME"_"$BLD_NAME"
+  sudo stow -v -D "${STOW_NAME}"
 
-  if [[ -L /usr/local/stow/"$PKG_NAME"_"$BLD_NAME" ]]; then
-    sudo rm "$PKG_NAME"_"$BLD_NAME"
+  if [[ -L /usr/local/stow/${STOW_NAME} ]]; then
+    sudo rm ${STOW_NAME}
   else
-    sudo mv -v "$PKG_NAME"_"$BLD_NAME" $DST_PATH/$BLD_NAME
+    [[ ! -d ${DST_PATH} ]] && mkdir "$DST_PATH"
+    sudo mv -v ${STOW_NAME} "${DST_PATH}/${BLD_NAME}"
   fi
 fi

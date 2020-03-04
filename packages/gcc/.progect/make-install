@@ -1,0 +1,38 @@
+#!/bin/bash
+
+set -eu
+set -o pipefail
+
+SPATH="$(dirname "${BASH_SOURCE[0]}")"
+if [[ ! -d "${SPATH}" ]]; then SPATH="${PWD}"; fi
+SPATH="$(cd -P "${SPATH}" && pwd)"
+
+readonly PRJ_PATH="${SPATH}"
+source "${PRJ_PATH}/conf"
+
+cd "${BLD_PATH}" && echo cd ${PWD}
+
+echo
+make install
+
+echo
+cd "/usr/local/stow/${STOW_NAME}/share/info" && echo cd ${PWD}
+mv -v dir "dir.${STOW_NAME}"
+
+echo
+cd /usr/local/stow && echo cd ${PWD}
+sudo chown -R root:root "${STOW_NAME}"
+sudo stow -v "${STOW_NAME}"
+
+echo
+cd /usr/local/share/info && echo cd ${PWD}
+
+INFO_DIR_FILE=$(realpath -e "dir.${STOW_NAME}")
+
+if [[ -f dir ]]; then
+  sudo sh -c 'set -x; merge-info dir "'${INFO_DIR_FILE}'" > dirtmp'
+  sudo mv dirtmp dir
+else
+  (set -x;
+   sudo cp -v "${INFO_DIR_FILE}" dir)
+fi

@@ -1,0 +1,48 @@
+#!/bin/bash
+
+set -eu
+set -o pipefail
+
+SPATH="$(dirname "${BASH_SOURCE[0]}")"
+if [[ ! -d "${SPATH}" ]]; then SPATH="${PWD}"; fi
+SPATH="$(cd -P "${SPATH}" && pwd)"
+
+readonly PRJ_PATH="${SPATH}"
+source "${PRJ_PATH}/conf"
+
+cd ${BLD_PATH} && echo cd ${PWD}
+
+echo
+(set -x
+ ../src/configure -v --enable-languages=c,c++ \
+                  --disable-multilib \
+                  --program-suffix=${GCC_SUFFIX} \
+                  --prefix=/usr/local/stow/${STOW_NAME})
+
+# ./configure -v --enable-languages=c,c++,go \
+#             --enable-shared \
+#             --enable-linker-build-id \
+#             --enable-threads=posix \
+#             --enable-nls \
+#             --with-sysroot=/ \
+#             --enable-libstdcxx-time=yes \
+#             --enable-gnu-unique-object \
+#             --disable-libmudflap \
+#             --enable-plugin \
+#             --with-system-zlib \
+#             --disable-browser-plugin \
+#             --enable-gtk-cairo \
+#             --enable-multiarch \
+#             --disable-werror \
+#             --with-arch-32=i686 \
+#             --with-abi=m64 \
+#             --disable-ppl-version-check \
+#             --disable-multilib \
+#             --with-tune=generic \
+#             --enable-checking=release \
+#             --build=x86_64-linux-gnu \
+#             --host=x86_64-linux-gnu \
+#             --target=x86_64-linux-gnu \
+#             --prefix=/opt/s600 \
+#             --enable-rpath \
+#             2>&1 | tee "$BLD_PATH/configure.log"

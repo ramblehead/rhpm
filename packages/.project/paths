@@ -3,15 +3,14 @@
 set -eu
 set -o pipefail
 
-SRC_DIR_NAME="src"
-DST_DIR_NAME="dist"
-BLD_DIR_NAME="build"
+readonly SRC_DIR_NAME="src"
+readonly DST_DIR_NAME="dist"
+readonly BLD_DIR_NAME="build"
 
-PKG_PATH="$PRJ_PATH/.."
-#PKG_PATH="`realpath --logical \"$PKG_PATH\"`"
-#PKG_PATH="`( cd -P \"$PKG_PATH\" && pwd )`"
-PKG_PATH="`( cd \"$PKG_PATH\" && pwd )`"
+#readonly PKG_PATH="$(realpath --logical "$${PRJ_PATH}/..")"
+#readonly PKG_PATH="$(cd -P "$${PRJ_PATH}/.." && pwd)"
+readonly PKG_PATH="$(cd "${PRJ_PATH}/.." && pwd)"
 
-SRC_PATH="$PKG_PATH/$SRC_DIR_NAME"
-BLD_PATH="$PKG_PATH/$BLD_DIR_NAME"
-DST_PATH="$PKG_PATH/$DST_DIR_NAME"
+readonly SRC_PATH="$PKG_PATH/$SRC_DIR_NAME"
+readonly BLD_PATH="$PKG_PATH/$BLD_DIR_NAME"
+readonly DST_PATH="$PKG_PATH/$DST_DIR_NAME"
