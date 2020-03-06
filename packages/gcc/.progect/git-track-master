@@ -5,7 +5,7 @@ set -o pipefail
 
 SPATH="$(dirname "${BASH_SOURCE[0]}")"
 if [[ ! -d "${SPATH}" ]]; then SPATH="${PWD}"; fi
-SPATH="$(cd -P "${SPATH}" && pwd)"
+readonly SPATH="$(cd -P "${SPATH}" && pwd)"
 
 readonly PRJ_PATH="${SPATH}"
 source "${PRJ_PATH}/conf"
@@ -14,7 +14,7 @@ cd "${SRC_PATH}" && echo cd ${PWD}
 
 echo
 git fetch --all
-git checkout devel/c++-modules
+git checkout master
 
 readonly HASH=$(git rev-parse --short=11 HEAD)
 

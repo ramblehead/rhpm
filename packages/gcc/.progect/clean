@@ -5,7 +5,7 @@ set -o pipefail
 
 SPATH="$(dirname "${BASH_SOURCE[0]}")"
 if [[ ! -d "${SPATH}" ]]; then SPATH="${PWD}"; fi
-SPATH="$(cd -P "${SPATH}" && pwd)"
+readonly SPATH="$(cd -P "${SPATH}" && pwd)"
 
 readonly PRJ_PATH="${SPATH}"
 source "${PRJ_PATH}/conf"
@@ -20,8 +20,5 @@ git checkout master
 
 # delete all of the last build stuff
 git clean -xdf
-
-# get latest update
-git pull
 
 rm -vrf "${BLD_PATH}"

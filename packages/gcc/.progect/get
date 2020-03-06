@@ -5,9 +5,17 @@ set -o pipefail
 
 SPATH="$(dirname "${BASH_SOURCE[0]}")"
 if [[ ! -d "${SPATH}" ]]; then SPATH="${PWD}"; fi
-SPATH="$(cd -P "${SPATH}" && pwd)"
+readonly SPATH="$(cd -P "${SPATH}" && pwd)"
 
 readonly PRJ_PATH="${SPATH}"
 source "${PRJ_PATH}/conf"
 
-git clone git://gcc.gnu.org/git/gcc.git ${SRC_PATH}
+if [[ ! -d "${SRC_PATH}" || \
+      (-d "${SRC_PATH}" && -z "$(ls -A ${SRC_PATH})") ]];
+then
+  git clone git://gcc.gnu.org/git/gcc.git ${SRC_PATH};
+  git fetch --all
+else
+  git fetch --all
+fi
+

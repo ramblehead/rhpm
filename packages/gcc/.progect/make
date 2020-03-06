@@ -6,11 +6,11 @@ set -o pipefail
 
 SPATH="$(dirname "${BASH_SOURCE[0]}")"
 if [[ ! -d "${SPATH}" ]]; then SPATH="${PWD}"; fi
-SPATH="$(cd -P "${SPATH}" && pwd)"
+readonly SPATH="$(cd -P "${SPATH}" && pwd)"
 
 readonly PRJ_PATH="${SPATH}"
 source "${PRJ_PATH}/conf"
 
-cd "$BLD_PATH" && echo cd ${PWD}
+cd "${BLD_PATH}" && echo cd ${PWD}
 # make -j$(nproc)
 make -j14
