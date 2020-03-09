@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# https://stackoverflow.com/a/13478622
 set -eu
 set -o pipefail
 
@@ -12,5 +11,5 @@ readonly PRJ_PATH="${SPATH}"
 source "${PRJ_PATH}/conf"
 
 cd "${BLD_PATH}" && echo cd ${PWD}
-# make -j$(nproc)
-make -j14
+# make -j14
+make -j$(let m=$(nproc)-2; (($m > 0)) && echo $m || echo 1)

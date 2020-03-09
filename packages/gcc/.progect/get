@@ -18,4 +18,3 @@ then
 else
   git fetch --all
 fi
-
