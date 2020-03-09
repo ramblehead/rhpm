@@ -1,0 +1,12 @@
+#!/bin/bash
+
+source "$PRJ_PATH/paths"
+
+readonly PKG_NAME=arangodb
+readonly DEP_NAME=ubuntu-18.04
+
+readonly SRC_VERSION=v3.4.2
+readonly BLD_VERSION=2019-01-25.1
+
+readonly BLD_NAME=${BLD_VERSION}_${SRC_VERSION}
+readonly STOW_NAME=${PKG_NAME}_${BLD_NAME}

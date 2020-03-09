@@ -3,11 +3,12 @@
 set -eu
 set -o pipefail
 
-PRJ_PATH="`dirname \"${BASH_SOURCE[0]}\"`"
-if [[ ! -d "$PRJ_PATH" ]]; then PRJ_PATH="$PWD"; fi
-PRJ_PATH="`( cd -P \"$PRJ_PATH\" && pwd )`"
-source "$PRJ_PATH/configs"
-source "$PRJ_PATH/paths"
+SPATH="$(dirname "${BASH_SOURCE[0]}")"
+if [[ ! -d "${SPATH}" ]]; then SPATH="${PWD}"; fi
+readonly SPATH="$(cd -P "${SPATH}" && pwd)"
+
+readonly PRJ_PATH="${SPATH}"
+source "${PRJ_PATH}/conf"
 
 if (( $(id -u) != 0 )); then
   echo "Please, run as root"
@@ -17,20 +18,29 @@ fi
 useradd --system --shell /usr/sbin/nologin \
         --home /nonexistent arangodb || true
 
-cd /usr/local/stow
+cd /usr/local/stow && echo cd ${PWD}
 
-chown -v -R arangodb:arangodb \
-      "$PKG_NAME"_"$BLD_NAME"/var/lib/arangodb3-apps
+chown -vR arangodb:arangodb \
+      ${STOW_NAME}/var/lib/arangodb3-apps
 
-chown -v -R arangodb:arangodb \
-      "$PKG_NAME"_"$BLD_NAME"/var/lib/arangodb3
+chmod -vR g+rw \
+      ${STOW_NAME}/var/lib/arangodb3-apps
 
-chown -v -R arangodb:arangodb \
-      "$PKG_NAME"_"$BLD_NAME"/var/log/arangodb3
+chown -vR arangodb:arangodb \
+      ${STOW_NAME}/var/lib/arangodb3
 
-mkdir /tmp/database-dir || true
-chown -v -R arangodb:arangodb /tmp/database-dir
-chmod 700 /tmp/database-dir
+chmod -vR g+rw \
+      ${STOW_NAME}/var/lib/arangodb3
+
+chown -vR arangodb:arangodb \
+      ${STOW_NAME}/var/log/arangodb3
+
+chmod -vR g+rw \
+      ${STOW_NAME}/var/log/arangodb3
+
+mkdir -v /tmp/database-dir || true
+chown -vR arangodb:arangodb /tmp/database-dir
+chmod 770 /tmp/database-dir
 
 if ! grep -qE '^\s*arangodb\s+(:?soft|hard)\s+nofile' /etc/security/limits.conf
 then

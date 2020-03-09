@@ -10,11 +10,9 @@ readonly SPATH="$(cd -P "${SPATH}" && pwd)"
 readonly PRJ_PATH="${SPATH}"
 source "${PRJ_PATH}/conf"
 
-if [[ ! -d "${SRC_PATH}" || \
-      (-d "${SRC_PATH}" && -z "$(ls -A ${SRC_PATH})") ]];
-then
-  git git://github.com/arangodb/arangodb.git ${SRC_PATH};
-  git fetch --all
-else
-  git fetch --all
-fi
+cd "$SRC_PATH" && echo cd $PWD
+git fetch --all
+git checkout "$SRC_VERSION"
+
+echo
+(set -x; mkdir -vp "$BLD_PATH")

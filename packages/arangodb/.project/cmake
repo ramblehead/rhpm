@@ -3,21 +3,16 @@
 set -eu
 set -o pipefail
 
-PRJ_PATH="`dirname \"${BASH_SOURCE[0]}\"`"
-if [[ ! -d "$PRJ_PATH" ]]; then PRJ_PATH="$PWD"; fi
-PRJ_PATH="`( cd -P \"$PRJ_PATH\" && pwd )`"
-source "$PRJ_PATH/configs"
-source "$PRJ_PATH/paths"
+SPATH="$(dirname "${BASH_SOURCE[0]}")"
+if [[ ! -d "${SPATH}" ]]; then SPATH="${PWD}"; fi
+readonly SPATH="$(cd -P "${SPATH}" && pwd)"
 
-#./dependency/"$DEP_NAME"
+readonly PRJ_PATH="${SPATH}"
+source "${PRJ_PATH}/conf"
 
-cd "$SRC_PATH"
-git checkout "$SRC_VERSION"
+cd "${BLD_PATH}" && echo cd ${PWD}
 
-if [[ ! -d "$BLD_PATH" ]]; then
-  mkdir "$BLD_PATH"
-fi
-
-cd "$BLD_PATH"
-cmake -DCMAKE_INSTALL_PREFIX=/usr/local/stow/"$PKG_NAME"_"$BLD_NAME" \
-      "$SRC_PATH"
+echo
+(set -x
+ cmake -DCMAKE_INSTALL_PREFIX="/usr/local/stow/${STOW_NAME}" \
+       "${SRC_PATH}")
