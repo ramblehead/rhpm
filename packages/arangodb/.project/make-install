@@ -13,6 +13,8 @@ source "${PRJ_PATH}/conf"
 cd "${BLD_PATH}" && echo cd ${PWD}
 make install
 
+cp -v "${PRJ_PATH}/sudo-adb" "/usr/local/stow/${STOW_NAME}/bin"
+
 echo
 cd /usr/local/stow && echo cd ${PWD}
 sudo chown -R root:root "${STOW_NAME}"

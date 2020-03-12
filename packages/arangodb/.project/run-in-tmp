@@ -1,0 +1,13 @@
+#!/bin/bash
+
+if [[ ! -d /tmp/database-dir ]]; then
+  sudo mkdir -v /tmp/database-dir
+  sudo chown -vR arangodb:arangodb /tmp/database-dir
+  sudo chmod 770 /tmp/database-dir
+fi
+
+export GLIBCXX_FORCE_NEW=1
+
+arangod --fortune -c /usr/local/etc/arangodb3/arangod.conf \
+        --server.endpoint tcp://127.0.0.1:8529 \
+        /tmp/database-dir
