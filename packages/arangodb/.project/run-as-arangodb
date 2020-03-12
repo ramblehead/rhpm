@@ -1,8 +1,0 @@
-#!/bin/bash
-
-sudo -u arangodb -g arangodb bash << END
-GLIBCXX_FORCE_NEW=1 \
-arangod -c /usr/local/etc/arangodb3/arangod.conf \
-        --server.endpoint tcp://127.0.0.1:8529 \
-        /tmp/database-dir
-END

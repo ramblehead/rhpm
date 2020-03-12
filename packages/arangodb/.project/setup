@@ -38,10 +38,6 @@ chown -vR arangodb:arangodb \
 chmod -vR g+rw \
       ${STOW_NAME}/var/log/arangodb3
 
-mkdir -v /tmp/database-dir || true
-chown -vR arangodb:arangodb /tmp/database-dir
-chmod 770 /tmp/database-dir
-
 if ! grep -qE '^\s*arangodb\s+(:?soft|hard)\s+nofile' /etc/security/limits.conf
 then
 
