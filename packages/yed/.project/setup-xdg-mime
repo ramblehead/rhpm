@@ -1,0 +1,25 @@
+#! /bin/bash
+
+# see https://yed.yworks.com/support/qa/5927/associate-yed-application-with-graphml-files-on-linux
+
+# Run the script in the root of yEd installation directory
+# Tested with Ubuntu 18.04
+
+# Install the new mime definition
+#xdg-mime install graphml+xml-mime.xml
+
+# Install icon (size 48 can be extracted from i4j_extf_2_1aawyej_k3n8ea.ico file)
+xdg-icon-resource install \
+  --context mimetypes \
+  --size 32 \
+  /home/rh/.local/opt/yEd/.install4j/yEd.png \
+  x-application-graphml+xml
+
+#/home/rh/.local/opt/yEd/.install4j/yEd.png
+
+# Append %F to yEd .desktop file so it is visible in "Open With Other
+# Application" menu
+#sed -i '/Exec/ s/$/ %F/' "~/.local/share/applications/yEd Graph Editor-0.desktop"
+
+# Finally go to file manager, right click, select "Open With Other Application",
+# click "View All Applications" and select yEd.

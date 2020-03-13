@@ -1,0 +1,10 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=yEd Graph Editor
+# Exec=/home/rh/.local/opt/yEd/yEd %F
+# nohup is a temp workaround for:
+# https://yed.yworks.com/support/qa/13633/cannot-start-because-java-illegalargumentexception-window
+Exec=nohup /home/rh/.local/opt/yEd/yEd %F
+Icon=/home/rh/.local/opt/yEd/.install4j/yEd.png
+Categories=Application;
