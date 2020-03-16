@@ -1,0 +1,23 @@
+#!/bin/bash
+
+set -eu
+set -o pipefail
+
+SPATH="$(dirname "${BASH_SOURCE[0]}")"
+if [[ ! -d "${SPATH}" ]]; then SPATH="${PWD}"; fi
+readonly SPATH="$(cd -P "${SPATH}" && pwd)"
+
+readonly PRJ_PATH="${SPATH}"
+source "${PRJ_PATH}/conf"
+
+cd ${SRC_PATH}
+
+NPROC=$(let m=$(nproc)-2; (($m > 0)) && echo $m || echo 1)
+
+if [[ -z "$@" ]]; then
+  make -j${NPROC}
+else
+  make -j${NPROC} $@
+fi
+
+make test

@@ -1,0 +1,17 @@
+#!/bin/bash
+
+set -eu
+set -o pipefail
+
+set -eu
+set -o pipefail
+
+SPATH="$(dirname "${BASH_SOURCE[0]}")"
+if [[ ! -d "${SPATH}" ]]; then SPATH="${PWD}"; fi
+readonly SPATH="$(cd -P "${SPATH}" && pwd)"
+
+readonly PRJ_PATH="${SPATH}"
+source "${PRJ_PATH}/conf"
+
+(set -x; sudo rm -v /etc/ld.so.conf.d/openssl-${SRC_VERSION}.conf)
+(set -x; sudo ldconfig -v)

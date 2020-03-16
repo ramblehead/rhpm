@@ -1,0 +1,19 @@
+#!/bin/bash
+
+set -eu
+set -o pipefail
+
+SPATH="$(dirname "${BASH_SOURCE[0]}")"
+if [[ ! -d "${SPATH}" ]]; then SPATH="${PWD}"; fi
+readonly SPATH="$(cd -P "${SPATH}" && pwd)"
+
+readonly PRJ_PATH="${SPATH}"
+source "${PRJ_PATH}/conf"
+
+cd "$SRC_PATH" && echo cd $PWD
+
+echo
+#         -Wl,-rpath="/usr/local/stow/${STOW_NAME}/lib"
+./config --prefix="/usr/local/stow/${STOW_NAME}" \
+         --openssldir="/usr/local/stow/${STOW_NAME}" \
+         shared zlib

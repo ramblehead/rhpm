@@ -1,0 +1,24 @@
+#!/bin/bash
+
+set -eu
+set -o pipefail
+
+SPATH="$(dirname "${BASH_SOURCE[0]}")"
+if [[ ! -d "${SPATH}" ]]; then SPATH="${PWD}"; fi
+readonly SPATH="$(cd -P "${SPATH}" && pwd)"
+
+readonly PRJ_PATH="${SPATH}"
+source "${PRJ_PATH}/conf"
+
+cd ${SRC_PATH}
+
+# discard stuff from last build
+git reset --hard
+
+# Go back to master HEAD
+git checkout master
+
+# delete all of the last build stuff
+git clean -xdf
+
+rm -vrf "${BLD_PATH}"

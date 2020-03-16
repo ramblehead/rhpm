@@ -1,0 +1,17 @@
+#!/bin/bash
+
+set -eu
+set -o pipefail
+
+SPATH="$(dirname "${BASH_SOURCE[0]}")"
+if [[ ! -d "${SPATH}" ]]; then SPATH="${PWD}"; fi
+readonly SPATH="$(cd -P "${SPATH}" && pwd)"
+
+readonly PRJ_PATH="${SPATH}"
+source "${PRJ_PATH}/conf"
+
+mkdir ${RELEASE_PATH} || true
+cd ${RELEASE_PATH}
+wget https://www.openssl.org/source/openssl-${SRC_VERSION}.tar.gz
+tar -xvf openssl-${SRC_VERSION}.tar.gz
+ln -vs ${RELEASE_PATH}/openssl-${SRC_VERSION} ${SRC_PATH}
