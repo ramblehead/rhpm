@@ -15,5 +15,4 @@ gpg --recv-key EA93F5E56E751E9B
 
 cd "${BLD_PATH}" && echo cd ${PWD}
 #make -d -j4
-#make -j4
-make -j$(let m=$(nproc)-2; (($m > 0)) && echo $m || echo 1)
+(set -x; make -j${NPROC})

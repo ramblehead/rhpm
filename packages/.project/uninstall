@@ -10,7 +10,7 @@ readonly SPATH="$(cd -P "${SPATH}" && pwd)"
 readonly PRJ_PATH="${SPATH}"
 source "${PRJ_PATH}/conf"
 
-if [[ -d /usr/local/stow/${STOW_NAME} ]]; then
+if [[ -d "/usr/local/stow/${STOW_NAME}" ]]; then
   if [[ -f /usr/local/share/info/dir.${STOW_NAME} ]]; then
     cd /usr/local/share/info
     INFO_DIR_FILE=$(realpath -e "dir.${STOW_NAME}")
@@ -19,12 +19,14 @@ if [[ -d /usr/local/stow/${STOW_NAME} ]]; then
   fi
 
   cd /usr/local/stow
-  sudo stow -v -D "${STOW_NAME}"
+  sudo stow -vD "${STOW_NAME}"
 
-  if [[ -L /usr/local/stow/${STOW_NAME} ]]; then
-    sudo rm ${STOW_NAME}
+  if [[ -L "/usr/local/stow/${STOW_NAME}" ]]; then
+    sudo rm "${STOW_NAME}"
   else
-    [[ ! -d ${DST_PATH} ]] && mkdir "$DST_PATH"
-    sudo mv -v ${STOW_NAME} "${DST_PATH}/${BLD_NAME}"
+    [[ ! -d "${DST_PATH}" ]] && mkdir "${DST_PATH}"
+    sudo mv -v "${STOW_NAME}" "${DST_PATH}/${BLD_NAME}"
+    cd "${DST_PATH}"
+    sudo chown -vR $(id -un):$(id -gn) "${BLD_NAME}"
   fi
 fi

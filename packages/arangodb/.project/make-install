@@ -11,11 +11,14 @@ readonly PRJ_PATH="${SPATH}"
 source "${PRJ_PATH}/conf"
 
 cd "${BLD_PATH}" && echo cd ${PWD}
-make install
+(set -x; make -j${NPROC} install)
 
-cp -v "${PRJ_PATH}/sudo-adb" "/usr/local/stow/${STOW_NAME}/bin"
+echo
+(set -x; sudo cp -Lv "${PRJ_PATH}/sudo-adb" "/usr/local/stow/${STOW_NAME}/bin")
 
 echo
 cd /usr/local/stow && echo cd ${PWD}
-sudo chown -R root:root "${STOW_NAME}"
-sudo stow -v "${STOW_NAME}"
+(set -x; sudo chown -R root:root "${STOW_NAME}")
+
+echo
+(set -x; sudo stow -v "${STOW_NAME}")

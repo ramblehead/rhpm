@@ -1,0 +1,25 @@
+#!/bin/bash
+
+set -eu
+set -o pipefail
+
+SPATH="$(dirname "${BASH_SOURCE[0]}")"
+if [[ ! -d "${SPATH}" ]]; then SPATH="${PWD}"; fi
+readonly SPATH="$(cd -P "${SPATH}" && pwd)"
+
+readonly PRJ_PATH="${SPATH}"
+source "${PRJ_PATH}/conf"
+
+mkdir ${RELEASE_PATH} || true
+cd ${RELEASE_PATH} && echo cd $PWD
+
+echo
+(set -x;
+ wget --no-check-certificate \
+ https://download.arangodb.com/Source/ArangoDB-${SRC_VERSION}.tar.gz)
+
+echo
+(set -x; tar -xvf ArangoDB-${SRC_VERSION}.tar.gz)
+
+echo
+(set -x; ln -vs ${RELEASE_PATH}/ArangoDB-${SRC_VERSION} ${SRC_PATH})

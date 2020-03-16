@@ -5,10 +5,13 @@ source "$PRJ_PATH/paths"
 readonly PKG_NAME=arangodb
 readonly DEP_NAME=ubuntu-18.04
 
-readonly SRC_VERSION=v3.6.2
+readonly SRC_VERSION=3.6.2
 readonly BLD_VERSION=2020-03-14
 
 readonly BLD_NAME=${BLD_VERSION}_${SRC_VERSION}
 readonly STOW_NAME=${PKG_NAME}_${BLD_NAME}
+
+readonly RELEASE_DIR_NAME="release"
+readonly RELEASE_PATH="${PKG_PATH}/${RELEASE_DIR_NAME}"
 
 NPROC=$(let m=$(nproc)-1; (($m > 0)) && echo $m || echo 1)

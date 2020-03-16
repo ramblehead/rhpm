@@ -20,11 +20,11 @@ if (( $(id -u) != 0 )); then
 fi
 
 cd /usr/local/stow && echo cd ${PWD}
-chown -vR root:root ${STOW_NAME}
+chown -vR root:root "${STOW_NAME}"
 
-if [[ -d /tmp/database-dir ]]; then
-  chown -vR root:root /tmp/database-dir
-fi
+# if [[ -d /tmp/database-dir ]]; then
+#   chown -vR root:root /tmp/database-dir
+# fi
 
 sed -i -E '/^\s*arangodb\s+(:?soft|hard)\s+nofile/d' \
     /etc/security/limits.conf
@@ -32,3 +32,4 @@ sed -i -E '/^\s*arangodb\s+(:?soft|hard)\s+nofile/d' \
 rm /etc/sysctl.d/40-arangodb.conf || true
 
 userdel arangodb || true
+groupdel arangodb || true

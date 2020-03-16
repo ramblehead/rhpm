@@ -10,10 +10,8 @@ readonly SPATH="$(cd -P "${SPATH}" && pwd)"
 readonly PRJ_PATH="${SPATH}"
 source "${PRJ_PATH}/conf"
 
-cd "${BLD_PATH}" && echo cd ${PWD}
+cd ${PKG_PATH} && echo cd $PWD
 
-echo
-(set -x
- cmake -DCMAKE_INSTALL_PREFIX="/usr/local/stow/${STOW_NAME}" \
-       -DUSE_GOOGLE_TESTS=false \
-       "${SRC_PATH}")
+rm -vrf "${BLD_PATH}"
+rm -vrf "${SRC_PATH}"
+rm -vrf "${RELEASE_PATH}"

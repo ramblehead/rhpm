@@ -10,16 +10,17 @@ readonly SPATH="$(cd -P "${SPATH}" && pwd)"
 readonly PRJ_PATH="${SPATH}"
 source "${PRJ_PATH}/conf"
 
-if [[ -d ${DST_PATH}/${BLD_NAME} ]]; then
-  sudo mv -v "${DST_PATH}/${BLD_NAME}" "/usr/local/stow/${STOW_NAME}"
+if [[ -d "${DST_PATH}/${BLD_NAME}" ]]; then
   cd /usr/local/stow
+  chown -vR root:root "${STOW_NAME}"
+  sudo mv -v "${DST_PATH}/${BLD_NAME}" "${STOW_NAME}"
   sudo stow -v "${STOW_NAME}"
 
   if [[ -z "$(ls -A $DST_PATH)" ]]; then
     rm -r "${DST_PATH}"
   fi
 
-  if [[ -f /usr/local/share/info/dir.${STOW_NAME} ]]; then
+  if [[ -f "/usr/local/share/info/dir.${STOW_NAME}" ]]; then
     cd /usr/local/share/info
     INFO_DIR_FILE=$(realpath -e "dir.${STOW_NAME}")
     sudo sh -c 'set -x; merge-info dir "'${INFO_DIR_FILE}'" > dirtmp'

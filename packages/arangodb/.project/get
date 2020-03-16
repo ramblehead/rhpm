@@ -13,8 +13,9 @@ source "${PRJ_PATH}/conf"
 if [[ ! -d "${SRC_PATH}" || \
       (-d "${SRC_PATH}" && -z "$(ls -A ${SRC_PATH})") ]];
 then
-  git git://github.com/arangodb/arangodb.git ${SRC_PATH};
+  git clone git://github.com/arangodb/arangodb.git "${SRC_PATH}"
   git fetch --all
 else
+  cd "${SRC_PATH}"
   git fetch --all
 fi

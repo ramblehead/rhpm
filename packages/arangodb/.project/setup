@@ -21,22 +21,24 @@ useradd --system --shell /usr/sbin/nologin \
 cd /usr/local/stow && echo cd ${PWD}
 
 chown -vR arangodb:arangodb \
-      ${STOW_NAME}/var/lib/arangodb3-apps
+      "${STOW_NAME}/var/lib/arangodb3-apps"
 
 chmod -vR g+rw \
-      ${STOW_NAME}/var/lib/arangodb3-apps
+      "${STOW_NAME}/var/lib/arangodb3-apps"
 
 chown -vR arangodb:arangodb \
-      ${STOW_NAME}/var/lib/arangodb3
+      "${STOW_NAME}/var/lib/arangodb3"
 
 chmod -vR g+rw \
-      ${STOW_NAME}/var/lib/arangodb3
+      "${STOW_NAME}/var/lib/arangodb3"
+
+touch "${STOW_NAME}/var/log/arangodb3/arangod.log"
 
 chown -vR arangodb:arangodb \
-      ${STOW_NAME}/var/log/arangodb3
+      "${STOW_NAME}/var/log/arangodb3"
 
 chmod -vR g+rw \
-      ${STOW_NAME}/var/log/arangodb3
+      "${STOW_NAME}/var/log/arangodb3"
 
 if ! grep -qE '^\s*arangodb\s+(:?soft|hard)\s+nofile' /etc/security/limits.conf
 then
