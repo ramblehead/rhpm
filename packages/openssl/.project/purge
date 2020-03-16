@@ -12,5 +12,4 @@ source "${PRJ_PATH}/conf"
 
 cd ${PKG_PATH} && echo cd $PWD
 
-rm -vrf "${BLD_PATH}"
 rm -vrf "${SRC_PATH}"

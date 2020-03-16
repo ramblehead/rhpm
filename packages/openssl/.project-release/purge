@@ -10,8 +10,8 @@ readonly SPATH="$(cd -P "${SPATH}" && pwd)"
 readonly PRJ_PATH="${SPATH}"
 source "${PRJ_PATH}/conf"
 
-cd "$PRJ_PATH" && echo cd $PWD
-(set -x; ./dependencies/$DEP_NAME)
+cd ${PKG_PATH} && echo cd $PWD
 
-echo
-(set -x; mkdir -vp "$BLD_PATH")
+rm -vrf "${BLD_PATH}"
+rm -vrf "${SRC_PATH}"
+rm -vrf "${RELEASE_PATH}"

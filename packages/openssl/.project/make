@@ -12,8 +12,6 @@ source "${PRJ_PATH}/conf"
 
 cd ${SRC_PATH}
 
-NPROC=$(let m=$(nproc)-2; (($m > 0)) && echo $m || echo 1)
-
 if [[ -z "$@" ]]; then
   make -j${NPROC}
 else

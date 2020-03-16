@@ -13,7 +13,7 @@ source "${PRJ_PATH}/conf"
 cd "$SRC_PATH" && echo cd $PWD
 
 echo
-#         -Wl,-rpath="/usr/local/stow/${STOW_NAME}/lib"
 ./config --prefix="/usr/local/stow/${STOW_NAME}" \
          --openssldir="/usr/local/stow/${STOW_NAME}" \
+         -Wl,-rpath="/usr/local/stow/${STOW_NAME}/lib" \
          shared zlib

@@ -13,3 +13,5 @@ readonly STOW_NAME=${PKG_NAME}_${BLD_NAME}
 
 readonly RELEASE_DIR_NAME="release"
 readonly RELEASE_PATH="${PKG_PATH}/${RELEASE_DIR_NAME}"
+
+readonly NPROC=$(let m=$(nproc)-2; (($m > 0)) && echo $m || echo 1)

@@ -10,12 +10,7 @@ readonly SPATH="$(cd -P "${SPATH}" && pwd)"
 readonly PRJ_PATH="${SPATH}"
 source "${PRJ_PATH}/conf"
 
-cd "${SRC_PATH}" && echo cd ${PWD}
+cd ${PKG_PATH} && echo cd $PWD
 
-echo
-make -j${NPROC} install
-
-echo
-cd /usr/local/stow && echo cd ${PWD}
-(set -x; sudo chown -R root:root "${STOW_NAME}")
-(set -x; sudo stow -v "${STOW_NAME}")
+rm -vrf "${BLD_PATH}"
+rm -vrf "${SRC_PATH}"
