@@ -4,12 +4,12 @@ set -eu
 set -o pipefail
 
 sudo apt update
-sudo apt install clang-8 clang-8-doc clang-8-examples clang-format-8 \
-                 clang-tidy-8 clang-tools-8 \
-                 libclang-8-dev \
-                 liblldb-8 liblldb-8-dev \
-                 python-clang-8 python-lldb-8 \
-                 libomp-8-dev libomp-8-doc \
-                 llvm-8-runtime llvm-8 llvm-8-dev llvm-8-doc \
-                 llvm-8-examples llvm-8-tools \
+sudo apt install clang-9 clang-9-doc clang-9-examples clang-format-9 \
+                 clang-tidy-9 clang-tools-9 \
+                 libclang-9-dev \
+                 liblldb-9 liblldb-9-dev \
+                 python-clang-9 python-lldb-9 \
+                 libomp-9-dev libomp-9-doc \
+                 llvm-9-runtime llvm-9 llvm-9-dev llvm-9-doc \
+                 llvm-9-examples llvm-9-tools \
                  libssl-dev lua5.3 liblua5.3-0

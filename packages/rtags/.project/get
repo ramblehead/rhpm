@@ -3,10 +3,20 @@
 set -eu
 set -o pipefail
 
-PRJ_PATH="`dirname \"${BASH_SOURCE[0]}\"`"
-if [[ ! -d "$PRJ_PATH" ]]; then PRJ_PATH="$PWD"; fi
-PRJ_PATH="`( cd -P \"$PRJ_PATH\" && pwd )`"
-source "$PRJ_PATH/configs"
-source "$PRJ_PATH/paths"
+SPATH="$(dirname "${BASH_SOURCE[0]}")"
+if [[ ! -d "${SPATH}" ]]; then SPATH="${PWD}"; fi
+readonly SPATH="$(cd -P "${SPATH}" && pwd)"
 
-git clone --recursive https://github.com/ramblehead/rtags.git $SRC_PATH
+readonly PRJ_PATH="${SPATH}"
+source "${PRJ_PATH}/conf"
+
+if [[ ! -d "${SRC_PATH}" || \
+      (-d "${SRC_PATH}" && -z "$(ls -A ${SRC_PATH})") ]];
+then
+  git clone --recursive https://github.com/ramblehead/rtags.git "${SRC_PATH}"
+  git fetch --all
+else
+  cd "${SRC_PATH}"
+  git submodule update --recursive --remote
+  git fetch --all
+fi

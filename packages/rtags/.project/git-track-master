@@ -11,8 +11,14 @@ readonly PRJ_PATH="${SPATH}"
 source "${PRJ_PATH}/conf"
 
 cd "${SRC_PATH}" && echo cd ${PWD}
-git fetch --all
-git checkout "${SRC_VERSION}"
 
 echo
-(set -x; mkdir -vp "${BLD_PATH}")
+git checkout master
+git submodule update --recursive --remote
+git pull
+
+readonly HASH=$(git rev-parse --short=11 HEAD)
+
+echo
+(set -x
+ sed -i -E 's/^(readonly SRC_VERSION)=.*$/\1='${HASH}'/' "${PRJ_PATH}/conf")

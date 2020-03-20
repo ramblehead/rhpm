@@ -1,18 +1,21 @@
 #!/bin/bash
 
-# https://stackoverflow.com/a/13478622
 set -eu
 set -o pipefail
 
-PRJ_PATH="`dirname \"${BASH_SOURCE[0]}\"`"
-if [[ ! -d "$PRJ_PATH" ]]; then PRJ_PATH="$PWD"; fi
-PRJ_PATH="`( cd -P \"$PRJ_PATH\" && pwd )`"
-source "$PRJ_PATH/configs"
-source "$PRJ_PATH/paths"
+SPATH="$(dirname "${BASH_SOURCE[0]}")"
+if [[ ! -d "${SPATH}" ]]; then SPATH="${PWD}"; fi
+readonly SPATH="$(cd -P "${SPATH}" && pwd)"
 
-cd $BLD_PATH
-make install
+readonly PRJ_PATH="${SPATH}"
+source "${PRJ_PATH}/conf"
 
-cd /usr/local/stow
-sudo chown -R root:root "$PKG_NAME"_"$BLD_NAME"
-sudo stow -v "$PKG_NAME"_"$BLD_NAME"
+cd "${BLD_PATH}" && echo cd ${PWD}
+(set -x; make -j${NPROC} install)
+
+echo
+cd /usr/local/stow && echo cd ${PWD}
+(set -x; sudo chown -R root:root "${STOW_NAME}")
+
+echo
+(set -x; sudo stow -v "${STOW_NAME}")
