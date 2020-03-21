@@ -15,18 +15,15 @@ if (( $(id -u) != 0 )); then
   exit 1
 fi
 
-useradd --system --shell /usr/sbin/nologin \
-        --home /nonexistent arangodb || true
-
 cd /usr/local/stow && echo cd ${PWD}
 
-chown -vR arangodb:arangodb \
+chown -vR rh:rh \
       "${STOW_NAME}/var/lib/arangodb3-apps"
 
 chmod -vR g+rw \
       "${STOW_NAME}/var/lib/arangodb3-apps"
 
-chown -vR arangodb:arangodb \
+chown -vR rh:rh \
       "${STOW_NAME}/var/lib/arangodb3"
 
 chmod -vR g+rw \
@@ -34,16 +31,16 @@ chmod -vR g+rw \
 
 touch "${STOW_NAME}/var/log/arangodb3/arangod.log"
 
-chown -vR arangodb:arangodb \
+chown -vR rh:rh \
       "${STOW_NAME}/var/log/arangodb3"
 
 chmod -vR g+rw \
       "${STOW_NAME}/var/log/arangodb3"
 
-sed -i -E 's/^\s*#(\s*uid\s*=\s*).*/\1arangodb/' \
+sed -i -E 's/^(\s*uid\s*=\s*.*)/# \1/' \
     /usr/local/etc/arangodb3/arangod.conf
 
-sed -i -E 's/^\s*#(\s*gid\s*=\s*).*/\1arangodb/' \
+sed -i -E 's/^(\s*gid\s*=\s*.*)/# \1/' \
     /usr/local/etc/arangodb3/arangod.conf
 
 if ! grep -qE '^\s*arangodb\s+(:?soft|hard)\s+nofile' /etc/security/limits.conf
