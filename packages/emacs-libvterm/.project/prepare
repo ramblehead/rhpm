@@ -17,4 +17,4 @@ echo
 (set -x; git checkout "${SRC_VERSION}")
 
 echo
-(set -x; mkdir -v "${BLD_PATH}")
+(set -x; mkdir -v "${BLD_DIR_NAME}")

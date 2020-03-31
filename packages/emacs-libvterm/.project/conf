@@ -2,20 +2,11 @@
 
 source "$PRJ_PATH/paths"
 
-readonly PKG_NAME=rtags
+readonly PKG_NAME=vterm
 readonly DEP_NAME=ubuntu-18.04
 
 readonly SRC_VERSION=996c535b9cc
 readonly BLD_VERSION=2020-03-31
-
-# readonly SRC_VERSION=d370c09007d
-# readonly BLD_VERSION=2020-03-20
-
-# readonly SRC_VERSION=v2.38
-# readonly BLD_VERSION=2020-03-20
-
-# readonly SRC_VERSION=63f6af9d
-# readonly BLD_VERSION=2018-11-26
 
 readonly BLD_NAME=${BLD_VERSION}_${SRC_VERSION}
 readonly STOW_NAME=${PKG_NAME}_${BLD_NAME}

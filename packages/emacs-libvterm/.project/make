@@ -11,6 +11,5 @@ readonly SPATH="$(cd -P "${SPATH}" && pwd)"
 readonly PRJ_PATH="${SPATH}"
 source "${PRJ_PATH}/conf"
 
-cd "${BLD_PATH}" && echo cd ${PWD}
-#make -d -j4
+cd "${SRC_PATH}/${BLD_DIR_NAME}" && echo cd ${PWD}
 (set -x; make -j${NPROC})

@@ -10,12 +10,12 @@ readonly SPATH="$(cd -P "${SPATH}" && pwd)"
 readonly PRJ_PATH="${SPATH}"
 source "${PRJ_PATH}/conf"
 
-cd "${BLD_PATH}" && echo cd ${PWD}
+cd "${SRC_PATH}/${BLD_DIR_NAME}" && echo cd ${PWD}
 
 echo
 (set -x
  cmake -DCMAKE_INSTALL_PREFIX="/usr/local/stow/${PKG_NAME}_${BLD_NAME}" \
        -DCMAKE_TOOLCHAIN_FILE="${PRJ_PATH}/86_64-linux-gnu-gcc.cmake" \
        -DCMAKE_BUILD_TYPE=RelWithDebInfo \
-       "${SRC_PATH}")
+       ..)
 #       -USE_SYSTEM_LIBVTERM=yes
