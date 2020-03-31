@@ -1,0 +1,21 @@
+#!/bin/bash
+
+set -eu
+set -o pipefail
+
+SPATH="$(dirname "${BASH_SOURCE[0]}")"
+if [[ ! -d "${SPATH}" ]]; then SPATH="${PWD}"; fi
+readonly SPATH="$(cd -P "${SPATH}" && pwd)"
+
+readonly PRJ_PATH="${SPATH}"
+source "${PRJ_PATH}/conf"
+
+cd "${BLD_PATH}" && echo cd ${PWD}
+
+echo
+(set -x
+ cmake -DCMAKE_INSTALL_PREFIX="/usr/local/stow/${PKG_NAME}_${BLD_NAME}" \
+       -DCMAKE_TOOLCHAIN_FILE="${PRJ_PATH}/86_64-linux-gnu-gcc.cmake" \
+       -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+       "${SRC_PATH}")
+#       -USE_SYSTEM_LIBVTERM=yes

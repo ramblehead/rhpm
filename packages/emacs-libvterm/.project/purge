@@ -1,0 +1,16 @@
+#!/bin/bash
+
+set -eu
+set -o pipefail
+
+SPATH="$(dirname "${BASH_SOURCE[0]}")"
+if [[ ! -d "${SPATH}" ]]; then SPATH="${PWD}"; fi
+readonly SPATH="$(cd -P "${SPATH}" && pwd)"
+
+readonly PRJ_PATH="${SPATH}"
+source "${PRJ_PATH}/conf"
+
+cd ${PKG_PATH} && echo cd $PWD
+
+rm -vrf "${BLD_PATH}"
+rm -vrf "${SRC_PATH}"

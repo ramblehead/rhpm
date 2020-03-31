@@ -1,0 +1,9 @@
+#!/bin/bash
+
+set -eu
+set -o pipefail
+
+# install new cmake here
+
+sudo apt update
+sudo apt install libtool-bin

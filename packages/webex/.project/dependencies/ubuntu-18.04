@@ -1,0 +1,10 @@
+#!/bin/bash
+
+set -eu
+set -o pipefail
+
+
+# https://askubuntu.com/questions/1033621/webex-on-ubuntu-18-04
+sudo apt update
+sudo apt install icedtea-plugin libpangoxft-1.0-0:i386 libxv1:i386 \
+                 libpangox-1.0-0:i386 icedtea-netx
