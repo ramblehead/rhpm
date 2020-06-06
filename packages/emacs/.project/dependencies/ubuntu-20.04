@@ -5,13 +5,17 @@ set -eu
 set -o pipefail
 
 sudo apt update
+
+sudo apt-get install fonts-noto-*
+
+# xstow is used for merge-info tool
 sudo apt install stow xstow build-essential autoconf-archive autoconf texinfo \
-         gnu-standards autoconf-doc libtool texlive-generic-recommended \
-         texinfo-doc-nonfree libtool-doc wget dh-make gawk devhelp \
-         spamassassin gnutls-bin autoconf texlive silversearcher-ag \
+         gnu-standards autoconf-doc libtool texlive-plain-generic \
+         emacs-common-non-dfsg libtool-doc wget dh-make gawk devhelp \
+         spamassassin gnutls-bin autoconf texlive silversearcher-ag mailutils \
 \
          libx11-dev xaw3dg-dev \
-         libjpeg-dev libpng-dev libgif-dev libtiff5-dev libncurses5-dev \
+         libjpeg-dev libpng-dev libgif-dev libtiff-dev libncurses-dev \
          libxft-dev librsvg2-dev libmagickcore-dev libmagick++-dev \
          libxml2-dev libgpm-dev libotf-dev libm17n-dev \
          libgnutls28-dev libxpm-dev libgtk-3-dev libwebkit2gtk-4.0-dev \
@@ -24,4 +28,4 @@ sudo apt install stow xstow build-essential autoconf-archive autoconf texinfo \
          libsm-doc libthai-doc libwmf-doc libxcb-doc libxext-doc libxt-doc \
          gawk-doc guile-2.0-doc libmpfr-doc \
 \
-         fonts-hack fonts-symbola fonts-noto-* clang-format-5.0
+         fonts-hack fonts-symbola clangd clang-tidy clang-format

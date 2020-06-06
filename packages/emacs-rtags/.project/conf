@@ -3,10 +3,10 @@
 source "$PRJ_PATH/paths"
 
 readonly PKG_NAME=rtags
-readonly DEP_NAME=ubuntu-18.04
+readonly DEP_NAME=ubuntu-20.04
 
-readonly SRC_VERSION=d370c09007d
-readonly BLD_VERSION=2020-03-20
+readonly SRC_VERSION=4ecf19b605a
+readonly BLD_VERSION=2020-06-03
 
 # readonly SRC_VERSION=d370c09007d
 # readonly BLD_VERSION=2020-03-20

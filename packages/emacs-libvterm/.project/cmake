@@ -15,7 +15,7 @@ cd "${SRC_PATH}/${BLD_DIR_NAME}" && echo cd ${PWD}
 echo
 (set -x
  cmake -DCMAKE_INSTALL_PREFIX="/usr/local/stow/${PKG_NAME}_${BLD_NAME}" \
-       -DCMAKE_TOOLCHAIN_FILE="${PRJ_PATH}/86_64-linux-gnu-gcc.cmake" \
        -DCMAKE_BUILD_TYPE=RelWithDebInfo \
        ..)
+#       -DCMAKE_TOOLCHAIN_FILE="${PRJ_PATH}/86_64-linux-gnu-gcc.cmake" \
 #       -USE_SYSTEM_LIBVTERM=yes

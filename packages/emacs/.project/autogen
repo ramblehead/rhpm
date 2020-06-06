@@ -12,11 +12,4 @@ source "${PRJ_PATH}/conf"
 
 cd "${SRC_PATH}" && echo cd ${PWD}
 
-# discard stuff from last build
-git reset --hard
-
-# Go back to master HEAD
-git checkout master
-
-# delete all of the last build stuff
-git clean -xdf
+./autogen.sh all

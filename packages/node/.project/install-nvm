@@ -3,14 +3,23 @@
 set -eu
 set -o pipefail
 
-DIR="`dirname \"${BASH_SOURCE[0]}\"`"
-if [[ ! -d "$DIR" ]]; then DIR="$PWD"; fi
-source "$DIR/configs"
-unset DIR
+SPATH="$(dirname "${BASH_SOURCE[0]}")"
+if [[ ! -d "${SPATH}" ]]; then SPATH="${PWD}"; fi
+readonly SPATH="$(cd -P "${SPATH}" && pwd)"
 
-#cd "$NVM_DIR"
-#git checkout $NVM_VERSION
+readonly PRJ_PATH="${SPATH}"
+source "${PRJ_PATH}/conf"
 
-echo '' >> ~/.bashrc
-echo "export NVM_DIR=\"$NVM_DIR\"" >> ~/.bashrc
-echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> ~/.bashrc
+#cd "${NVM_DIR}"
+#git checkout ${NVM_VERSION}
+
+  cat <<'EOT' >> ~/.profile
+
+export NVM_DIR="/home/rh/.nvm"
+[ -s "${NVM_DIR}/nvm.sh" ] && \. "${NVM_DIR}/nvm.sh"
+
+NPM_ROOT="$(which npm > /dev/null && npm root -g)"
+if [ ! -z "$NPM_ROOT" ]; then
+  export NODE_PATH="$NPM_ROOT"
+fi
+EOT

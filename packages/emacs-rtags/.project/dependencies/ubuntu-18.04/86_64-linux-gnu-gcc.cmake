@@ -4,14 +4,10 @@
 set(CMAKE_C_COMPILER clang-9)
 set(CMAKE_CXX_COMPILER clang++-9)
 
-# set(CMAKE_C_COMPILER gcc-8)
-# set(CMAKE_CXX_COMPILER g++-8)
-
 # set(CMAKE_C_COMPILER gcc)
 # set(CMAKE_CXX_COMPILER g++)
 
 set(LIBCLANG_LLVM_CONFIG_EXECUTABLE /usr/bin/llvm-config-9)
-#set(LIBCLANG_LLVM_CONFIG_EXECUTABLE /usr/bin/llvm-config-8)
 
 set(CMAKE_C_FLAGS "-std=c99 -pipe -feliminate-unused-debug-types" CACHE STRING "CFLAGS")
 set(CMAKE_CXX_FLAGS "-std=c++17 -pipe -feliminate-unused-debug-types -Wno-unused-parameter" CACHE STRING "CXXFLAGS")

@@ -12,8 +12,8 @@ source "${PRJ_PATH}/conf"
 
 if [[ -d "${DST_PATH}/${BLD_NAME}" ]]; then
   cd /usr/local/stow
-  chown -vR root:root "${STOW_NAME}"
   sudo mv -v "${DST_PATH}/${BLD_NAME}" "${STOW_NAME}"
+  sudo chown -vR root:root "${STOW_NAME}"
   sudo stow -v "${STOW_NAME}"
 
   if [[ -z "$(ls -A $DST_PATH)" ]]; then

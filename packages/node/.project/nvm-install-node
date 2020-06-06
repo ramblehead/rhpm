@@ -6,10 +6,4 @@
 set -eu
 set -o pipefail
 
-DIR="`dirname \"${BASH_SOURCE[0]}\"`"
-if [[ ! -d "$DIR" ]]; then DIR="$PWD"; fi
-source "$DIR/configs"
-unset DIR
-
-# source "$NVM_DIR/nvm.sh"
 nvm install node

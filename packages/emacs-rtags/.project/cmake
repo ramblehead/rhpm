@@ -13,7 +13,16 @@ source "${PRJ_PATH}/conf"
 cd "${BLD_PATH}" && echo cd ${PWD}
 
 echo
-(set -x
- cmake -DCMAKE_INSTALL_PREFIX="/usr/local/stow/${PKG_NAME}_${BLD_NAME}" \
-       -DCMAKE_TOOLCHAIN_FILE="${PRJ_PATH}/86_64-linux-gnu-gcc.cmake" \
-       "${SRC_PATH}")
+
+readonly DEP_PATH="${PRJ_PATH}/dependencies/${DEP_NAME}"
+
+if [[ -d "${DEP_PATH}" ]]; then
+  (set -x
+   cmake -DCMAKE_INSTALL_PREFIX="/usr/local/stow/${STOW_NAME}" \
+         -DCMAKE_TOOLCHAIN_FILE="${DEP_PATH}/86_64-linux-gnu-clang.cmake" \
+         "${SRC_PATH}")
+else
+  (set -x
+   cmake -DCMAKE_INSTALL_PREFIX="/usr/local/stow/${STOW_NAME}" \
+         "${SRC_PATH}")
+fi

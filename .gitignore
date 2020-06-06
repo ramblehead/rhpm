@@ -1,5 +1,5 @@
-packages/*/src
-packages/*/build
-packages/*/dist
-packages/*/release
-packages/*/go
+/packages/*/src
+/packages/*/build
+/packages/*/dist
+/packages/*/release
+/packages/*/go

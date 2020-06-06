@@ -1,0 +1,15 @@
+#!/bin/bash
+
+set -eu
+set -o pipefail
+
+sudo apt update
+sudo apt install clang-10 clang-10-doc clang-10-examples clang-format-10 \
+                 clang-tidy-10 clang-tools-10 \
+                 libclang-10-dev \
+                 liblldb-10 liblldb-10-dev \
+                 python3-clang-10 python3-lldb-10 \
+                 libomp-10-dev libomp-10-doc \
+                 llvm-10-runtime llvm-10 llvm-10-dev llvm-10-doc \
+                 llvm-10-examples llvm-10-tools \
+                 libssl-dev lua5.3 liblua5.3-0

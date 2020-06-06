@@ -3,9 +3,11 @@
 set -eu
 set -o pipefail
 
-DIR="`dirname \"${BASH_SOURCE[0]}\"`"
-if [[ ! -d "$DIR" ]]; then DIR="$PWD"; fi
-source "$DIR/configs"
-unset DIR
+SPATH="$(dirname "${BASH_SOURCE[0]}")"
+if [[ ! -d "${SPATH}" ]]; then SPATH="${PWD}"; fi
+readonly SPATH="$(cd -P "${SPATH}" && pwd)"
 
-git clone https://github.com/creationix/nvm.git "$NVM_DIR"
+readonly PRJ_PATH="${SPATH}"
+source "${PRJ_PATH}/conf"
+
+git clone https://github.com/creationix/nvm.git "${NVM_DIR}"

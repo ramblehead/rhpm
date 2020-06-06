@@ -3,7 +3,5 @@
 set -eu
 set -o pipefail
 
-# The package python-gpgme, which is used by Dropbox to verify binary signature,
-# is no longer in Ubuntu 18.04 repository. The successor is python-gpg.
 sudo apt install python-gpg nautilus-dropbox
 dropbox
