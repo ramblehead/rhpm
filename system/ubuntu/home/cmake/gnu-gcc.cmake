@@ -1,1 +1,0 @@
-86_64-linux-gnu-gcc.cmake

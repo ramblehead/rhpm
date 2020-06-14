@@ -57,11 +57,3 @@ fi
 if [[ ! -f ~/.local/var/log/xsel.log ]]; then
   touch ~/.local/var/log/xsel.log
 fi
-
-if [[ ! -d ~/bin ]]; then
-  mkdir ~/bin
-fi
-
-if [[ ! -f ~/bin/f2clip ]]; then
-  ln -s "`cd -P \"../home/bin\" && pwd`/f2clip" ~/bin
-fi
