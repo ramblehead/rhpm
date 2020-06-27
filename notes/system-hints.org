@@ -6,6 +6,16 @@ sudo tlp-stat -s
 systemctl enable tlp
 #+END_SRC
 
+kernel disk write buffer
+#+BEGIN_SRC
+# Temporary
+sudo sysctl vm.dirty_bytes=15000000
+
+# Permanent
+echo vm.dirty_bytes=15000000 | sudo tee -a /etc/sysctl.conf
+#+END_SRC
+
+
 https://github.com/smxi/inxi
 https://github.com/lm-sensors/lm-sensors
 
