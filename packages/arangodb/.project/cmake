@@ -13,6 +13,9 @@ source "${PRJ_PATH}/conf"
 cd "${BLD_PATH}" && echo cd ${PWD}
 
 echo
+
+readonly DEP_PATH="${PRJ_PATH}/dependencies/${DEP_NAME}"
+
 (set -x
  cmake -DCMAKE_INSTALL_PREFIX="/usr/local/stow/${STOW_NAME}" \
        -DUSE_GOOGLE_TESTS=false \

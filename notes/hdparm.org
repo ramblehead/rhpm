@@ -1,0 +1,2 @@
+* Check  the  current  IDE power mode status
+sudo hdparm -C /dev/sdb

@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# https://stackoverflow.com/a/13478622
+set -eu
+set -o pipefail
+
+sudo apt update
+sudo apt install git build-essential gcc-10 g++-10 \
+                 libssl-dev libjemalloc-dev cmake
+#sudo apt install git-core build-essential libssl-dev \
+#                 libjemalloc-dev cmake python2.7
