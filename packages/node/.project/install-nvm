@@ -13,7 +13,7 @@ source "${PRJ_PATH}/conf"
 #cd "${NVM_DIR}"
 #git checkout ${NVM_VERSION}
 
-  cat <<'EOT' >> ~/.profile
+cat <<'EOT' >> ~/.profile
 
 export NVM_DIR="/home/rh/.nvm"
 [ -s "${NVM_DIR}/nvm.sh" ] && \. "${NVM_DIR}/nvm.sh"
