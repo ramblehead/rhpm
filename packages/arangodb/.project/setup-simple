@@ -15,14 +15,14 @@ if (( $(id -u) != 0 )); then
   exit 1
 fi
 
-#useradd --system --shell /usr/sbin/nologin \
-#        --home /nonexistent arangodb || true
+# useradd --system --shell /usr/sbin/nologin \
+#         --home /nonexistent arangodb || true
 
-sed -i -E 's/^\s*#(\s*uid\s*=\s*).*/\1arangodb/' \
-    /usr/local/etc/arangodb3/arangod.conf
+# sed -i -E 's/^\s*#(\s*uid\s*=\s*).*/\1arangodb/' \
+#     /usr/local/etc/arangodb3/arangod.conf
 
-sed -i -E 's/^\s*#(\s*gid\s*=\s*).*/\1arangodb/' \
-    /usr/local/etc/arangodb3/arangod.conf
+# sed -i -E 's/^\s*#(\s*gid\s*=\s*).*/\1arangodb/' \
+#     /usr/local/etc/arangodb3/arangod.conf
 
 if ! grep -qE '^\s*arangodb\s+(:?soft|hard)\s+nofile' /etc/security/limits.conf
 then
