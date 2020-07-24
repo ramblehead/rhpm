@@ -18,7 +18,13 @@ git submodule update --recursive --remote
 git pull
 
 readonly HASH=$(git rev-parse --short=11 HEAD)
+readonly version=$(date "+%Y-%m-%d")
 
 echo
 (set -x
  sed -i -E 's/^(readonly SRC_VERSION)=.*$/\1='${HASH}'/' "${PRJ_PATH}/conf")
+
+echo
+(set -x
+ sed -i -E 's/^(readonly BLD_VERSION)=.*$/\1='${version}'/' \
+           "${PRJ_PATH}/conf")
