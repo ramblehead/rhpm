@@ -6,7 +6,7 @@ readonly PKG_NAME=emacs
 readonly DEP_NAME=ubuntu-20.04
 
 readonly SRC_VERSION=bca8686f552
-readonly BLD_VERSION=2019-07-24
+readonly BLD_VERSION=2020-07-24
 
 readonly BLD_NAME=${BLD_VERSION}_${SRC_VERSION}
 readonly STOW_NAME=${PKG_NAME}_${BLD_NAME}
