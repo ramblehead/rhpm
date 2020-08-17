@@ -22,4 +22,5 @@ git checkout master
 # delete all of the last build stuff
 git clean -xdf
 
+echo
 rm -vrf "${BLD_PATH}"
