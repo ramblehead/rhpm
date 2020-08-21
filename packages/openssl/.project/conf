@@ -5,8 +5,11 @@ source "$PRJ_PATH/paths"
 readonly PKG_NAME=openssl
 readonly DEP_NAME=ubuntu-18.04
 
-readonly SRC_VERSION=2f0dab7e59c # OpenSSL_1_1_1-stable, 2020-03-16
-readonly BLD_VERSION=2020-03-16
+#readonly SRC_VERSION=2f0dab7e59c # OpenSSL_1_1_1-stable, 2020-03-16
+#readonly BLD_VERSION=2020-03-16
+
+readonly SRC_VERSION=1.1.1d
+readonly BLD_VERSION=2020-03-14
 
 readonly BLD_NAME=${BLD_VERSION}_${SRC_VERSION}
 readonly STOW_NAME=${PKG_NAME}_${BLD_NAME}
