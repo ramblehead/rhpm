@@ -1,6 +1,6 @@
 #!/bin/bash
 
-register_clang_version () {
+register_clang_version() {
   local version=$1
   local priority=$2
 
