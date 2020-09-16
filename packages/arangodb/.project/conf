@@ -8,6 +8,9 @@ readonly DEP_NAME=ubuntu-20.04
 readonly SRC_VERSION=v3.7.0.1
 readonly BLD_VERSION=2020-06-21
 
+# readonly SRC_VERSION=v3.6.2
+# readonly BLD_VERSION=2020-03-16
+
 readonly BLD_NAME=${BLD_VERSION}_${SRC_VERSION}
 readonly STOW_NAME=${PKG_NAME}_${BLD_NAME}
 

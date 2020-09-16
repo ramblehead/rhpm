@@ -13,7 +13,8 @@ source "${PRJ_PATH}/conf"
 cd "${BLD_PATH}" && echo cd ${PWD}
 
 (set -x
- cmake -DgRPC_BUILD_TESTS=OFF \
-       -DgRPC_INSTALL=ON \
+ cmake -DgRPC_BUILD_TESTS=false \
+       -DgRPC_INSTALL=true \
+       -DgRPC_SSL_PROVIDER=package \
        -DCMAKE_INSTALL_PREFIX="/usr/local/stow/${STOW_NAME}" \
        "${SRC_PATH}")

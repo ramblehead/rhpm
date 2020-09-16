@@ -11,7 +11,7 @@ readonly PRJ_PATH="${SPATH}"
 source "${PRJ_PATH}/conf"
 
 # see https://github.com/sleepycat/arangodb_arch/issues/4
-gpg --recv-key EA93F5E56E751E9B
+#gpg --recv-key EA93F5E56E751E9B
 
 cd "${BLD_PATH}" && echo cd ${PWD}
 #make -d -j4
