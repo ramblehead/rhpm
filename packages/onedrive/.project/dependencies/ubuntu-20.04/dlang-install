@@ -1,0 +1,6 @@
+#!/bin/bash
+
+set -eu
+set -o pipefail
+
+curl -fsS https://dlang.org/install.sh | bash -s dmd

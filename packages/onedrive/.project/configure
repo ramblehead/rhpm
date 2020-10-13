@@ -1,0 +1,29 @@
+#!/bin/bash
+
+set -eu
+set -o pipefail
+
+SDPATH="$(dirname "${BASH_SOURCE[0]}")"
+if [[ ! -d "${SDPATH}" ]]; then SDPATH="${PWD}"; fi
+readonly SDPATH="$(cd -P "${SDPATH}" && pwd)"
+
+readonly PRJ_PATH="${SDPATH}"
+source "${PRJ_PATH}/conf"
+
+source ~/dlang/dmd-${DMD_VERSION}/activate
+
+cd "${SRC_PATH}" && echo cd ${PWD}
+
+readonly STOW_PATH=/usr/local/stow/${STOW_NAME}
+
+echo
+(set -x;
+ ./configure --enable-notifications --enable-completions \
+             --prefix=${STOW_PATH} \
+             --with-systemduserunitdir=${STOW_PATH}/lib/systemd/user \
+             --with-systemdsystemunitdir=${STOW_PATH}/lib/systemd/system \
+             --with-zsh-completion-dir=${STOW_PATH}/share/zsh/site-functions \
+             --with-bash-completion-dir=${STOW_PATH}/share/bash-completion/completions \
+             --with-fish-completion-dir=${STOW_PATH}/share/fish/completions)
+
+#/usr/share/bash-completion/completions/onedrive

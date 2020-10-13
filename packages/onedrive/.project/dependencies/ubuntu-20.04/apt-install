@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -eu
+set -o pipefail
+
+sudo apt update
+sudo apt install trickle build-essential libcurl4-openssl-dev libsqlite3-dev \
+         pkg-config git curl
+
+# sudo apt install libnotify-bin notify-osd notification-daemon
+sudo apt install libnotify-dev

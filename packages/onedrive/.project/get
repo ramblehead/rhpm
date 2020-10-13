@@ -1,0 +1,21 @@
+#!/bin/bash
+
+set -eu
+set -o pipefail
+
+SDPATH="$(dirname "${BASH_SOURCE[0]}")"
+if [[ ! -d "${SDPATH}" ]]; then SDPATH="${PWD}"; fi
+readonly SDPATH="$(cd -P "${SDPATH}" && pwd)"
+
+readonly PRJ_PATH="${SDPATH}"
+source "${PRJ_PATH}/conf"
+
+if [[ ! -d "${SRC_PATH}" || \
+      (-d "${SRC_PATH}" && -z "$(ls -A ${SRC_PATH})") ]];
+then
+  git clone https://github.com/abraunegg/onedrive.git "${SRC_PATH}"
+  git fetch --all
+else
+  cd "${SRC_PATH}"
+  git fetch --all
+fi
