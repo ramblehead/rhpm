@@ -13,4 +13,7 @@ systemctl --user start onedrive
 
 journalctl --user-unit onedrive -f
 
-sudo apt install trickle
+
+
+
+use `notify-send' to test desktop notificatins

@@ -1,0 +1,2 @@
+source ~/dlang/dmd-2.094.0/activate
+deactivate

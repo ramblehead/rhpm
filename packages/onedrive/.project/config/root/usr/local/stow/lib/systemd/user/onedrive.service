@@ -1,0 +1,14 @@
+[Unit]
+Description=OneDrive Free Client
+Documentation=https://github.com/abraunegg/onedrive
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+ExecStart=/usr/bin/trickle -s -u 500 -d 1000 /usr/local/stow/onedrive_2020-10-13_a3c4ba1b3bc/bin/onedrive --monitor
+Restart=on-failure
+RestartSec=3
+RestartPreventExitStatus=3
+
+[Install]
+WantedBy=default.target
