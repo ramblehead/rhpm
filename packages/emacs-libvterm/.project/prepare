@@ -10,11 +10,16 @@ readonly SPATH="$(cd -P "${SPATH}" && pwd)"
 readonly PRJ_PATH="${SPATH}"
 source "${PRJ_PATH}/conf"
 
-cd "${SRC_PATH}" && echo cd $PWD
-git fetch --all
+cd "${SRC_PATH}" && echo + cd $PWD
 
 echo
-(set -x; git checkout "${SRC_VERSION}")
+CMD=(git fetch --all)
+echo + "${CMD[@]}" && "${CMD[@]}"
 
 echo
-(set -x; mkdir -vp "${BLD_DIR_NAME}")
+CMD=(git checkout "${SRC_VERSION}")
+echo + "${CMD[@]}" && "${CMD[@]}"
+
+echo
+CMD=(mkdir -vp "${BLD_DIR_NAME}")
+echo + "${CMD[@]}" && "${CMD[@]}"
