@@ -10,7 +10,7 @@ readonly SDPATH="$(cd -P "${SDPATH}" && pwd)"
 readonly PRJ_PATH="${SDPATH}"
 source "${PRJ_PATH}/conf"
 
-cd ${SRC_PATH}; echo cd ${PWD}
+cd ${SRC_PATH}; echo + cd ${PWD}
 
 # discard stuff from last build
 echo

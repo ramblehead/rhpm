@@ -18,9 +18,9 @@ then
   echo + ${CMD} && eval ${CMD}
 
   echo
-  cd "${SRC_PATH}"; echo cd ${PWD}
+  cd "${SRC_PATH}"; echo + cd ${PWD}
 else
-  cd "${SRC_PATH}"; echo cd ${PWD}
+  cd "${SRC_PATH}"; echo + cd ${PWD}
 
   echo
   CMD="git submodule update --recursive --remote"; echo + ${CMD} && ${CMD}
