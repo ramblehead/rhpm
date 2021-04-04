@@ -1,0 +1,34 @@
+#!/bin/bash
+
+set -eu
+set -o pipefail
+
+SDPATH="$(dirname "${BASH_SOURCE[0]}")"
+if [[ ! -d "${SDPATH}" ]]; then SDPATH="${PWD}"; fi
+readonly SDPATH="$(cd -P "${SDPATH}" && pwd)"
+
+readonly PRJ_PATH="${SDPATH}"
+source "${PRJ_PATH}/conf"
+
+cd "${SRC_PATH}"; echo cd ${PWD}
+
+echo
+CMD="git checkout master"; echo + ${CMD} && ${CMD}
+
+echo
+CMD="git pull"; echo + ${CMD} && ${CMD}
+
+readonly HASH=$(git rev-parse --short=11 HEAD)
+readonly version=$(date "+%Y-%m-%d")
+
+echo
+CMD="sed -i"
+CMD+=" -E '"'s/^(readonly SRC_VERSION)=.*$/\1='${HASH}'/'"'"
+CMD+=" ${PRJ_PATH}/conf"
+echo + ${CMD} && eval ${CMD}
+
+echo
+CMD="sed -i"
+CMD+=" -E '"'s/^(readonly BLD_VERSION)=.*$/\1='${version}'/'"'"
+CMD+=" ${PRJ_PATH}/conf"
+echo + ${CMD} && eval ${CMD}

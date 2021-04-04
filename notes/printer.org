@@ -1,0 +1,5 @@
+* HP LaserJet P1005 on Ubuntu
+
+#+BEGIN_SRC
+sudo hp-setup -i
+#+END_SRC

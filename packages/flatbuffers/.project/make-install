@@ -1,0 +1,25 @@
+#!/bin/bash
+
+set -eu
+set -o pipefail
+
+SPATH="$(dirname "${BASH_SOURCE[0]}")"
+if [[ ! -d "${SPATH}" ]]; then SPATH="${PWD}"; fi
+readonly SPATH="$(cd -P "${SPATH}" && pwd)"
+
+readonly PRJ_PATH="${SPATH}"
+source "${PRJ_PATH}/conf"
+
+cd "${BLD_PATH}"; echo + cd ${PWD}
+
+echo
+CMD="make -j${NPROC} install"; echo + ${CMD} && ${CMD}
+
+echo
+cd /usr/local/stow; echo + cd ${PWD}
+
+echo
+CMD="sudo chown -R root:root ${STOW_NAME}"; echo + ${CMD} && ${CMD}
+
+echo
+CMD="sudo stow -v ${STOW_NAME}"; echo + ${CMD} && ${CMD}

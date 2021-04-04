@@ -1,0 +1,30 @@
+#!/bin/bash
+
+set -eu
+set -o pipefail
+
+SDPATH="$(dirname "${BASH_SOURCE[0]}")"
+if [[ ! -d "${SDPATH}" ]]; then SDPATH="${PWD}"; fi
+readonly SDPATH="$(cd -P "${SDPATH}" && pwd)"
+
+readonly PRJ_PATH="${SDPATH}"
+source "${PRJ_PATH}/conf"
+
+if [[ ! -d "${SRC_PATH}" || \
+      (-d "${SRC_PATH}" && -z "$(ls -A ${SRC_PATH})") ]];
+then
+  CMD="git clone --recurse-submodules"
+  CMD+=" https://github.com/google/flatbuffers.git \"${SRC_PATH}\""
+  echo + ${CMD} && eval ${CMD}
+
+  echo
+  cd "${SRC_PATH}"; echo cd ${PWD}
+else
+  cd "${SRC_PATH}"; echo cd ${PWD}
+
+  echo
+  CMD="git submodule update --recursive --remote"; echo + ${CMD} && ${CMD}
+fi
+
+echo
+CMD="git fetch --all"; echo + ${CMD} && ${CMD}

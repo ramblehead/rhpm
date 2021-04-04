@@ -1,0 +1,20 @@
+#!/bin/bash
+
+set -eu
+set -o pipefail
+
+SDPATH="$(dirname "${BASH_SOURCE[0]}")"
+if [[ ! -d "${SDPATH}" ]]; then SDPATH="${PWD}"; fi
+readonly SDPATH="$(cd -P "${SDPATH}" && pwd)"
+
+readonly PRJ_PATH="${SDPATH}"
+source "${PRJ_PATH}/conf"
+
+cd "${BLD_PATH}"; echo cd ${PWD}
+
+echo
+CMD="cmake -G 'Unix Makefiles'"
+CMD+=" -DCMAKE_BUILD_TYPE=Release"
+CMD+=" -DCMAKE_INSTALL_PREFIX=/usr/local/stow/${STOW_NAME}"
+CMD+=" ${SRC_PATH}"
+echo + ${CMD} && eval ${CMD}
