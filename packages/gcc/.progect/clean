@@ -20,9 +20,6 @@ echo + ${CMD[@]} && "${CMD[@]}"
 CMD=(git checkout master)
 echo + ${CMD[@]} && "${CMD[@]}"
 
-# CMD=(git pull)
-# echo + ${CMD[@]} && "${CMD[@]}"
-
 # delete all of the last build stuff
 CMD=(git clean -xdf)
 echo + ${CMD[@]} && "${CMD[@]}"

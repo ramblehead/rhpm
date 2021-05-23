@@ -12,10 +12,6 @@ source "${PRJ_PATH}/conf"
 
 cd "${SRC_PATH}" && echo + cd $PWD
 
-# echo
-# CMD=(git fetch --all)
-# echo + "${CMD[@]}" && "${CMD[@]}"
-
 echo
 CMD=(git checkout "${SRC_VERSION}")
 echo + "${CMD[@]}" && "${CMD[@]}"

@@ -27,7 +27,7 @@ CMD=(sudo stow -v "${STOW_NAME}"); echo + ${CMD[@]} && "${CMD[@]}"
 echo
 cd /usr/local/share/info && echo cd ${PWD}
 
-INFO_DIR_FILE=$(realpath -e "dir.${STOW_NAME}")
+readonly INFO_DIR_FILE=$(realpath -e "dir.${STOW_NAME}")
 
 if [[ -f dir ]]; then
   CMD=(sudo sh -c 'set -x; merge-info dir "'${INFO_DIR_FILE}'" > dirtmp')
