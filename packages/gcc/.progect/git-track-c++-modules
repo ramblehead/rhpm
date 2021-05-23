@@ -15,6 +15,7 @@ cd "${SRC_PATH}" && echo cd ${PWD}
 echo
 CMD=(git fetch --all); echo + ${CMD[@]} && "${CMD[@]}"
 CMD=(git checkout devel/c++-modules); echo + ${CMD[@]} && "${CMD[@]}"
+CMD=(git pull); echo + ${CMD[@]} && "${CMD[@]}"
 
 readonly HASH=$(git rev-parse --short=11 HEAD)
 

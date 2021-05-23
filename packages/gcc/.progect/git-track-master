@@ -13,11 +13,13 @@ source "${PRJ_PATH}/conf"
 cd "${SRC_PATH}" && echo cd ${PWD}
 
 echo
-git fetch --all
-git checkout master
+CMD=(git checkout master); echo + ${CMD[@]} && "${CMD[@]}"
+CMD=(git pull); echo + ${CMD[@]} && "${CMD[@]}"
 
 readonly HASH=$(git rev-parse --short=11 HEAD)
 
 echo
-(set -x
- sed -i -E 's/^(readonly SRC_VERSION)=.*$/\1='${HASH}'/' "${PRJ_PATH}/conf")
+CMD=(sed -i -E)
+CMD+=('s/^(readonly SRC_VERSION)=.*$/\1='${HASH}'/')
+CMD+=("${PRJ_PATH}/conf")
+echo + ${CMD[@]} && "${CMD[@]}"
