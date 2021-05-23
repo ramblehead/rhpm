@@ -10,6 +10,18 @@ readonly SDPATH="$(cd -P "${SDPATH}" && pwd)"
 readonly PRJ_PATH="${SDPATH}"
 source "${PRJ_PATH}/conf"
 
+if [[ -d "/usr/local/stow/${STOW_NAME}" ]]; then
+  cd /usr/local/stow; echo + cd ${PWD}
+
+  echo
+  CMD="stow -vD ${STOW_NAME}"; echo + ${CMD} && ${CMD}
+
+  echo
+  CMD="rm -rfv ${STOW_NAME}"; echo + ${CMD} && ${CMD}
+
+  echo
+fi
+
 cd "${BLD_PATH}"; echo + cd ${PWD}
 
 echo
@@ -19,7 +31,4 @@ echo
 cd /usr/local/stow; echo + cd ${PWD}
 
 echo
-CMD="sudo chown -R root:root ${STOW_NAME}"; echo + ${CMD} && ${CMD}
-
-echo
-CMD="sudo stow -v ${STOW_NAME}"; echo + ${CMD} && ${CMD}
+CMD="stow -v ${STOW_NAME}"; echo + ${CMD} && ${CMD}

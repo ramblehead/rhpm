@@ -20,7 +20,7 @@ if [[ -d "/usr/local/stow/${STOW_NAME}" ]]; then
     sudo mv dirtmp dir
   fi
 
-  cd /usr/local/stow
+  cd /usr/local/stow; echo + cd ${PWD}
   sudo stow -vD "${STOW_NAME}"
 
   if [[ -L "/usr/local/stow/${STOW_NAME}" ]]; then

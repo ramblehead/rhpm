@@ -13,16 +13,16 @@ source "${PRJ_PATH}/conf"
 cd "${BLD_PATH}" && echo cd ${PWD}
 
 echo
-make install
+CMD=(make install); echo + ${CMD[@]} && "${CMD[@]}"
 
 echo
 cd "/usr/local/stow/${STOW_NAME}/share/info" && echo cd ${PWD}
-mv -v dir "dir.${STOW_NAME}"
+CMD=(mv -v dir "dir.${STOW_NAME}"); echo + ${CMD[@]} && "${CMD[@]}"
 
 echo
 cd /usr/local/stow && echo cd ${PWD}
-sudo chown -R root:root "${STOW_NAME}"
-sudo stow -v "${STOW_NAME}"
+CMD=(sudo chown -R root:root "${STOW_NAME}"); echo + ${CMD[@]} && "${CMD[@]}"
+CMD=(sudo stow -v "${STOW_NAME}"); echo + ${CMD[@]} && "${CMD[@]}"
 
 echo
 cd /usr/local/share/info && echo cd ${PWD}
@@ -30,9 +30,10 @@ cd /usr/local/share/info && echo cd ${PWD}
 INFO_DIR_FILE=$(realpath -e "dir.${STOW_NAME}")
 
 if [[ -f dir ]]; then
-  sudo sh -c 'set -x; merge-info dir "'${INFO_DIR_FILE}'" > dirtmp'
-  sudo mv dirtmp dir
+  CMD=(sudo sh -c 'set -x; merge-info dir "'${INFO_DIR_FILE}'" > dirtmp')
+  echo + ${CMD[@]} && eval "${CMD[@]}"
+
+  CMD=(sudo mv dirtmp dir); echo + ${CMD[@]} && "${CMD[@]}"
 else
-  (set -x;
-   sudo cp -v "${INFO_DIR_FILE}" dir)
+  CMD=(sudo cp -v "${INFO_DIR_FILE}" dir); echo + ${CMD[@]} && "${CMD[@]}"
 fi

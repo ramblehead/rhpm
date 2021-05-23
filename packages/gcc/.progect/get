@@ -13,8 +13,11 @@ source "${PRJ_PATH}/conf"
 if [[ ! -d "${SRC_PATH}" || \
       (-d "${SRC_PATH}" && -z "$(ls -A ${SRC_PATH})") ]];
 then
-  git clone git://gcc.gnu.org/git/gcc.git ${SRC_PATH};
-  git fetch --all
+  CMD=(git clone git://gcc.gnu.org/git/gcc.git ${SRC_PATH})
+  echo + ${CMD[@]} && "${CMD[@]}"
+
+  CMD=(git fetch --all); echo + ${CMD[@]} && "${CMD[@]}"
 else
-  git fetch --all
+  cd "${SRC_PATH}" && echo cd ${PWD}
+  CMD=(git fetch --all); echo + ${CMD[@]} && "${CMD[@]}"
 fi

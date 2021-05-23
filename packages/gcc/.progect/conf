@@ -3,12 +3,19 @@
 source "$PRJ_PATH/paths"
 
 readonly PKG_NAME=gcc
-readonly DEP_NAME=ubuntu-18.04
+readonly DEP_NAME=ubuntu-20.04
 
-readonly SRC_VERSION=329b9d79faf
-readonly BLD_VERSION=2020-03-04
+readonly SRC_VERSION=releases/gcc-11.1.0
+#readonly SRC_VERSION=50bc9185c28 # tag releases/gcc-11.1.0
+#readonly SRC_VERSION=releases/gcc-11
+#readonly SRC_VERSION=releases/gcc-10.3.0
 
-readonly BLD_NAME=${BLD_VERSION}_${SRC_VERSION}
+readonly BLD_VERSION=2020-05-21
+
+#readonly BLD_NAME=${BLD_VERSION}_${SRC_VERSION/\//%2f}
+readonly BLD_NAME=${BLD_VERSION}_${SRC_VERSION/\//_}
+#readonly BLD_NAME=${BLD_VERSION}_${SRC_VERSION}
 readonly STOW_NAME=${PKG_NAME}_${BLD_NAME}
 
-readonly GCC_SUFFIX=-10-rh
+#readonly GCC_SUFFIX=-11-rh
+readonly GCC_SUFFIX=-11-rh

@@ -5,8 +5,8 @@ source "$PRJ_PATH/paths"
 readonly PKG_NAME=flatbuffers
 readonly DEP_NAME=ubuntu-20.04
 
-readonly SRC_VERSION=1aa0c2f6a9c
-readonly BLD_VERSION=2021-04-04
+readonly SRC_VERSION=988d7300 # @artizanya/master
+readonly BLD_VERSION=2021-04-09
 
 readonly BLD_NAME=${BLD_VERSION}_${SRC_VERSION}
 readonly STOW_NAME=${PKG_NAME}_${BLD_NAME}

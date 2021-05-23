@@ -11,5 +11,6 @@ readonly PRJ_PATH="${SPATH}"
 source "${PRJ_PATH}/conf"
 
 cd "${BLD_PATH}" && echo cd ${PWD}
-# make -j14
-make -j$(let m=$(nproc)-2; (($m > 0)) && echo $m || echo 1)
+
+CMD=(make "-j$(let m=$(nproc)-1; (($m > 0)) && echo $m || echo 1)")
+echo + "${CMD[@]}" && "${CMD[@]}"

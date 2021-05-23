@@ -11,7 +11,19 @@ https://extensions.gnome.org/extension/1160/dash-to-panel/
 https://extensions.gnome.org/extension/1071/applications-overview-tooltip/
 https://extensions.gnome.org/extension/841/freon/
 
+https://superuser.com/questions/644850/disable-window-is-ready-notification-in-gnome-shell
+https://askubuntu.com/questions/80969/gnome-shell-move-windows-to-front-on-launch-no-more-is-ready-to-use-noti
+https://extensions.gnome.org/extension/2182/noannoyance/
+https://github.com/bdaase/noannoyance
+
 #+BEGIN_SRC
 sudo apt install dconf-editor
 # inside dconf-editor search for disable-lock-screen option
+#+END_SRC
+
+#+BEGIN_SRC
+# Disable Window is Rready Notification
+# use gsettings reset to go back to default value
+gsettings set org.gnome.desktop.wm.preferences auto-raise 'true'
+gsettings set org.gnome.desktop.wm.preferences focus-new-windows 'strict'
 #+END_SRC

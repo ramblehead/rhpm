@@ -25,5 +25,5 @@ echo + ${CMD[@]} && "${CMD[@]}"
 CMD=(git clean -xdf)
 echo + ${CMD[@]} && "${CMD[@]}"
 
-CMD=(rm -vrf build)
-echo + ${CMD[@]} && "${CMD[@]}"
+#CMD=(rm -vrf build)
+#echo + ${CMD[@]} && "${CMD[@]}"

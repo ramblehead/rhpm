@@ -14,7 +14,8 @@ if [[ ! -d "${SRC_PATH}" || \
       (-d "${SRC_PATH}" && -z "$(ls -A ${SRC_PATH})") ]];
 then
   CMD="git clone --recurse-submodules"
-  CMD+=" https://github.com/google/flatbuffers.git \"${SRC_PATH}\""
+  CMD+=" git@gitlab.com:artizanya/external/google-flatbuffers.git \"${SRC_PATH}\""
+  # CMD+=" https://github.com/google/flatbuffers.git \"${SRC_PATH}\""
   echo + ${CMD} && eval ${CMD}
 
   echo

@@ -4,8 +4,8 @@
 #set(CMAKE_C_COMPILER clang-9)
 #set(CMAKE_CXX_COMPILER clang++-9)
 
-set(CMAKE_C_COMPILER gcc-8)
-set(CMAKE_CXX_COMPILER g++-8)
+set(CMAKE_C_COMPILER gcc-11)
+set(CMAKE_CXX_COMPILER g++-11)
 
 # set(CMAKE_C_COMPILER gcc)
 # set(CMAKE_CXX_COMPILER g++)
