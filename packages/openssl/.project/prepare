@@ -12,5 +12,4 @@ source "${PRJ_PATH}/conf"
 
 echo
 cd "${SRC_PATH}" && echo cd $PWD
-git fetch --all
 git checkout "${SRC_VERSION}"

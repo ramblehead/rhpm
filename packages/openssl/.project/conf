@@ -8,8 +8,11 @@ readonly DEP_NAME=ubuntu-18.04
 # readonly SRC_VERSION=46a9ee8c796 # OpenSSL_1_1_1-stable, 2020-08-25
 # readonly BLD_VERSION=2020-08-25
 
-readonly SRC_VERSION=OpenSSL_1_1_1g
-readonly BLD_VERSION=2020-03-14
+# readonly SRC_VERSION=7fc0b937613 # OpenSSL_1_1_1-stable, 2021-05-24
+# readonly BLD_VERSION=2020-03-14
+
+readonly SRC_VERSION=7fc0b937613  # OpenSSL_1_1_1-stable, 2021-05-24
+readonly BLD_VERSION=2021-05-24
 
 readonly BLD_NAME=${BLD_VERSION}_${SRC_VERSION}
 readonly STOW_NAME=${PKG_NAME}_${BLD_NAME}

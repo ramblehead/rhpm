@@ -14,19 +14,26 @@ cd "${SRC_PATH}" && echo cd ${PWD}
 
 readonly BRANCH=OpenSSL_1_1_1-stable
 
+CMD=(git fetch --all); echo + ${CMD[@]} && "${CMD[@]}"
+
 echo
-git fetch --all
-git checkout ${BRANCH}
+CMD=(git checkout ${BRANCH}); echo + ${CMD[@]} && "${CMD[@]}"
+
+echo
+CMD=(git pull); echo + ${CMD[@]} && "${CMD[@]}"
 
 readonly HASH=$(git rev-parse --short=11 HEAD)
+readonly DATE=$(date +"%Y-%m-%d")
 
 echo
-(set -x
- sed -i -E 's/^(readonly SRC_VERSION)=.*$/\1='${HASH}`
-           `' # '${BRANCH}', '$(date +"%Y-%m-%d")'/' \
-           "${PRJ_PATH}/conf")
+CMD=(sed -i -E)
+CMD+=("'"'s/^(readonly SRC_VERSION)=.*$/\1='${HASH})
+CMD+=(' # '${BRANCH}', '${DATE}'/'"'")
+CMD+=("${PRJ_PATH}/conf")
+echo + ${CMD[@]} && eval "${CMD[@]}"
 
-# echo
-# (set -x
-#  sed -i -E 's/^(readonly BLD_VERSION)=.*$/\1='$(date +"%Y-%m-%d")'/' \
-#      "${PRJ_PATH}/conf")
+echo
+CMD=(sed -i -E)
+CMD+=('s/^(readonly BLD_VERSION)=.*$/\1='${DATE}'/')
+CMD+=("${PRJ_PATH}/conf")
+echo + ${CMD[@]} && "${CMD[@]}"
