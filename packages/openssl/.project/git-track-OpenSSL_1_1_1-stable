@@ -28,7 +28,7 @@ readonly DATE=$(date +"%Y-%m-%d")
 echo
 CMD=(sed -i -E)
 CMD+=("'"'s/^(readonly SRC_VERSION)=.*$/\1='${HASH})
-CMD+=(' # '${BRANCH}', '${DATE}'/'"'")
+CMD+=('# '${BRANCH//\//\\\/}', '${DATE}"/'")
 CMD+=("${PRJ_PATH}/conf")
 echo + ${CMD[@]} && eval "${CMD[@]}"
 
