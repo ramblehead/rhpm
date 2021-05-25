@@ -13,8 +13,24 @@ sudo sysctl vm.dirty_bytes=15000000
 
 # Permanent
 echo vm.dirty_bytes=15000000 | sudo tee -a /etc/sysctl.conf
+sudo sysctl -p
 #+END_SRC
 
+
+inotify number of watchers
+#+BEGIN_SRC
+cat /proc/sys/fs/inotify/max_user_watches
+
+# Temporary
+sudo sysctl fs.inotify.max_user_watches=524288
+
+# Permanent
+echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf
+sudo sysctl -p
+#+END_SRC
+
+
+https://dev.to/stephencweiss/running-vscode-on-linux-hitting-my-watcher-limit-and-what-to-do-about-it-52i0
 
 https://github.com/smxi/inxi
 https://github.com/lm-sensors/lm-sensors
