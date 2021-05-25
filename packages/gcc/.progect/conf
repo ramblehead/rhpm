@@ -17,5 +17,7 @@ readonly BLD_NAME=${BLD_VERSION}_${SRC_VERSION/\//_}
 #readonly BLD_NAME=${BLD_VERSION}_${SRC_VERSION}
 readonly STOW_NAME=${PKG_NAME}_${BLD_NAME}
 
+NPROC=$(let m=$(nproc)-1; (($m > 0)) && echo $m || echo 1)
+
 #readonly GCC_SUFFIX=-11-rh
 readonly GCC_SUFFIX=-11-rh

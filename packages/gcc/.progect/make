@@ -10,7 +10,7 @@ readonly SPATH="$(cd -P "${SPATH}" && pwd)"
 readonly PRJ_PATH="${SPATH}"
 source "${PRJ_PATH}/conf"
 
-cd "${BLD_PATH}" && echo cd ${PWD}
+cd "${BLD_PATH}"; echo cd ${PWD}
 
-CMD=(make "-j$(let m=$(nproc)-1; (($m > 0)) && echo $m || echo 1)")
+CMD=(make -j${NPROC})
 echo + "${CMD[@]}" && "${CMD[@]}"

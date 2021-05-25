@@ -10,22 +10,22 @@ readonly SPATH="$(cd -P "${SPATH}" && pwd)"
 readonly PRJ_PATH="${SPATH}"
 source "${PRJ_PATH}/conf"
 
-cd "${BLD_PATH}" && echo cd ${PWD}
+cd "${BLD_PATH}"; echo cd ${PWD}
 
 echo
-CMD=(make install); echo + ${CMD[@]} && "${CMD[@]}"
+CMD=(make -j${NPROC} install); echo + ${CMD[@]} && "${CMD[@]}"
 
 echo
-cd "/usr/local/stow/${STOW_NAME}/share/info" && echo cd ${PWD}
+cd "/usr/local/stow/${STOW_NAME}/share/info"; echo cd ${PWD}
 CMD=(mv -v dir "dir.${STOW_NAME}"); echo + ${CMD[@]} && "${CMD[@]}"
 
 echo
-cd /usr/local/stow && echo cd ${PWD}
+cd /usr/local/stow; echo cd ${PWD}
 CMD=(sudo chown -R root:root "${STOW_NAME}"); echo + ${CMD[@]} && "${CMD[@]}"
 CMD=(sudo stow -v "${STOW_NAME}"); echo + ${CMD[@]} && "${CMD[@]}"
 
 echo
-cd /usr/local/share/info && echo cd ${PWD}
+cd /usr/local/share/info; echo cd ${PWD}
 
 readonly INFO_DIR_FILE=$(realpath -e "dir.${STOW_NAME}")
 

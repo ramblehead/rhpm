@@ -14,10 +14,10 @@ if [[ -d "/usr/local/stow/${STOW_NAME}" ]]; then
   cd /usr/local/stow; echo + cd ${PWD}
 
   echo
-  CMD="stow -vD ${STOW_NAME}"; echo + ${CMD} && ${CMD}
+  CMD=(stow -vD ${STOW_NAME}); echo + ${CMD[@]} && ${CMD[@]}
 
   echo
-  CMD="rm -rfv ${STOW_NAME}"; echo + ${CMD} && ${CMD}
+  CMD=(rm -rfv ${STOW_NAME}); echo + ${CMD[@]} && ${CMD[@]}
 
   echo
 fi
@@ -25,10 +25,10 @@ fi
 cd "${BLD_PATH}"; echo + cd ${PWD}
 
 echo
-CMD="make -j${NPROC} install"; echo + ${CMD} && ${CMD}
+CMD=(make -j${NPROC} install); echo + ${CMD[@]} && ${CMD[@]}
 
 echo
 cd /usr/local/stow; echo + cd ${PWD}
 
 echo
-CMD="stow -v ${STOW_NAME}"; echo + ${CMD} && ${CMD}
+CMD=(stow -v ${STOW_NAME}); echo + ${CMD[@]} && ${CMD[@]}
