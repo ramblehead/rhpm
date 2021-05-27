@@ -30,8 +30,9 @@ cd /usr/local/share/info; echo cd ${PWD}
 readonly INFO_DIR_FILE=$(realpath -e "dir.${STOW_NAME}")
 
 if [[ -f dir ]]; then
-  CMD=(sudo sh -c 'set -x; merge-info dir "'${INFO_DIR_FILE}'" > dirtmp')
-  echo + ${CMD[@]} && eval "${CMD[@]}"
+  CMD=(sudo sh -c)
+  CMD+=("merge-info dir ${INFO_DIR_FILE} > dirtmp")
+  echo + ${CMD[@]} && "${CMD[@]}"
 
   CMD=(sudo mv dirtmp dir); echo + ${CMD[@]} && "${CMD[@]}"
 else
