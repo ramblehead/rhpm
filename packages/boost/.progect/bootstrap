@@ -1,0 +1,31 @@
+#!/bin/bash
+
+set -eu
+set -o pipefail
+
+SPATH="$(dirname "${BASH_SOURCE[0]}")"
+if [[ ! -d "${SPATH}" ]]; then SPATH="${PWD}"; fi
+readonly SPATH="$(cd -P "${SPATH}" && pwd)"
+
+readonly PRJ_PATH="${SPATH}"
+source "${PRJ_PATH}/conf"
+
+cd "${SRC_PATH}"; echo + cd ${PWD}
+
+echo
+CMD=(echo)
+# CMD+=('"using mpi : : <find-shared-library>impi ;"')
+CMD+=('"using mpi ;"')
+CMD+=("> tools/build/src/user-config.jam")
+echo + ${CMD[@]} && eval ${CMD[@]}
+
+
+echo
+CMD=(echo)
+# CMD+=('"using gcc : 11 : /usr/bin/g++-11 ;"')
+CMD+=('"using gcc : 11~c++20 : g++-11 : <cxxflags>-std=c++20 ;"')
+CMD+=(">> tools/build/src/user-config.jam")
+echo + ${CMD[@]} && eval ${CMD[@]}
+
+echo
+CMD=(./bootstrap.sh --with-python=python3); echo ${CMD[@]} && ${CMD[@]}

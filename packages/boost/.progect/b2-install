@@ -1,0 +1,37 @@
+#!/bin/bash
+
+set -eu
+set -o pipefail
+
+SPATH="$(dirname "${BASH_SOURCE[0]}")"
+if [[ ! -d "${SPATH}" ]]; then SPATH="${PWD}"; fi
+readonly SPATH="$(cd -P "${SPATH}" && pwd)"
+
+readonly PRJ_PATH="${SPATH}"
+source "${PRJ_PATH}/conf"
+
+cd "${SRC_PATH}"; echo + cd ${PWD}
+
+CMD=(./b2)
+#CMD+=(stage)
+CMD+=(install)
+CMD+=(-d+2 -q)
+CMD+=(-j${NPROC})
+CMD+=(--prefix=/usr/local/stow/${STOW_NAME})
+#CMD+=(--build-type=complete)
+CMD+=(--build-dir=${BLD_PATH})
+CMD+=(--layout=versioned)
+CMD+=(toolset=gcc-11~c++20)
+CMD+=(variant=release)
+CMD+=(threading=multi)
+CMD+=(link=static,shared)
+#CMD+=(link=shared)
+#CMD+=(link=static)
+#CMD+=(runtime-link=static)
+CMD+=('2>&1' '|' tee "$BLD_PATH/b2.log")
+echo + ${CMD[@]} && eval "${CMD[@]}"
+
+echo
+cd /usr/local/stow; echo cd ${PWD}
+CMD=(sudo chown -R root:root "${STOW_NAME}"); echo + ${CMD[@]} && "${CMD[@]}"
+CMD=(sudo stow -v "${STOW_NAME}"); echo + ${CMD[@]} && "${CMD[@]}"

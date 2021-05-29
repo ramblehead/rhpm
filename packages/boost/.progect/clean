@@ -1,0 +1,31 @@
+#!/bin/bash
+
+set -eu
+set -o pipefail
+
+SPATH="$(dirname "${BASH_SOURCE[0]}")"
+if [[ ! -d "${SPATH}" ]]; then SPATH="${PWD}"; fi
+readonly SPATH="$(cd -P "${SPATH}" && pwd)"
+
+readonly PRJ_PATH="${SPATH}"
+source "${PRJ_PATH}/conf"
+
+cd "${SRC_PATH}"; echo + cd ${PWD}
+
+CMD=(git reset --hard)
+echo + ${CMD[@]} && "${CMD[@]}"
+
+CMD=(git submodule foreach --recursive git reset --hard)
+echo + ${CMD[@]} && "${CMD[@]}"
+
+CMD=(git checkout master)
+echo + ${CMD[@]} && "${CMD[@]}"
+
+CMD=(git clean -xdf)
+echo + ${CMD[@]} && "${CMD[@]}"
+
+CMD=(git submodule foreach --recursive git clean -xfd)
+echo + ${CMD[@]} && "${CMD[@]}"
+
+CMD=(rm -vrf "${BLD_PATH}")
+echo + ${CMD[@]} && "${CMD[@]}"
