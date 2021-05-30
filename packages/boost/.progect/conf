@@ -5,6 +5,9 @@ source "$PRJ_PATH/paths"
 readonly PKG_NAME=boost
 readonly DEP_NAME=ubuntu-20.04
 
+# readonly SRC_VERSION=boost-1.65.1
+# readonly BLD_VERSION=2020-05-30
+
 readonly SRC_VERSION=boost-1.76.0
 readonly BLD_VERSION=2020-05-27
 
