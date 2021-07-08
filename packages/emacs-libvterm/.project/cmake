@@ -8,15 +8,22 @@ if [[ ! -d "${SPATH}" ]]; then SPATH="${PWD}"; fi
 readonly SPATH="$(cd -P "${SPATH}" && pwd)"
 
 readonly PRJ_PATH="${SPATH}"
+
+# shellcheck source=./conf
 source "${PRJ_PATH}/conf"
 
-cd "${SRC_PATH}/${BLD_DIR_NAME}" && echo + cd ${PWD}
+# shellcheck disable=SC2153
+cd "${SRC_PATH}/${BLD_DIR_NAME}"; echo + cd "${PWD}"
+
+export CC=gcc-11
+export CXX=g++-11
 
 echo
-CMD=(cmake "-DCMAKE_INSTALL_PREFIX=/usr/local/stow/${PKG_NAME}_${BLD_NAME}")
-CMD+=(-DCMAKE_BUILD_TYPE=RelWithDebInfo)
+CMD=(cmake)
+CMD+=("-DCMAKE_INSTALL_PREFIX=/usr/local/stow/${PKG_NAME}_${BLD_NAME}")
+CMD+=('-DCMAKE_BUILD_TYPE=RelWithDebInfo')
 CMD+=(..)
-echo + ${CMD[@]} && "${CMD[@]}"
+echo + "${CMD[@]}" && "${CMD[@]}"
 
 #       -DCMAKE_TOOLCHAIN_FILE="${PRJ_PATH}/86_64-linux-gnu-gcc.cmake" \
 #       -USE_SYSTEM_LIBVTERM=yes

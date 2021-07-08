@@ -17,6 +17,7 @@ export CXX=g++-11
 
 CMD=(./configure)
 CMD+=(--with-native-compilation)
+# CMD+=(--without-libsystemd)
 # CMD+=(--with-native-image-api)
 CMD+=('--with-file-notification=inotify')
 CMD+=(--with-imagemagick)

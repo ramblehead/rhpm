@@ -9,10 +9,14 @@ if [[ ! -d "${SPATH}" ]]; then SPATH="${PWD}"; fi
 readonly SPATH="$(cd -P "${SPATH}" && pwd)"
 
 readonly PRJ_PATH="${SPATH}"
+
+# shellcheck source=./conf
 source "${PRJ_PATH}/conf"
 
-cd "${SRC_PATH}/${BLD_DIR_NAME}" && echo + cd ${PWD}
+# shellcheck disable=SC2153
+cd "${SRC_PATH}/${BLD_DIR_NAME}" && echo + cd "${PWD}"
 
 echo
-CMD=(make -j${NPROC})
-echo + ${CMD[@]} && "${CMD[@]}"
+CMD=(make)
+CMD+=("-j${NPROC}")
+echo + "${CMD[@]}" && "${CMD[@]}"

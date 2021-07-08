@@ -26,17 +26,17 @@ CMD=(mv -v dir "dir.${STOW_NAME}"); echo + ${CMD[@]} && "${CMD[@]}"
 echo
 cd /usr/local/stow; echo + cd ${PWD}
 
-sudo --reset-timestamp
+# sudo --reset-timestamp
 CMD=(sudo chown -R root:root "${STOW_NAME}"); echo + ${CMD[@]} && "${CMD[@]}"
 
-sudo --reset-timestamp
+# sudo --reset-timestamp
 CMD=(sudo stow -v "${STOW_NAME}"); echo + ${CMD[@]} && "${CMD[@]}"
 
 cd /usr/local/share/info; echo cd + ${PWD}
 
 readonly INFO_DIR_FILE=$(sudo realpath -e "dir.${STOW_NAME}")
 
-sudo --reset-timestamp
+# sudo --reset-timestamp
 if [[ -f dir ]]; then
   CMD=(sudo merge-info)
   CMD+=(dir)

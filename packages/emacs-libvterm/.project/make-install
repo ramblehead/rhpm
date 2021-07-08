@@ -8,27 +8,29 @@ if [[ ! -d "${SPATH}" ]]; then SPATH="${PWD}"; fi
 readonly SPATH="$(cd -P "${SPATH}" && pwd)"
 
 readonly PRJ_PATH="${SPATH}"
+
+# shellcheck source=./conf
 source "${PRJ_PATH}/conf"
 
 readonly DST="${STOW_NAME}/share/emacs/site-lisp/${PKG_NAME}"
 
-cd /usr/local/stow && echo + cd ${PWD}
+cd /usr/local/stow && echo + cd "${PWD}"
 
 echo
 CMD=(mkdir -p "${DST}")
-echo + ${CMD[@]} && "${CMD[@]}"
+echo + "${CMD[@]}" && "${CMD[@]}"
 
 echo
 CMD=(cp -vR "${SRC_PATH}"/* "${DST}")
-echo + ${CMD[@]} && "${CMD[@]}"
+echo + "${CMD[@]}" && "${CMD[@]}"
 
 echo
-cd /usr/local/stow && echo + cd ${PWD}
+cd /usr/local/stow && echo + cd "${PWD}"
 
 echo
 CMD=(sudo chown -R root:root "${STOW_NAME}")
-echo + ${CMD[@]} && "${CMD[@]}"
+echo + "${CMD[@]}" && "${CMD[@]}"
 
 echo
 CMD=(sudo stow -v "${STOW_NAME}")
-echo + ${CMD[@]} && "${CMD[@]}"
+echo + "${CMD[@]}" && "${CMD[@]}"

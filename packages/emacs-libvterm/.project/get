@@ -13,10 +13,16 @@ source "${PRJ_PATH}/conf"
 if [[ ! -d "${SRC_PATH}" || \
       (-d "${SRC_PATH}" && -z "$(ls -A ${SRC_PATH})") ]];
 then
-  git clone --recursive https://github.com/akermu/emacs-libvterm.git "${SRC_PATH}"
-  git fetch --all
+  CMD=(git clone)
+  CMD+=(--recursive https://github.com/akermu/emacs-libvterm.git)
+  CMD+=("${SRC_PATH}")
+  echo + ${CMD[@]} && "${CMD[@]}"
+
+  CMD=(git fetch --all --tags)
+  echo + ${CMD[@]} && "${CMD[@]}"
 else
-  cd "${SRC_PATH}"
-  git submodule update --recursive --remote
-  git fetch --all
+  cd "${SRC_PATH}"; echo + cd ${PWD}
+
+  CMD=(git fetch --all --tags)
+  echo + ${CMD[@]} && "${CMD[@]}"
 fi
