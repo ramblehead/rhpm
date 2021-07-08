@@ -2,10 +2,10 @@
 
 source "$PRJ_PATH/paths"
 
-readonly PKG_NAME=emacs
+readonly PKG_NAME=jansson
 readonly DEP_NAME=ubuntu-20.04
 
-readonly SRC_VERSION=6d580b00 # master, 2021-07-08
+readonly SRC_VERSION=0dffb428 # master, 2021-07-08
 readonly BLD_VERSION=2021-07-08
 
 readonly BLD_NAME=${BLD_VERSION}_${SRC_VERSION}

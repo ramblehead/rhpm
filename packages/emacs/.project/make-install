@@ -10,32 +10,40 @@ readonly SPATH="$(cd -P "${SPATH}" && pwd)"
 readonly PRJ_PATH="${SPATH}"
 source "${PRJ_PATH}/conf"
 
-cd "${SRC_PATH}" && echo cd ${PWD}
+cd "${SRC_PATH}"; echo + cd ${PWD}
 
-make install \
-     install-man \
-     prefix="/usr/local/stow/${STOW_NAME}"
-
-echo
-
-cd /usr/local/stow/${STOW_NAME}/share/info && echo cd ${PWD}
-mv -v dir "dir.${STOW_NAME}"
+CMD=(make)
+CMD+=(install)
+CMD+=(install-man)
+CMD+=("prefix=/usr/local/stow/${STOW_NAME}")
+echo + ${CMD[@]} && "${CMD[@]}"
 
 echo
+cd /usr/local/stow/${STOW_NAME}/share/info; echo + cd ${PWD}
 
-cd /usr/local/stow && echo cd ${PWD}
-sudo chown -R root:root "${STOW_NAME}"
-sudo stow -v "${STOW_NAME}"
+CMD=(mv -v dir "dir.${STOW_NAME}"); echo + ${CMD[@]} && "${CMD[@]}"
 
 echo
+cd /usr/local/stow; echo + cd ${PWD}
 
-cd /usr/local/share/info && echo cd ${PWD}
+sudo --reset-timestamp
+CMD=(sudo chown -R root:root "${STOW_NAME}"); echo + ${CMD[@]} && "${CMD[@]}"
 
-INFO_DIR_FILE=$(sudo realpath -e "dir.${STOW_NAME}")
+sudo --reset-timestamp
+CMD=(sudo stow -v "${STOW_NAME}"); echo + ${CMD[@]} && "${CMD[@]}"
 
+cd /usr/local/share/info; echo cd + ${PWD}
+
+readonly INFO_DIR_FILE=$(sudo realpath -e "dir.${STOW_NAME}")
+
+sudo --reset-timestamp
 if [[ -f dir ]]; then
-  sudo sh -c 'set -x; merge-info dir "'${INFO_DIR_FILE}'" > dir'
+  CMD=(sudo merge-info)
+  CMD+=(dir)
+  CMD+=("${INFO_DIR_FILE}")
+  CMD+=('> dir')
+  echo + ${CMD[@]} && "${CMD[@]}"
 else
-  (set -x;
-   sudo cp -v "${INFO_DIR_FILE}" dir)
+  CMD=(sudo cp -v "${INFO_DIR_FILE}" dir)
+  echo + ${CMD[@]} && "${CMD[@]}"
 fi

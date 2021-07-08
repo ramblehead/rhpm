@@ -10,7 +10,20 @@ readonly SPATH="$(cd -P "${SPATH}" && pwd)"
 readonly PRJ_PATH="${SPATH}"
 source "${PRJ_PATH}/conf"
 
-cd "${SRC_PATH}" && echo cd ${PWD}
+cd "${SRC_PATH}" && echo + cd ${PWD}
 
-./configure --with-xft --with-x-toolkit=gtk3 --with-xwidgets \
-            --with-modules
+export CC=gcc-11
+export CXX=g++-11
+
+CMD=(./configure)
+CMD+=(--with-native-compilation)
+# CMD+=(--with-native-image-api)
+CMD+=('--with-file-notification=inotify')
+CMD+=(--with-imagemagick)
+CMD+=(--with-libgmp)
+CMD+=(--with-xft)
+CMD+=('--with-x-toolkit=gtk3')
+CMD+=(--with-xwidgets)
+CMD+=(--with-modules)
+CMD+=(--with-json)
+echo + ${CMD[@]} && "${CMD[@]}"

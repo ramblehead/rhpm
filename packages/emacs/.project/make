@@ -12,10 +12,11 @@ source "${PRJ_PATH}/conf"
 
 cd "${SRC_PATH}" && echo cd ${PWD}
 
-if [[ -z "$@" ]]; then
-  # (set -x; make bootstrap docs -j${NPROC})
-  (set -x; make bootstrap docs)
-else
-  #e.g. make src
-  make $@
-fi
+export CC=gcc-11
+export CXX=g++-11
+
+cd "${SRC_PATH}" && echo + cd ${PWD}
+
+echo
+CMD=(make bootstrap docs)
+echo + ${CMD[@]} && "${CMD[@]}"

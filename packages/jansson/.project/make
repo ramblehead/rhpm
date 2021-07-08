@@ -10,7 +10,11 @@ readonly SPATH="$(cd -P "${SPATH}" && pwd)"
 readonly PRJ_PATH="${SPATH}"
 source "${PRJ_PATH}/conf"
 
-cd "${SRC_PATH}"; echo + cd ${PWD}
+export CC=gcc-11
+export CXX=g++-11
+
+cd "${SRC_PATH}" && echo + cd ${PWD}
 
 echo
-CMD=(git checkout "${SRC_VERSION}"); echo + "${CMD[@]}" && "${CMD[@]}"
+CMD=(make -j${NPROC})
+echo + ${CMD[@]} && "${CMD[@]}"

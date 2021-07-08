@@ -18,6 +18,6 @@ then
 
   CMD=(git fetch --all); echo + ${CMD[@]} && "${CMD[@]}"
 else
-  cd "${SRC_PATH}"; echo cd ${PWD}
+  cd "${SRC_PATH}"; echo + cd ${PWD}
   CMD=(git fetch --all); echo + ${CMD[@]} && "${CMD[@]}"
 fi

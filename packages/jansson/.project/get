@@ -13,7 +13,7 @@ source "${PRJ_PATH}/conf"
 if [[ ! -d "${SRC_PATH}" || \
       (-d "${SRC_PATH}" && -z "$(ls -A ${SRC_PATH})") ]];
 then
-  CMD=(git clone git://git.savannah.gnu.org/emacs.git "${SRC_PATH}")
+  CMD=(git clone https://github.com/akheron/jansson.git "${SRC_PATH}")
   echo + ${CMD[@]} && "${CMD[@]}"
 
   CMD=(git fetch --all --tags)

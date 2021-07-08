@@ -12,4 +12,10 @@ source "${PRJ_PATH}/conf"
 
 cd "${SRC_PATH}" && echo + cd ${PWD}
 
-CMD=(./autogen.sh all); echo + ${CMD[@]} && "${CMD[@]}"
+echo
+CMD=(make install); echo + ${CMD[@]} && "${CMD[@]}"
+
+echo
+cd /usr/local/stow; echo + cd ${PWD}
+CMD=(sudo chown -R root:root "${STOW_NAME}"); echo + ${CMD[@]} && "${CMD[@]}"
+CMD=(sudo stow -v "${STOW_NAME}"); echo + ${CMD[@]} && "${CMD[@]}"
