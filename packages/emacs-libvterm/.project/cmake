@@ -9,16 +9,16 @@ readonly SPATH="$(cd -P "${SPATH}" && pwd)"
 
 readonly PRJ_PATH="${SPATH}"
 
+export CC=gcc-11
+export CXX=g++-11
+
 # shellcheck source=./conf
 source "${PRJ_PATH}/conf"
 
 # shellcheck disable=SC2153
 cd "${SRC_PATH}/${BLD_DIR_NAME}"; echo + cd "${PWD}"
 
-export CC=gcc-11
-export CXX=g++-11
 
-echo
 CMD=(cmake)
 CMD+=("-DCMAKE_INSTALL_PREFIX=/usr/local/stow/${PKG_NAME}_${BLD_NAME}")
 CMD+=('-DCMAKE_BUILD_TYPE=RelWithDebInfo')

@@ -8,8 +8,11 @@ if [[ ! -d "${SPATH}" ]]; then SPATH="${PWD}"; fi
 readonly SPATH="$(cd -P "${SPATH}" && pwd)"
 
 readonly PRJ_PATH="${SPATH}"
+
+# shellcheck source=./conf
 source "${PRJ_PATH}/conf"
 
-cd ${PKG_PATH} && echo + cd $PWD
+# shellcheck disable=SC2153
+cd "${PKG_PATH}" && echo + cd "$PWD"
 
 CMD=(rm -vrf "${SRC_PATH}"); echo + "${CMD[@]}" && "${CMD[@]}"

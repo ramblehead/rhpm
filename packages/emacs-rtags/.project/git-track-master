@@ -10,21 +10,27 @@ readonly SPATH="$(cd -P "${SPATH}" && pwd)"
 readonly PRJ_PATH="${SPATH}"
 source "${PRJ_PATH}/conf"
 
-cd "${SRC_PATH}" && echo cd ${PWD}
+cd "${SRC_PATH}" && echo + cd ${PWD}
+
+readonly BRANCH=master
 
 echo
-git checkout master
-git submodule update --recursive --remote
-git pull
+CMD=(git fetch --all); echo + ${CMD[@]} && "${CMD[@]}"
+CMD=(git checkout ${BRANCH}); echo + ${CMD[@]} && "${CMD[@]}"
+CMD=(git pull); echo + ${CMD[@]} && "${CMD[@]}"
 
-readonly HASH=$(git rev-parse --short=11 HEAD)
-readonly version=$(date "+%Y-%m-%d")
-
-echo
-(set -x
- sed -i -E 's/^(readonly SRC_VERSION)=.*$/\1='${HASH}'/' "${PRJ_PATH}/conf")
+readonly HASH=$(git rev-parse --short=8 HEAD)
+readonly DATE=$(date +"%Y-%m-%d")
 
 echo
-(set -x
- sed -i -E 's/^(readonly BLD_VERSION)=.*$/\1='${version}'/' \
-           "${PRJ_PATH}/conf")
+CMD=(sed -i -E)
+CMD+=("'"'s/^(readonly SRC_VERSION)=.*$/\1='${HASH})
+CMD+=('# '${BRANCH//\//\\\/}', '${DATE}"/'")
+CMD+=("${PRJ_PATH}/conf")
+echo + ${CMD[@]} && eval "${CMD[@]}"
+
+echo
+CMD=(sed -i -E)
+CMD+=('s/^(readonly BLD_VERSION)=.*$/\1='${DATE}'/')
+CMD+=("${PRJ_PATH}/conf")
+echo + ${CMD[@]} && "${CMD[@]}"

@@ -8,14 +8,18 @@ if [[ ! -d "${SPATH}" ]]; then SPATH="${PWD}"; fi
 readonly SPATH="$(cd -P "${SPATH}" && pwd)"
 
 readonly PRJ_PATH="${SPATH}"
+
+# shellcheck source=./conf
 source "${PRJ_PATH}/conf"
 
-cd "${BLD_PATH}" && echo cd ${PWD}
-(set -x; make -j${NPROC} install)
+cd "${BLD_PATH}" && echo cd "${PWD}"
 
 echo
-cd /usr/local/stow && echo cd ${PWD}
-(set -x; sudo chown -R root:root "${STOW_NAME}")
+CMD=(make install)
+CMD+=("-j${NPROC}")
+echo + "${CMD[@]}" && "${CMD[@]}"
 
 echo
-(set -x; sudo stow -v "${STOW_NAME}")
+cd /usr/local/stow; echo cd "${PWD}"
+CMD=(sudo chown -R root:root "${STOW_NAME}"); echo + "${CMD[@]}" && "${CMD[@]}"
+CMD=(sudo stow -v "${STOW_NAME}"); echo + "${CMD[@]}" && "${CMD[@]}"

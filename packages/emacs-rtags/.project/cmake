@@ -8,21 +8,14 @@ if [[ ! -d "${SPATH}" ]]; then SPATH="${PWD}"; fi
 readonly SPATH="$(cd -P "${SPATH}" && pwd)"
 
 readonly PRJ_PATH="${SPATH}"
+
+# shellcheck source=./conf
 source "${PRJ_PATH}/conf"
 
-cd "${BLD_PATH}" && echo cd ${PWD}
+cd "${BLD_PATH}"; echo + cd "${PWD}"
 
-echo
-
-readonly DEP_PATH="${PRJ_PATH}/dependencies/${DEP_NAME}"
-
-if [[ -d "${DEP_PATH}" ]]; then
-  (set -x
-   cmake -DCMAKE_INSTALL_PREFIX="/usr/local/stow/${STOW_NAME}" \
-         -DCMAKE_TOOLCHAIN_FILE="${DEP_PATH}/86_64-linux-gnu-clang.cmake" \
-         "${SRC_PATH}")
-else
-  (set -x
-   cmake -DCMAKE_INSTALL_PREFIX="/usr/local/stow/${STOW_NAME}" \
-         "${SRC_PATH}")
-fi
+CMD=(cmake)
+CMD+=("-DCMAKE_INSTALL_PREFIX=/usr/local/stow/${STOW_NAME}")
+CMD+=("-DLIBCLANG_LLVM_CONFIG_EXECUTABLE=/usr/bin/llvm-config-${CLANG_VERSION}")
+CMD+=("${SRC_PATH}")
+echo + "${CMD[@]}" && "${CMD[@]}"

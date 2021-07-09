@@ -8,13 +8,15 @@ if [[ ! -d "${SPATH}" ]]; then SPATH="${PWD}"; fi
 readonly SPATH="$(cd -P "${SPATH}" && pwd)"
 
 readonly PRJ_PATH="${SPATH}"
+
+# shellcheck source=./conf
 source "${PRJ_PATH}/conf"
 
-cd "${SRC_PATH}" && echo cd $PWD
-git fetch --all
+# shellcheck disable=SC2153
+cd "${SRC_PATH}" && echo + cd "$PWD"
 
 echo
-(set -x; git checkout "${SRC_VERSION}")
+CMD=(git checkout "${SRC_VERSION}"); echo + "${CMD[@]}" && "${CMD[@]}"
 
 echo
-(set -x; mkdir -vp "${BLD_PATH}")
+CMD=(mkdir -vp "${BLD_PATH}"); echo + "${CMD[@]}" && "${CMD[@]}"
