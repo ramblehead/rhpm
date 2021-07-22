@@ -1,4 +1,0 @@
-#!/bin/bash
-
-NVM_DIR=~/.nvm
-NVM_VERSION=v0.35.2

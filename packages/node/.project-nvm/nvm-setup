@@ -8,18 +8,26 @@ if [[ ! -d "${SPATH}" ]]; then SPATH="${PWD}"; fi
 readonly SPATH="$(cd -P "${SPATH}" && pwd)"
 
 readonly PRJ_PATH="${SPATH}"
+
+# shellcheck source=./conf
 source "${PRJ_PATH}/conf"
 
 #cd "${NVM_DIR}"
 #git checkout ${NVM_VERSION}
 
-cat <<'EOT' >> ~/.profile
+cat <<'EOT' >> ~/.bashrc
 
-export NVM_DIR="/home/rh/.nvm"
+export NVM_DIR="${HOME}/.nvm"
+
+# load nvm
 [ -s "${NVM_DIR}/nvm.sh" ] && \. "${NVM_DIR}/nvm.sh"
 
+# load nvm bash_completion
+[ -s "${NVM_DIR}/bash_completion" ] && \. "${NVM_DIR}/bash_completion"
+
+# set ${NPM_ROOT} to current version
 NPM_ROOT="$(which npm > /dev/null && npm root -g)"
-if [ ! -z "$NPM_ROOT" ]; then
-  export NODE_PATH="$NPM_ROOT"
+if [ ! -z "${NPM_ROOT}" ]; then
+  export NODE_PATH="${NPM_ROOT}"
 fi
 EOT

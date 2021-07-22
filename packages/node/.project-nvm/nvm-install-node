@@ -6,4 +6,6 @@
 set -eu
 set -o pipefail
 
+source ${NVM_DIR}/nvm.sh
+
 nvm install node

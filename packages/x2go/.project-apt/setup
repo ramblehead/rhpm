@@ -8,6 +8,8 @@ if [[ ! -d "${SPATH}" ]]; then SPATH="${PWD}"; fi
 readonly SPATH="$(cd -P "${SPATH}" && pwd)"
 
 readonly PRJ_PATH="${SPATH}"
-source "${PRJ_PATH}/conf"
 
-git clone https://github.com/creationix/nvm.git "${NVM_DIR}"
+cat <<'EOT' >> ~/.profile
+
+[ -z "${SSH_AUTH_SOCK}" ] && eval "$(ssh-agent -s)"
+EOT

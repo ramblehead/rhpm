@@ -1,0 +1,5 @@
+#!/bin/bash
+# shellcheck disable=SC2034
+
+NVM_DIR=~/.nvm
+# NVM_VERSION=v0.35.2
