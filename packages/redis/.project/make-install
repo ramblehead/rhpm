@@ -1,0 +1,70 @@
+#!/bin/bash
+
+set -eu
+set -o pipefail
+
+SDPATH="$(dirname "${BASH_SOURCE[0]}")"
+if [[ ! -d "${SDPATH}" ]]; then SDPATH="${PWD}"; fi
+readonly SDPATH="$(cd -P "${SDPATH}" && pwd)"
+
+readonly PRJ_PATH="${SDPATH}"
+
+# shellcheck source=conf
+source "${PRJ_PATH}/conf"
+
+cd "${SRC_PATH}" && echo cd "${PWD}"
+
+echo
+CMD=(export "PREFIX=/usr/local/stow/${STOW_NAME}")
+echo + "${CMD[@]}" && "${CMD[@]}"
+CMD=(export "USE_SYSTEMD=yes")
+echo + "${CMD[@]}" && "${CMD[@]}"
+
+echo
+CMD=(make install)
+echo + "${CMD[@]}" && "${CMD[@]}"
+
+echo
+CMD=(cp -vr "$PRJ_PATH"/root/* "/usr/local/stow/${STOW_NAME}")
+echo + "${CMD[@]}" && "${CMD[@]}"
+
+if ! grep -qE '^#*\s*(supervised\s+).*' "${SRC_PATH}/redis.conf" ||
+    ! grep -qE '^#*\s*(dir\s+).*' "${SRC_PATH}/redis.conf"
+then
+  echo
+  CMD=("${SRC_PATH}/redis.conf is either missformatted, ")
+  CMD+=("or its format has changed.")
+  echo "${CMD[@]}"
+  exit 1
+fi
+
+echo
+CMD=(mkdir -vp "/usr/local/stow/${STOW_NAME}/etc/redis")
+echo + "${CMD[@]}" && "${CMD[@]}"
+
+echo
+CMD=(cp "${SRC_PATH}/redis.conf" "/usr/local/stow/${STOW_NAME}/etc/redis")
+echo + "${CMD[@]}" && "${CMD[@]}"
+
+echo
+CMD=(sed -i -E)
+CMD+=("'s/^#*\s*(supervised\s+).*/\1systemd/'")
+CMD+=("/usr/local/stow/${STOW_NAME}/etc/redis/redis.conf")
+echo + "${CMD[@]}" && eval "${CMD[@]}"
+
+echo
+CMD=(sed -i -E)
+CMD+=("'s/^#*\s*(dir\s+).*/\1\/var\/lib\/redis/'")
+CMD+=("/usr/local/stow/${STOW_NAME}/etc/redis/redis.conf")
+echo + "${CMD[@]}" && eval "${CMD[@]}"
+
+echo
+cd /usr/local/stow && echo cd "${PWD}"
+
+echo
+CMD=(sudo chown -R root:root "${STOW_NAME}")
+echo + "${CMD[@]}" && "${CMD[@]}"
+
+echo
+CMD=(sudo stow -v "${STOW_NAME}")
+echo + "${CMD[@]}" && "${CMD[@]}"

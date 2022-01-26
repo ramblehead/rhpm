@@ -1,0 +1,34 @@
+#!/bin/bash
+
+set -eu
+set -o pipefail
+
+SDPATH="$(dirname "${BASH_SOURCE[0]}")"
+if [[ ! -d "${SDPATH}" ]]; then SDPATH="${PWD}"; fi
+readonly SDPATH="$(cd -P "${SDPATH}" && pwd)"
+
+readonly PRJ_PATH="${SDPATH}"
+
+# shellcheck source=conf
+source "${PRJ_PATH}/conf"
+
+if (( $(id -u) != 0 )); then
+  echo "Please, run as root"
+  exit 1
+fi
+
+echo
+CMD=(service redis stop)
+echo + "${CMD[@]}" && "${CMD[@]}"
+
+echo
+CMD=(sudo deluser redis)
+echo + "${CMD[@]}" && "${CMD[@]}"
+
+echo
+echo '/var/lib/redis is not deleted - delete it manually.'
+
+echo
+echo '"vm.overcommit_memory = 1" is not removed from /etc/sysctl.conf'
+echo 'remove it manually if needed.'
+echo 'Run "sysctl vm.overcommit_memory=0" to avoid system restart.'

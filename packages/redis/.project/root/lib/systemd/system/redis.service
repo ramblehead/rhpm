@@ -1,0 +1,15 @@
+[Unit]
+Description=Redis: in-memory data structure store
+After=network.target
+
+[Service]
+User=redis
+Group=redis
+Type=notify
+ExecStart=/usr/local/bin/redis-server /usr/local/etc/redis/redis.conf
+ExecStop=/usr/local/bin/redis-cli shutdown
+RestartSec=5s
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
