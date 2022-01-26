@@ -39,7 +39,6 @@ echo + "${CMD[@]}" && "${CMD[@]}"
 if ! grep -qE '^\s*vm\.overcommit_memory' /etc/sysctl.conf
 then
   echo
-  # CMD=("echo 'vm.overcommit_memory = 1' >> /etc/sysctl.conf")
   CMD=(printf "'vm.overcommit_memory = 1\n\n'")
   CMD+=('>>')
   CMD+=(/etc/sysctl.conf)
