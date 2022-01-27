@@ -1,0 +1,34 @@
+#!/bin/bash
+
+set -eu
+set -o pipefail
+
+SDPATH="$(dirname "${BASH_SOURCE[0]}")"
+if [[ ! -d "${SDPATH}" ]]; then SDPATH="${PWD}"; fi
+readonly SDPATH="$(cd -P "${SDPATH}" && pwd)"
+
+readonly PRJ_PATH="${SDPATH}"
+
+# shellcheck source=conf
+source "${PRJ_PATH}/conf"
+
+cd "${SRC_PATH}" && echo cd "${PWD}"
+
+echo
+CMD=(mkdir -vp "/usr/local/stow/${STOW_NAME}/lib")
+echo + "${CMD[@]}" && "${CMD[@]}"
+
+echo
+CMD=(cp -v ./target/release/librejson.so "/usr/local/stow/${STOW_NAME}/lib")
+echo + "${CMD[@]}" && "${CMD[@]}"
+
+echo
+cd /usr/local/stow && echo cd "${PWD}"
+
+echo
+CMD=(sudo chown -R root:root "${STOW_NAME}")
+echo + "${CMD[@]}" && "${CMD[@]}"
+
+echo
+CMD=(sudo stow -v "${STOW_NAME}")
+echo + "${CMD[@]}" && "${CMD[@]}"

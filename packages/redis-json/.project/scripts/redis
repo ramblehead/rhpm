@@ -1,0 +1,4 @@
+#!/bin/bash
+
+sudo -u redis -g redis \
+     redis-server /usr/local/etc/redis/redis.conf --loadmodule /usr/local/lib/librejson.so --supervised no

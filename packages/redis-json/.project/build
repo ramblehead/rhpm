@@ -1,0 +1,19 @@
+#!/bin/bash
+
+set -eu
+set -o pipefail
+
+SDPATH="$(dirname "${BASH_SOURCE[0]}")"
+if [[ ! -d "${SDPATH}" ]]; then SDPATH="${PWD}"; fi
+readonly SDPATH="$(cd -P "${SDPATH}" && pwd)"
+
+readonly PRJ_PATH="${SDPATH}"
+
+# shellcheck source=conf
+source "${PRJ_PATH}/conf"
+
+cd "${SRC_PATH}" && echo cd "${PWD}"
+
+echo
+CMD=(cargo build --release)
+echo + "${CMD[@]}" && "${CMD[@]}"

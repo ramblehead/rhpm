@@ -32,7 +32,7 @@ if ! grep -qE '^#*\s*(supervised\s+).*' "${SRC_PATH}/redis.conf" ||
     ! grep -qE '^#*\s*(dir\s+).*' "${SRC_PATH}/redis.conf"
 then
   echo
-  CMD=("${SRC_PATH}/redis.conf is either missformatted, ")
+  CMD=("${SRC_PATH}/redis.conf is either missformatted")
   CMD+=("or its format has changed.")
   echo "${CMD[@]}"
   exit 1

@@ -1,0 +1,48 @@
+#!/bin/bash
+
+set -eu
+set -o pipefail
+
+SDPATH="$(dirname "${BASH_SOURCE[0]}")"
+if [[ ! -d "${SDPATH}" ]]; then SDPATH="${PWD}"; fi
+readonly SDPATH="$(cd -P "${SDPATH}" && pwd)"
+
+readonly PRJ_PATH="${SDPATH}"
+
+# shellcheck source=conf
+source "${PRJ_PATH}/conf"
+
+if (( $(id -u) != 0 )); then
+  echo "Please, run as root"
+  exit 1
+fi
+
+if ! grep -qE '^ExecStart=/usr/local/bin/redis-server' \
+     "/usr/local/lib/systemd/system/redis.service"
+then
+  echo
+  CMD=("Failed to find /usr/local/lib/systemd/system/redis.service")
+  CMD+=("or it does not contain ExecStart redis-server command.")
+  echo "${CMD[@]}"
+  exit 1
+fi
+
+if grep -qE '^ExecStart=/usr/local/bin/redis-server.*--loadmodule.*librejson\.so' \
+  "/usr/local/lib/systemd/system/redis.service"
+then
+  exit
+fi
+
+echo
+CMD=(sed -i -E)
+CMD+=("'s/^(ExecStart=\/usr\/local\/bin\/redis-server.*)/\1 --loadmodule \/usr\/local\/lib\/librejson.so/'")
+CMD+=("/usr/local/lib/systemd/system/redis.service")
+echo + "${CMD[@]}" && eval "${CMD[@]}"
+
+echo
+CMD=(systemctl daemon-reload)
+echo + "${CMD[@]}" && "${CMD[@]}"
+
+echo
+CMD=(systemctl reset-failed)
+echo + "${CMD[@]}" && "${CMD[@]}"

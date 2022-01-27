@@ -1,0 +1,20 @@
+#!/bin/bash
+
+readonly PKG_NAME=redis-json
+
+# shellcheck source=paths disable=SC2153
+source "$PRJ_PATH/paths"
+
+# shellcheck disable=SC2034
+readonly DEP_NAME=ubuntu-20.04
+
+readonly SRC_VERSION=v2.0.6
+readonly BLD_VERSION=2022-01-27
+
+readonly BLD_NAME=${BLD_VERSION}_${SRC_VERSION}
+
+# shellcheck disable=SC2034
+readonly STOW_NAME=${PKG_NAME}_${BLD_NAME}
+
+# shellcheck disable=SC2034,SC2219
+NPROC=$(let m=$(nproc)-1; ((m > 0)) && echo $m || echo 1)
