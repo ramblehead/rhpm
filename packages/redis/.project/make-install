@@ -48,7 +48,7 @@ echo + "${CMD[@]}" && "${CMD[@]}"
 
 echo
 CMD=(sed -i -E)
-CMD+=("'s/^#*\s*(supervised\s+).*/\1systemd/'")
+CMD+=("'s/^#*\s*(supervised)\s+auto\$/\1systemd/'")
 CMD+=("/usr/local/stow/${STOW_NAME}/etc/redis/redis.conf")
 echo + "${CMD[@]}" && eval "${CMD[@]}"
 
