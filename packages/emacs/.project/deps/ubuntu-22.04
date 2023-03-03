@@ -6,7 +6,7 @@ set -o pipefail
 
 sudo apt update
 
-sudo apt install gcc-11 g++-11 libgccjit-11-dev
+sudo apt install gcc-12 g++-12 libgccjit-12-dev
 
 sudo apt install fonts-noto-*
 
@@ -15,6 +15,7 @@ sudo apt install stow xstow build-essential autoconf-archive autoconf texinfo \
          gnu-standards autoconf-doc libtool texlive-plain-generic \
          emacs-common-non-dfsg libtool-doc wget dh-make gawk devhelp \
          spamassassin gnutls-bin autoconf texlive silversearcher-ag mailutils \
+         libtree-sitter-dev libjansson-dev libjansson-doc libsystemd-dev \
 \
          libx11-dev xaw3dg-dev \
          libjpeg-dev libpng-dev libgif-dev libtiff-dev libncurses-dev \
@@ -28,6 +29,6 @@ sudo apt install stow xstow build-essential autoconf-archive autoconf texinfo \
          libgmp10-doc gnutls-doc libgtk-3-doc libice-doc icu-doc\
          liblzma-doc m17n-docs ncurses-doc libpango1.0-doc librsvg2-doc \
          libsm-doc libthai-doc libwmf-doc libxcb-doc libxext-doc libxt-doc \
-         gawk-doc guile-2.0-doc libmpfr-doc \
+         gawk-doc guile-3.0-doc libmpfr-doc \
 \
-         fonts-hack fonts-symbola clangd clang-tidy clang-format
+         fonts-hack fonts-symbola clangd-15 clang-tidy-15 clang-format-15

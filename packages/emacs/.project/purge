@@ -13,7 +13,9 @@ source "${PRJ_PATH}/conf"
 cd ${PKG_PATH} && echo + cd ${PWD}
 
 echo
-CMD=(rm -vrf "${BLD_PATH}"); echo + ${CMD[@]} && "${CMD[@]}"
+CMD=(rm -vrf "${BLD_PATH}")
+echo + ${CMD[@]} && "${CMD[@]}"
 
 echo
-CMD=(rm -vrf "${SRC_PATH}"); echo + ${CMD[@]} && "${CMD[@]}"
+CMD=(rm -vrf "${SRC_PATH}")
+echo + ${CMD[@]} && "${CMD[@]}"

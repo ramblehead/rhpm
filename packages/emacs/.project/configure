@@ -12,8 +12,8 @@ source "${PRJ_PATH}/conf"
 
 cd "${SRC_PATH}" && echo + cd ${PWD}
 
-export CC=gcc-11
-export CXX=g++-11
+export CC=gcc-12
+export CXX=g++-12
 
 CMD=(./configure)
 CMD+=(--with-native-compilation)
@@ -27,4 +27,5 @@ CMD+=('--with-x-toolkit=gtk3')
 CMD+=(--with-xwidgets)
 CMD+=(--with-modules)
 CMD+=(--with-json)
+CMD+=(--with-tree-sitter)
 echo + ${CMD[@]} && "${CMD[@]}"

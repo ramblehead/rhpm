@@ -12,14 +12,22 @@ source "${PRJ_PATH}/conf"
 
 cd "${SRC_PATH}"; echo + cd ${PWD}
 
-# discard stuff from last build
-CMD=(git reset --hard)
+# echo
+# CMD=(mkdir -p "/usr/local/stow/${STOW_NAME}")
+# echo + "${CMD[@]}" && "${CMD[@]}"
+
+export PREFIX=/usr/local/stow/${STOW_NAME}
+
+CMD=(make)
+CMD+=(install)
+# CMD+=("--prefix=/usr/local/stow/${STOW_NAME}")
 echo + ${CMD[@]} && "${CMD[@]}"
 
-# Go back to master HEAD
-CMD=(git checkout master)
+echo
+cd /usr/local/stow; echo + cd ${PWD}
+
+CMD=(sudo chown -R root:root "${STOW_NAME}")
 echo + ${CMD[@]} && "${CMD[@]}"
 
-# delete all of the last build stuff
-CMD=(git clean -xdf)
+CMD=(sudo stow -v "${STOW_NAME}")
 echo + ${CMD[@]} && "${CMD[@]}"
