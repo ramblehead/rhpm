@@ -19,6 +19,7 @@ export CC=gcc-11
 export CXX=g++-11
 
 CMD=(./configure)
+CMD+=('--program-suffix=-29')
 CMD+=(--with-native-compilation)
 # CMD+=(--without-libsystemd)
 # CMD+=(--with-native-image-api)
@@ -30,6 +31,6 @@ CMD+=('--with-x-toolkit=gtk3')
 CMD+=(--with-xwidgets)
 CMD+=(--with-modules)
 CMD+=(--with-json)
-# CMD+=(--with-tree-sitter)
+CMD+=(--with-tree-sitter)
 CMD+=(--with-mailutils)
 echo + "${CMD[@]}" && "${CMD[@]}"

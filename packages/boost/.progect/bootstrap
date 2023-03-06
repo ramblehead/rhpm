@@ -13,24 +13,4 @@ source "${PRJ_PATH}/conf"
 cd "${SRC_PATH}"; echo + cd ${PWD}
 
 echo
-CMD=(echo)
-# CMD+=('"using mpi : : <find-shared-library>impi ;"')
-CMD+=('"using mpi ;"')
-CMD+=("> tools/build/src/user-config.jam")
-echo + ${CMD[@]} && eval ${CMD[@]}
-
-
-echo
-CMD=(echo)
-CMD+=('"using gcc : 11~c++17 : g++-11 : <cxxflags>\"-std=c++17 -fpermissive\" ;"')
-CMD+=(">> tools/build/src/user-config.jam")
-echo + ${CMD[@]} && eval ${CMD[@]}
-
-echo
-CMD=(echo)
-CMD+=('"using gcc : 11~c++20 : g++-11 : <cxxflags>-std=c++20 ;"')
-CMD+=(">> tools/build/src/user-config.jam")
-echo + ${CMD[@]} && eval ${CMD[@]}
-
-echo
 CMD=(./bootstrap.sh --with-python=python3); echo ${CMD[@]} && ${CMD[@]}

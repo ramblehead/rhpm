@@ -5,8 +5,8 @@ source "$PRJ_PATH/paths"
 readonly PKG_NAME=emacs
 readonly DEP_NAME=ubuntu-22.04
 
-readonly SRC_VERSION=6fde1fcd # feature/tree-sitter, 2023-03-03
-readonly BLD_VERSION=2023-03-03
+readonly SRC_VERSION=5b8e0b31 # emacs-29, 2023-03-05
+readonly BLD_VERSION=2023-03-05
 
 readonly BLD_NAME=${BLD_VERSION}_${SRC_VERSION}
 readonly STOW_NAME=${PKG_NAME}_${BLD_NAME}

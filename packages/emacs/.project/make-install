@@ -8,31 +8,37 @@ if [[ ! -d "${SPATH}" ]]; then SPATH="${PWD}"; fi
 readonly SPATH="$(cd -P "${SPATH}" && pwd)"
 
 readonly PRJ_PATH="${SPATH}"
+
+# shellcheck source=./conf
 source "${PRJ_PATH}/conf"
 
-cd "${SRC_PATH}"; echo + cd ${PWD}
+# shellcheck disable=SC2153
+cd "${SRC_PATH}"; echo + cd "${PWD}"
 
 CMD=(make)
 CMD+=(install)
 CMD+=(install-man)
 CMD+=("prefix=/usr/local/stow/${STOW_NAME}")
-echo + ${CMD[@]} && "${CMD[@]}"
+echo + "${CMD[@]}" && "${CMD[@]}"
 
 echo
-cd /usr/local/stow/${STOW_NAME}/share/info; echo + cd ${PWD}
+cd /usr/local/stow/${STOW_NAME}/share/info; echo + cd "${PWD}"
 
-CMD=(mv -v dir "dir.${STOW_NAME}"); echo + ${CMD[@]} && "${CMD[@]}"
+CMD=(mv -v dir "dir.${STOW_NAME}")
+echo + "${CMD[@]}" && "${CMD[@]}"
 
 echo
-cd /usr/local/stow; echo + cd ${PWD}
+cd /usr/local/stow; echo + cd "${PWD}"
 
 # sudo --reset-timestamp
-CMD=(sudo chown -R root:root "${STOW_NAME}"); echo + ${CMD[@]} && "${CMD[@]}"
+CMD=(sudo chown -R root:root "${STOW_NAME}")
+echo + "${CMD[@]}" && "${CMD[@]}"
 
 # sudo --reset-timestamp
-CMD=(sudo stow -v "${STOW_NAME}"); echo + ${CMD[@]} && "${CMD[@]}"
+CMD=(sudo stow -v "${STOW_NAME}")
+echo + "${CMD[@]}" && "${CMD[@]}"
 
-cd /usr/local/share/info; echo cd + ${PWD}
+cd /usr/local/share/info; echo cd + "${PWD}"
 
 readonly INFO_DIR_FILE=$(sudo realpath -e "dir.${STOW_NAME}")
 
@@ -42,8 +48,8 @@ if [[ -f dir ]]; then
   CMD+=(dir)
   CMD+=("${INFO_DIR_FILE}")
   CMD+=('> dir')
-  echo + ${CMD[@]} && "${CMD[@]}"
+  echo + "${CMD[@]}" && "${CMD[@]}"
 else
   CMD=(sudo cp -v "${INFO_DIR_FILE}" dir)
-  echo + ${CMD[@]} && "${CMD[@]}"
+  echo + "${CMD[@]}" && "${CMD[@]}"
 fi

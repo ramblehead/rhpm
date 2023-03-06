@@ -1,0 +1,28 @@
+#!/bin/bash
+
+set -eu
+set -o pipefail
+
+SDPATH="$(dirname "${BASH_SOURCE[0]}")"
+if [[ ! -d "${SDPATH}" ]]; then SDPATH="${PWD}"; fi
+readonly SDPATH="$(cd -P "${SDPATH}" && pwd)"
+
+readonly PRJ_PATH="${SDPATH}"
+
+# shellcheck source=./conf
+source "${PRJ_PATH}/conf"
+
+echo "/usr/local/stow/${STOW_NAME}"
+
+if [[ -d "/usr/local/stow/${STOW_NAME}" ]]; then
+  echo
+  cd /usr/local/stow; echo + cd "${PWD}"
+
+  echo
+  CMD=(sudo stow -vD "${STOW_NAME}")
+  echo + "${CMD[@]}" && "${CMD[@]}"
+
+  echo
+  CMD=(sudo rm -rv "${STOW_NAME}")
+  echo + "${CMD[@]}" && "${CMD[@]}"
+fi
