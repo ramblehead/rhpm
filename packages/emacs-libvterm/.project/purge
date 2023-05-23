@@ -15,4 +15,5 @@ source "${PRJ_PATH}/conf"
 # shellcheck disable=SC2153
 cd "${PKG_PATH}" && echo + cd "$PWD"
 
-CMD=(rm -vrf "${SRC_PATH}"); echo + "${CMD[@]}" && "${CMD[@]}"
+CMD=(rm -vrf "${SRC_PATH}")
+echo + "${CMD[@]}" && "${CMD[@]}"
