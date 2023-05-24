@@ -39,10 +39,10 @@ CMD+=("'s/^(ExecStart=\/usr\/local\/bin\/redis-server.*)/\1 --loadmodule \/usr\/
 CMD+=("/usr/local/lib/systemd/system/redis.service")
 echo + "${CMD[@]}" && eval "${CMD[@]}"
 
-echo
-CMD=(systemctl daemon-reload)
-echo + "${CMD[@]}" && "${CMD[@]}"
+# echo
+# CMD=(systemctl daemon-reload)
+# echo + "${CMD[@]}" && "${CMD[@]}"
 
-echo
-CMD=(systemctl reset-failed)
-echo + "${CMD[@]}" && "${CMD[@]}"
+# echo
+# CMD=(systemctl reset-failed)
+# echo + "${CMD[@]}" && "${CMD[@]}"
