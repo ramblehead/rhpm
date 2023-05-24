@@ -4,4 +4,5 @@ set -eu
 set -o pipefail
 
 sudo apt update
-sudo apt install git libclang-9-dev
+# sudo apt install git libclang-9-dev
+sudo apt install git
