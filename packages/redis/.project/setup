@@ -17,9 +17,6 @@ if (( $(id -u) != 0 )); then
   exit 1
 fi
 
-# useradd --system --shell /usr/sbin/nologin \
-#         --home /nonexistent arangodb || true
-
 echo
 CMD=(adduser --system --group --no-create-home redis)
 echo + "${CMD[@]}" && "${CMD[@]}"
@@ -49,6 +46,6 @@ then
   echo + "${CMD[@]}" && "${CMD[@]}"
 fi
 
-echo
-CMD=(systemctl enable redis.service)
-echo + "${CMD[@]}" && "${CMD[@]}"
+# echo
+# CMD=(systemctl enable redis.service)
+# echo + "${CMD[@]}" && "${CMD[@]}"

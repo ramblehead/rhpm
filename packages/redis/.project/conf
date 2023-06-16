@@ -6,10 +6,10 @@ readonly PKG_NAME=redis
 source "$PRJ_PATH/paths"
 
 # shellcheck disable=SC2034
-readonly DEP_NAME=ubuntu-20.04
+readonly DEP_NAME=ubuntu-22.04
 
-readonly SRC_VERSION=6.2.6
-readonly BLD_VERSION=2022-01-26
+readonly SRC_VERSION=7.0.11
+readonly BLD_VERSION=2023-05-23
 
 readonly BLD_NAME=${BLD_VERSION}_${SRC_VERSION}
 

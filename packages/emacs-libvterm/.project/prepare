@@ -16,7 +16,9 @@ source "${PRJ_PATH}/conf"
 cd "${SRC_PATH}" && echo + cd "$PWD"
 
 echo
-CMD=(git checkout "${SRC_VERSION}"); echo + "${CMD[@]}" && "${CMD[@]}"
+CMD=(git checkout "${SRC_VERSION}")
+echo + "${CMD[@]}" && "${CMD[@]}"
 
 echo
-CMD=(mkdir -vp "${BLD_DIR_NAME}"); echo + "${CMD[@]}" && "${CMD[@]}"
+CMD=(mkdir -vp "${BLD_DIR_NAME}")
+echo + "${CMD[@]}" && "${CMD[@]}"
