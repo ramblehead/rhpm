@@ -5,8 +5,8 @@ source "$PRJ_PATH/paths"
 readonly PKG_NAME=onedrive
 readonly DEP_NAME=ubuntu-20.04
 
-readonly SRC_VERSION=a3c4ba1b3bc
-readonly BLD_VERSION=2020-10-13
+readonly SRC_VERSION=2.4.23
+readonly BLD_VERSION=2023-06-09
 
 readonly DMD_VERSION=2.094.0
 
