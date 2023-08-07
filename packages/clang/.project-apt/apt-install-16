@@ -1,0 +1,41 @@
+#!/bin/bash
+
+set -eu
+set -o pipefail
+
+SDPATH="$(dirname "${BASH_SOURCE[0]}")"
+if [[ ! -d "${SDPATH}" ]]; then SDPATH="${PWD}"; fi
+readonly SDPATH="$(cd -P "${SDPATH}" && pwd)"
+
+apt update
+
+# LLVM
+apt-get install libllvm-16-ocaml-dev libllvm16 llvm-16 llvm-16-dev llvm-16-doc llvm-16-examples llvm-16-runtime
+# Clang and co
+apt-get install clang-16 clang-tools-16 clang-16-doc libclang-common-16-dev libclang-16-dev libclang1-16 clang-format-16 python3-clang-16 clangd-16 clang-tidy-16
+# compiler-rt
+apt-get install libclang-rt-16-dev
+# polly
+apt-get install libpolly-16-dev
+# libfuzzer
+apt-get install libfuzzer-16-dev
+# lldb
+apt-get install lldb-16
+# lld (linker)
+apt-get install lld-16
+# libc++
+apt-get install libc++-16-dev libc++abi-16-dev
+# OpenMP
+apt-get install libomp-16-dev
+# libclc
+apt-get install libclc-16-dev
+# libunwind
+apt-get install libunwind-16-dev
+# mlir
+apt-get install libmlir-16-dev mlir-16-tools
+# bolt
+apt-get install libbolt-16-dev bolt-16
+# flang
+apt-get install flang-16
+# wasm support
+# apt-get install libclang-rt-16-dev-wasm32 libclang-rt-16-dev-wasm64 libc++-16-dev-wasm32 libc++abi-16-dev-wasm32 libclang-rt-16-dev-wasm32 libclang-rt-16-dev-wasm64

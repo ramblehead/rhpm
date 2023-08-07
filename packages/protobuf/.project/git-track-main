@@ -12,7 +12,7 @@ source "${PRJ_PATH}/conf"
 
 cd "${SRC_PATH}"; echo cd ${PWD}
 
-readonly BRANCH=@artizanya/master
+readonly BRANCH=main
 
 echo
 CMD=(git fetch --all); echo + ${CMD[@]} && "${CMD[@]}"

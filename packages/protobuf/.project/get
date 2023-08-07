@@ -13,13 +13,15 @@ source "${PRJ_PATH}/conf"
 if [[ ! -d "${SRC_PATH}" || \
       (-d "${SRC_PATH}" && -z "$(ls -A ${SRC_PATH})") ]];
 then
-  CMD=(git clone --recurse-submodules)
-  CMD+=(git@github.com:google/flatbuffers.git)
+  CMD=(git clone)
+  CMD+=(git@github.com:protocolbuffers/protobuf.git)
   CMD+=("${SRC_PATH}")
   echo + ${CMD[@]} && ${CMD[@]}
 
   echo
   cd "${SRC_PATH}"; echo + cd ${PWD}
+  CMD=(git submodule update --init --recursive)
+  echo + ${CMD[@]} && ${CMD[@]}
 else
   cd "${SRC_PATH}"; echo + cd ${PWD}
 

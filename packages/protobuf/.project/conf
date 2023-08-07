@@ -2,11 +2,11 @@
 
 source "$PRJ_PATH/paths"
 
-readonly PKG_NAME=flatbuffers
+readonly PKG_NAME=protobuf
 readonly DEP_NAME=ubuntu-22.04
 
-readonly SRC_VERSION=0cc525b7 # master, 2023-06-14
-readonly BLD_VERSION=2023-06-14
+readonly SRC_VERSION=45676832 # main, 2023-06-20
+readonly BLD_VERSION=2023-06-20
 
 readonly BLD_NAME=${BLD_VERSION}_${SRC_VERSION}
 readonly STOW_NAME=${PKG_NAME}_${BLD_NAME}
