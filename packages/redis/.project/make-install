@@ -29,7 +29,7 @@ echo
 CMD=(cp -vr "$PRJ_PATH"/root/* "/usr/local/stow/${STOW_NAME}")
 echo + "${CMD[@]}" && "${CMD[@]}"
 
-if ! grep -qE '^#*\s*(supervised\s+).*' "${SRC_PATH}/redis.conf" ||
+if ! grep -qE '^#*\s*(supervised\s+)auto\$' "${SRC_PATH}/redis.conf" ||
     ! grep -qE '^#*\s*(dir\s+).*' "${SRC_PATH}/redis.conf"
 then
   echo
