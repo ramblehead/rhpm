@@ -8,8 +8,8 @@ source "$PRJ_PATH/paths"
 # shellcheck disable=SC2034
 readonly DEP_NAME=ubuntu-22.04
 
-readonly SRC_VERSION=7.0.11
-readonly BLD_VERSION=2023-05-23
+readonly SRC_VERSION=7.0.12
+readonly BLD_VERSION=2023-08-11
 
 readonly BLD_NAME=${BLD_VERSION}_${SRC_VERSION}
 
