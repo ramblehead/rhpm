@@ -15,5 +15,5 @@ source "${PRJ_PATH}/conf"
 cd "${SRC_PATH}" && echo cd "${PWD}"
 
 echo
-CMD=(cargo test --features test)
+CMD=(cargo test)
 echo + "${CMD[@]}" && "${CMD[@]}"
