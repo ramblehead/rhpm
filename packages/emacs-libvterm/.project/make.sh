@@ -4,14 +4,15 @@
 set -eu
 set -o pipefail
 
-SPATH="$(dirname "${BASH_SOURCE[0]}")"
-if [[ ! -d "${SPATH}" ]]; then SPATH="${PWD}"; fi
-readonly SPATH="$(cd -P "${SPATH}" && pwd)"
+SDPATH="$(dirname "${BASH_SOURCE[0]}")"
+if [[ ! -d "${SDPATH}" ]]; then SDPATH="${PWD}"; fi
+SDPATH="$(cd -P "${SDPATH}" && pwd)"
+readonly SDPATH
 
-readonly PRJ_PATH="${SPATH}"
+readonly PRJ_PATH="${SDPATH}"
 
-# shellcheck source=./conf
-source "${PRJ_PATH}/conf"
+# shellcheck source=./conf.sh
+source "${PRJ_PATH}/conf.sh"
 
 # shellcheck disable=SC2153
 cd "${SRC_PATH}/${BLD_DIR_NAME}" && echo + cd "${PWD}"

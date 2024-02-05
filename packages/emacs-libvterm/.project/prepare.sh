@@ -1,0 +1,24 @@
+#!/bin/bash
+
+set -eu
+set -o pipefail
+
+SDPATH="$(dirname "${BASH_SOURCE[0]}")"
+if [[ ! -d "${SDPATH}" ]]; then SDPATH="${PWD}"; fi
+SDPATH="$(cd -P "${SDPATH}" && pwd)"
+readonly SDPATH
+
+readonly PRJ_PATH="${SDPATH}"
+
+# shellcheck source=./conf.sh
+source "${PRJ_PATH}/conf.sh"
+
+cd "${SRC_PATH}" && echo + cd "$PWD"
+
+echo
+CMD=(git checkout "${SRC_VERSION}")
+echo + "${CMD[@]}" && "${CMD[@]}"
+
+echo
+CMD=(mkdir -vp "${BLD_DIR_NAME}")
+echo + "${CMD[@]}" && "${CMD[@]}"

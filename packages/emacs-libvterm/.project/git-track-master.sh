@@ -1,0 +1,47 @@
+#!/bin/bash
+
+set -eu
+set -o pipefail
+
+SDPATH="$(dirname "${BASH_SOURCE[0]}")"
+if [[ ! -d "${SDPATH}" ]]; then SDPATH="${PWD}"; fi
+SDPATH="$(cd -P "${SDPATH}" && pwd)"
+readonly SDPATH
+
+readonly PRJ_PATH="${SDPATH}"
+
+# shellcheck source=./conf.sh
+source "${PRJ_PATH}/conf.sh"
+
+cd "${SRC_PATH}" && echo + cd "${PWD}"
+
+readonly BRANCH=master
+
+echo
+CMD=(git fetch --all)
+echo + "${CMD[@]}" && "${CMD[@]}"
+
+CMD=(git checkout "${BRANCH}")
+echo + "${CMD[@]}" && "${CMD[@]}"
+
+CMD=(git pull)
+echo + "${CMD[@]}" && "${CMD[@]}"
+
+HASH=$(git rev-parse --short=8 HEAD)
+readonly HASH
+
+DATE=$(date +"%Y-%m-%d")
+readonly DATE
+
+echo
+CMD=(sed -i -E)
+CMD+=("'"'s/^(readonly SRC_VERSION)=.*$/\1='"${HASH}")
+CMD+=('# '"${BRANCH//\//\\\/}"', '"${DATE}""/'")
+CMD+=("${PRJ_PATH}/conf.sh")
+echo + "${CMD[@]}" && eval "${CMD[*]}"
+
+echo
+CMD=(sed -i -E)
+CMD+=('s/^(readonly BLD_VERSION)=.*$/\1='"${DATE}"'/')
+CMD+=("${PRJ_PATH}/conf.sh")
+echo + "${CMD[@]}" && "${CMD[@]}"
