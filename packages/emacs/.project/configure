@@ -30,6 +30,6 @@ CMD+=('--with-x-toolkit=gtk3')
 CMD+=(--with-xwidgets)
 CMD+=(--with-modules)
 CMD+=(--with-json)
-# CMD+=(--with-tree-sitter)
+CMD+=(--with-tree-sitter)
 CMD+=(--with-mailutils)
 echo + "${CMD[@]}" && "${CMD[@]}"
