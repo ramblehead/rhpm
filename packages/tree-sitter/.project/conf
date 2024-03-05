@@ -5,7 +5,7 @@ source "$PRJ_PATH/paths"
 readonly PKG_NAME=tree-sitter
 readonly DEP_NAME=ubuntu-22.04
 
-readonly SRC_VERSION=36397810 # master, 2024-03-01
+readonly SRC_VERSION=6756eb5c # master, 2024-03-01
 readonly BLD_VERSION=2024-03-01
 
 readonly BLD_NAME=${BLD_VERSION}_${SRC_VERSION}

@@ -46,6 +46,6 @@ then
   echo + "${CMD[@]}" && "${CMD[@]}"
 fi
 
-# echo
-# CMD=(systemctl enable redis.service)
-# echo + "${CMD[@]}" && "${CMD[@]}"
+echo
+CMD=(systemctl enable redis.service)
+echo + "${CMD[@]}" && "${CMD[@]}"
