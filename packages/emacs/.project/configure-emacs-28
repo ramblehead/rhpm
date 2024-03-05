@@ -1,0 +1,35 @@
+#!/bin/bash
+
+set -eu
+set -o pipefail
+
+SPATH="$(dirname "${BASH_SOURCE[0]}")"
+if [[ ! -d "${SPATH}" ]]; then SPATH="${PWD}"; fi
+readonly SPATH="$(cd -P "${SPATH}" && pwd)"
+
+readonly PRJ_PATH="${SPATH}"
+
+# shellcheck source=./conf
+source "${PRJ_PATH}/conf"
+
+# shellcheck disable=SC2153
+cd "${SRC_PATH}" && echo + cd "${PWD}"
+
+export CC=gcc-11
+export CXX=g++-11
+
+CMD=(./configure)
+CMD+=('--program-suffix=-28')
+CMD+=(--with-native-compilation)
+# CMD+=(--without-libsystemd)
+# CMD+=(--with-native-image-api)
+CMD+=('--with-file-notification=inotify')
+CMD+=(--with-imagemagick)
+CMD+=(--with-libgmp)
+CMD+=(--with-xft)
+CMD+=('--with-x-toolkit=gtk3')
+CMD+=(--with-xwidgets)
+CMD+=(--with-modules)
+CMD+=(--with-json)
+CMD+=(--with-mailutils)
+echo + "${CMD[@]}" && "${CMD[@]}"
