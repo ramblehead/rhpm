@@ -11,8 +11,8 @@ readonly DEP_NAME=ubuntu-18.04
 # readonly SRC_VERSION=4b94838f # master, 2024-02-05
 # readonly BLD_VERSION=2024-02-05
 
-readonly SRC_VERSION=c3a3a23a # master, 2024-03-02
-readonly BLD_VERSION=2024-03-02
+readonly SRC_VERSION=303decd9 # master, 2024-03-19
+readonly BLD_VERSION=2024-03-19
 
 readonly BLD_NAME=${BLD_VERSION}_${SRC_VERSION}
 readonly STOW_NAME=${PKG_NAME}_${BLD_NAME}
