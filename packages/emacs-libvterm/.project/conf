@@ -6,13 +6,9 @@
 source "${PRJ_PATH}/paths"
 
 readonly PKG_NAME=vterm
-readonly DEP_NAME=ubuntu-18.04
 
-# readonly SRC_VERSION=4b94838f # master, 2024-02-05
-# readonly BLD_VERSION=2024-02-05
-
-readonly SRC_VERSION=303decd9 # master, 2024-03-19
-readonly BLD_VERSION=2024-03-19
+readonly SRC_VERSION=ae4ae1ae # master, 2024-04-15
+readonly BLD_VERSION=2024-04-15
 
 readonly BLD_NAME=${BLD_VERSION}_${SRC_VERSION}
 readonly STOW_NAME=${PKG_NAME}_${BLD_NAME}

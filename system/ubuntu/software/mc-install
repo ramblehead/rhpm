@@ -7,5 +7,6 @@
 set -eu
 set -o pipefail
 
-sudo apt install mc xsel
+# sudo apt install mc xsel
+sudo apt install mc wl-clipboard
 mc

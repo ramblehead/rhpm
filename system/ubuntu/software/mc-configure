@@ -15,8 +15,8 @@ if [[ ! -f ~/.config/mc/ini ]]; then
   exit 1
 fi
 
-sed -i -E 's/^(clipboard_store)=.*$/\1=f2clip/' ~/.config/mc/ini
-sed -i -E 's/^(clipboard_paste)=.*$/\1=xsel -ob/' ~/.config/mc/ini
+sed -i -E 's/^(clipboard_store)=.*$/\1=file2clip/' ~/.config/mc/ini
+sed -i -E 's/^(clipboard_paste)=.*$/\1=clip2output/' ~/.config/mc/ini
 sed -i -E 's/^(confirm_exit)=.*$/\1=true/' ~/.config/mc/ini
 sed -i -E 's/^(use_internal_edit)=.*$/\1=true/' ~/.config/mc/ini
 sed -i -E 's/^(editor_cursor_beyond_eol)=.*$/\1=true/' ~/.config/mc/ini
