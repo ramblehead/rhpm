@@ -1,3 +1,4 @@
 #!/bin/sh
 
 wl-copy < "$1"
+wl-copy --primary < "$1"
