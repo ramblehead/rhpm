@@ -1,0 +1,26 @@
+#!/bin/bash
+
+set -eu
+set -o pipefail
+
+SPATH="$(dirname "${BASH_SOURCE[0]}")"
+if [[ ! -d "${SPATH}" ]]; then SPATH="${PWD}"; fi
+readonly SPATH="$(cd -P "${SPATH}" && pwd)"
+
+readonly PRJ_PATH="${SPATH}"
+source "${PRJ_PATH}/conf"
+
+if [[ ! -d "${SRC_PATH}" || \
+      (-d "${SRC_PATH}" && -z "$(ls -A ${SRC_PATH})") ]];
+then
+  cmd=(git clone git@github.com:elfmz/far2l.git "${SRC_PATH}")
+  echo + ${cmd[@]} && "${cmd[@]}"
+
+  cmd=(git fetch --all --tags)
+  echo + ${cmd[@]} && "${cmd[@]}"
+else
+  cd "${SRC_PATH}"; echo + cd ${PWD}
+
+  cmd=(git fetch --all --tags)
+  echo + ${cmd[@]} && "${cmd[@]}"
+fi

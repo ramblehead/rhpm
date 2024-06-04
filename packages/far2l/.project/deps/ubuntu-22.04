@@ -1,0 +1,34 @@
+#!/bin/bash
+
+# https://stackoverflow.com/a/13478622
+set -eu
+set -o pipefail
+
+CMD=(sudo --reset-timestamp apt update)
+
+echo + "${CMD[@]}" && "${CMD[@]}"
+
+export CC=gcc-12
+export CXX=g++-12
+
+CMD=(sudo --reset-timestamp)
+CMD+=(apt install)
+CMD+=(libwxgtk3.2-dev)
+CMD+=(libx11-dev)
+CMD+=(libxi-dev)
+CMD+=(libpcre3-dev)
+CMD+=(libxerces-c-dev)
+CMD+=(libuchardet-dev)
+CMD+=(libssh-dev)
+CMD+=(libssl-dev)
+CMD+=(libsmbclient-dev)
+CMD+=(libnfs-dev)
+CMD+=(libneon27-dev)
+CMD+=(libarchive-dev)
+CMD+=(cmake)
+CMD+=(ninja-build)
+CMD+=(pkg-config)
+CMD+=(g++)
+CMD+=(git)
+
+echo + "${CMD[@]}" && "${CMD[@]}"

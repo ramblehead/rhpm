@@ -11,8 +11,8 @@ readonly SDPATH
 readonly PRJ_PATH="${SDPATH}"
 source "${PRJ_PATH}/conf"
 
-cd "${SRC_PATH}"; echo + cd "${PWD}"
+cd "${BLD_PATH}" && echo + cd "${PWD}"
 
-echo
-cmd=(git checkout "${SRC_VERSION}")
+cmd=(cmake --build . "-j${NPROC}")
+
 echo + "${cmd[@]}" && "${cmd[@]}"

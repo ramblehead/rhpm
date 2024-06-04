@@ -16,3 +16,7 @@ cd "${SRC_PATH}"; echo + cd "${PWD}"
 echo
 cmd=(git checkout "${SRC_VERSION}")
 echo + "${cmd[@]}" && "${cmd[@]}"
+
+echo
+cmd=(mkdir -vp "${BLD_PATH}")
+echo + "${cmd[@]}" && "${cmd[@]}"

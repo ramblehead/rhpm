@@ -1,0 +1,27 @@
+#!/bin/bash
+
+set -eu
+set -o pipefail
+
+SDPATH="$(dirname "${BASH_SOURCE[0]}")"
+if [[ ! -d "${SDPATH}" ]]; then SDPATH="${PWD}"; fi
+SDPATH="$(cd -P "${SDPATH}" && pwd)"
+readonly SDPATH
+
+readonly PRJ_PATH="${SDPATH}"
+source "${PRJ_PATH}/conf"
+
+export CC=gcc-12
+export CXX=g++-12
+
+cd "${BLD_PATH}"; echo + cd "${PWD}"
+
+cmd=(cmake)
+cmd+=(-DCMAKE_INSTALL_PREFIX="/usr/local/stow/${STOW_NAME}")
+cmd+=(-DCMAKE_EXPORT_COMPILE_COMMANDS=true)
+cmd+=(-DUSEWX=true)
+cmd+=(-DCMAKE_BUILD_TYPE=Release)
+cmd+=(-G Ninja)
+cmd+=("${SRC_PATH}")
+
+echo + "${cmd[@]}" && "${cmd[@]}"

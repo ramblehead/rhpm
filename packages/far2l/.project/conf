@@ -1,0 +1,13 @@
+#!/bin/bash
+
+source "$PRJ_PATH/paths"
+
+readonly PKG_NAME=far2l
+
+readonly SRC_VERSION=51cf4e3d # master, 2024-06-04
+readonly BLD_VERSION=2024-06-04
+
+readonly BLD_NAME=${BLD_VERSION}_${SRC_VERSION}
+readonly STOW_NAME=${PKG_NAME}_${BLD_NAME}
+
+NPROC=$(let m=$(nproc)-1; (($m > 0)) && echo $m || echo 1)
