@@ -1,9 +1,9 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 set -eu
 set -o pipefail
 
-if [[ ! -f /etc/mc/mc.keymap ]]; then
+if ! command -v mc >/dev/null 2>&1; then
   echo ""
   echo "'mc' is not installed."
   exit 1
@@ -49,11 +49,3 @@ sed -i -E 's/^( ?)(\s*)echo "\.\.\/\$tar\.tar\.xz created\."$/&\
 \1\2cd .. \&\& \\\
 \1\2zip -r "$Pwd" "$Pwd" \&\& \\\
 \1\2echo "..\/$zip.zip created."/' ~/.config/mc/menu
-
-if [[ ! -d ~/.local/var/log ]]; then
-  mkdir -p ~/.local/var/log
-fi
-
-if [[ ! -f ~/.local/var/log/xsel.log ]]; then
-  touch ~/.local/var/log/xsel.log
-fi
