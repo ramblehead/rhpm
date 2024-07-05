@@ -12,10 +12,19 @@
       in {
         # nix build .#hello
         packages.hello = stdenv.mkDerivation {
-          name = "Hello bash in nix";
+          name = hello-rh-tiny-v0;
           src = ./.;
           installPhase = ''
-            echo "Hello, world!" > $out
+            cat << 'EOF' > $out
+            #!/usr/bin/env bash
+
+            set -eu
+            set -o pipefail
+
+            echo "Hello, world!"
+            EOF
+
+            chmod a+x $out
           '';
         };
 
