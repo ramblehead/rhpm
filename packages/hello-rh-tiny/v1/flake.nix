@@ -9,13 +9,26 @@
       let
         pkgs = nixpkgs.legacyPackages.${system};
         inherit (pkgs) stdenv;
+        name = "hello-rh-tiny-v1";
       in {
         # nix build .#hello
         packages.hello = stdenv.mkDerivation {
-          name = "hello-rh-tiny-v0";
+          inherit name;
           src = ./.;
           installPhase = ''
-            echo "Hello, world!" > $out
+            SDPATH="$out/bin/${name}"
+            mkdir -vp $out/bin
+
+            cat << 'EOF' > $SDPATH
+            #!/usr/bin/env bash
+
+            set -eu
+            set -o pipefail
+
+            echo "Hello, world in bash!"
+            EOF
+
+            chmod a+x $SDPATH
           '';
         };
 
