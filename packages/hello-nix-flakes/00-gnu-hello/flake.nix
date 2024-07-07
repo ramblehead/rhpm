@@ -8,18 +8,17 @@
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
-        inherit (pkgs) stdenv;
       in {
         # nix build .#hello
-        packages.hello = stdenv.mkDerivation {
-          name = "hello-rh-tiny-v0";
-          src = ./.;
-          installPhase = ''
-            echo "Hello, world!" > $out
-          '';
-        };
+        packages.hello = pkgs.hello;
 
         # nix build
         defaultPackage = self.packages.${system}.hello;
+
+        # nix develop .#hello or nix shell .#hello
+        devShells.hello = pkgs.mkShell { buildInputs = [ pkgs.hello pkgs.cowsay ]; };
+
+        # nix develop or nix shell
+        devShell = self.devShells.${system}.hello;
       });
 }

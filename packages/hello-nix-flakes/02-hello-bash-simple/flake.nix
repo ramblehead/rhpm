@@ -11,7 +11,7 @@
         inherit (pkgs) stdenv;
         name = "hello-rh-tiny-v1";
       in {
-        # nix build .#hello
+        # nix {build|run} .#hello
         packages.hello = stdenv.mkDerivation {
           inherit name;
           src = ./.;
@@ -32,7 +32,7 @@
           '';
         };
 
-        # nix build
+        # nix {build|run}
         defaultPackage = self.packages.${system}.hello;
       });
 }
